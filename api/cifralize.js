@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
     if (!q) {
       return res.status(400).json({
-        error: "Informe uma música"
+        error: "Informe o nome da música"
       });
     }
 
@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       "&format=json";
 
     const resposta = await fetch(url, {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "User-Agent": "Mozilla/5.0"
@@ -30,9 +31,9 @@ export default async function handler(req, res) {
 
     if (!resposta.ok) {
       return res.status(resposta.status).json({
-        error: "Erro no Cifralize",
+        error: "Cifralize retornou erro",
         status: resposta.status,
-        resposta: texto.substring(0, 1000)
+        resposta: texto.substring(0, 2000)
       });
     }
 
@@ -40,20 +41,21 @@ export default async function handler(req, res) {
 
     try {
       dados = JSON.parse(texto);
-    } catch {
+    } catch (erro) {
       return res.status(502).json({
-        error: "Cifralize não retornou JSON",
-        resposta: texto.substring(0, 1000)
+        error: "Cifralize não retornou JSON válido",
+        resposta: texto.substring(0, 2000)
       });
     }
 
     return res.status(200).json(dados);
 
   } catch (erro) {
-    console.error(erro);
+
+    console.error("ERRO CIFRALIZE:", erro);
 
     return res.status(500).json({
-      error: "Erro interno",
+      error: "Erro interno na Function",
       detalhe: erro.message
     });
   }
