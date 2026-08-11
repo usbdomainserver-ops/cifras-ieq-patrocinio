@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cifras IEQ Patrocínio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #6d28d9, #4c1d95);
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      opacity: 0.85;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .culto {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .culto h2 {
+      margin-top: 0;
+      color: #4c1d95;
+    }
+
+    .musica {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .musica:hover {
+      background: #f0eaff;
+      transform: translateY(-1px);
+    }
+
+    .musica strong {
+      display: block;
+      font-size: 17px;
+    }
+
+    .tom {
+      color: #6d28d9;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .seta {
+      font-size: 24px;
+      color: #6d28d9;
+    }
+
+    .cifra {
+      display: none;
+    }
+
+    .cifra.ativa {
+      display: block;
+    }
+
+    .voltar {
+      border: none;
+      background: none;
+      color: #6d28d9;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .cabecalho-musica {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .cabecalho-musica h2 {
+      margin: 0;
+    }
+
+    .controles {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .controles button {
+      border: none;
+      background: #6d28d9;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #tomAtual {
+      font-size: 22px;
+      font-weight: bold;
+      min-width: 45px;
+      text-align: center;
+    }
+
+    .letra {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      line-height: 2;
+      font-size: 19px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .acorde {
+      color: #6d28d9;
+      font-weight: bold;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .acao {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #eee;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .acao:hover {
+      background: #ddd;
+    }
+
+    .rodape {
+      text-align: center;
+      color: #777;
+      padding: 30px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      header h1 {
+        font-size: 22px;
+      }
+
+      .letra {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
+  <p>Louvor • Adoração • Repertórios</p>
+</header>
+
+<div class="container">
+
+  <!-- TELA DO REPERTÓRIO -->
+  <div id="inicio">
+
+    <div class="culto">
+      <h2>📅 Culto de Domingo</h2>
+      <p>16 de agosto</p>
+
+      <div class="musica" onclick="abrirMusica()">
+        <div>
+          <strong>01 — Música de Teste</strong>
+          <div class="tom">Tom: G</div>
+        </div>
+        <div class="seta">›</div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TELA DA CIFRA -->
+  <div id="paginaMusica" class="cifra">
+
+    <button class="voltar" onclick="voltar()">
+      ← Voltar para o repertório
+    </button>
+
+    <div class="cabecalho-musica">
+
+      <h2>🎵 Música de Teste</h2>
+      <p>Meu Ministério</p>
+
+      <div class="controles">
+        <button onclick="mudarTom(-1)">−</button>
+
+        <span id="tomAtual">G</span>
+
+        <button onclick="mudarTom(1)">+</button>
+      </div>
+
+      <div class="acoes">
+        <button class="acao" onclick="rolar()">
+          ▶ Rolagem
+        </button>
+
+        <button class="acao" onclick="modoCulto()">
+          🌙 Modo Culto
+        </button>
+      </div>
+
+    </div>
+
+    <div class="letra">
+
+      <p>
+        <span class="acorde" data-acorde="G">G</span>
+        Esta é uma música de teste
+      </p>
+
+      <p>
+        <span class="acorde" data-acorde="Em">Em</span>
+        Para nosso projeto de louvor
+      </p>
+
+      <p>
+        <span class="acorde" data-acorde="C">C</span>
+        Vamos construir isso juntos
+      </p>
+
+      <p>
+        <span class="acorde" data-acorde="D">D</span>
+        E vai ficar muito bom!
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="rodape">
+    Cifras IEQ Patrocínio
+  </div>
+
+</div>
+
+
+<script>
+
+  let tons = [
+    "C", "C#", "D", "D#", "E", "F",
+    "F#", "G", "G#", "A", "A#", "B"
+  ];
+
+  let tom = 7; // G
+
+  function abrirMusica() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("paginaMusica").classList.add("ativa");
+    window.scrollTo(0, 0);
+  }
+
+  function voltar() {
+    document.getElementById("paginaMusica").classList.remove("ativa");
+    document.getElementById("inicio").style.display = "block";
+    window.scrollTo(0, 0);
+  }
+
+  function mudarTom(direcao) {
+
+    tom = (tom + direcao + 12) % 12;
+
+    document.getElementById("tomAtual").textContent = tons[tom];
+
+    let acordes = document.querySelectorAll(".acorde");
+
+    acordes.forEach(function(elemento) {
+
+      let acordeOriginal = elemento.getAttribute("data-acorde");
+
+      let indice = encontrarTom(acordeOriginal);
+
+      if (indice !== -1) {
+        let novoIndice = (indice + (tom - 7) + 12) % 12;
+        elemento.textContent = tons[novoIndice];
+      }
+
+    });
+  }
+
+  function encontrarTom(acorde) {
+
+    let limpo = acorde
+      .replace("m", "")
+      .replace("7", "")
+      .replace("maj", "")
+      .replace("sus", "");
+
+    return tons.indexOf(limpo);
+  }
+
+  function rolar() {
+
+    let velocidade = 1;
+
+    let intervalo = setInterval(function() {
+
+      window.scrollBy(0, velocidade);
+
+      if (
+        window.innerHeight +
+        window.scrollY >=
+        document.body.offsetHeight
+      ) {
+        clearInterval(intervalo);
+      }
+
+    }, 40);
+
+  }
+
+  function modoCulto() {
+
+    document.body.style.background = "#000";
+    document.body.style.color = "#fff";
+
+    document.querySelector(".letra").style.background = "#000";
+    document.querySelector(".letra").style.color = "#fff";
+
+    document.querySelector(".cabecalho-musica").style.background = "#111";
+    document.querySelector(".cabecalho-musica").style.color = "#fff";
+
+  }
+
+</script>
+
+</body>
+</html>
