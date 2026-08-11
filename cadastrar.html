@@ -81,59 +81,6 @@
       gap: 12px;
     }
 
-    /* =====================================================
-       LOGIN
-       ===================================================== */
-
-    #bloqueio {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #4c1d95, #6d28d9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 9999;
-    }
-
-    .login-card {
-      width: 100%;
-      max-width: 380px;
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.25);
-      text-align: center;
-    }
-
-    .login-card h2 {
-      margin-top: 0;
-      color: #4c1d95;
-    }
-
-    .login-card p {
-      color: #666;
-    }
-
-    .login-card input {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .login-erro {
-      display: none;
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      background: #fee2e2;
-      color: #991b1b;
-      font-weight: bold;
-    }
-
-    /* =====================================================
-       BOTÕES
-       ===================================================== */
-
     button {
       width: 100%;
       border: none;
@@ -186,10 +133,6 @@
       background: #4b5563;
     }
 
-    /* =====================================================
-       INSTRUÇÕES
-       ===================================================== */
-
     .observacao {
       background: #f3e8ff;
       padding: 15px;
@@ -219,10 +162,6 @@
       font-weight: bold;
       font-size: 13px;
     }
-
-    /* =====================================================
-       ÁREA DO EDITOR
-       ===================================================== */
 
     .editor-area {
       margin-top: 15px;
@@ -285,11 +224,6 @@
       background: white;
     }
 
-    /*
-      O conteúdo é digitado normalmente.
-      Os acordes aparecem em laranja dentro do editor.
-    */
-
     .editor:empty:before {
       content: attr(data-placeholder);
       color: #9ca3af;
@@ -311,10 +245,6 @@
       font-size: 13px;
       border-top: 1px solid #fed7aa;
     }
-
-    /* =====================================================
-       PREVIEW
-       ===================================================== */
 
     .preview {
       display: none;
@@ -341,10 +271,6 @@
       font-weight: 900;
     }
 
-    /* =====================================================
-       MENSAGENS
-       ===================================================== */
-
     .mensagem {
       margin-top: 18px;
       padding: 14px;
@@ -365,10 +291,6 @@
       background: #fee2e2;
       color: #991b1b;
     }
-
-    /* =====================================================
-       LINKS
-       ===================================================== */
 
     .voltar {
       display: block;
@@ -392,7 +314,6 @@
     }
 
     @media (max-width: 600px) {
-
       .container {
         padding: 12px;
       }
@@ -428,54 +349,6 @@
 
 <body>
 
-<!-- =====================================================
-     BLOQUEIO POR SENHA
-     ===================================================== -->
-
-<div id="bloqueio">
-
-  <div class="login-card">
-
-    <div style="font-size:48px;">🎸</div>
-
-    <h2>Área de cadastro</h2>
-
-    <p>
-      Digite a senha para cadastrar músicas.
-    </p>
-
-    <input
-      id="senha"
-      type="password"
-      placeholder="Digite a senha"
-      autocomplete="off"
-      onkeydown="if(event.key === 'Enter') entrar()"
-    >
-
-    <button
-      type="button"
-      onclick="entrar()"
-      style="margin-top:15px;"
-    >
-      🔐 ENTRAR
-    </button>
-
-    <div
-      id="loginErro"
-      class="login-erro"
-    >
-      ❌ Senha incorreta.
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
-     SITE
-     ===================================================== -->
-
 <header>
 
   <button
@@ -488,12 +361,9 @@
 
   <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
 
-  <p>
-    Cadastro de músicas
-  </p>
+  <p>Cadastro de músicas</p>
 
 </header>
-
 
 <div class="container">
 
@@ -527,11 +397,6 @@
 
     </div>
 
-
-    <!-- =================================================
-         DADOS DA MÚSICA
-         ================================================= -->
-
     <label for="titulo">
       Título da música *
     </label>
@@ -541,7 +406,6 @@
       type="text"
       placeholder="Ex.: Bondade de Deus"
     >
-
 
     <label for="artista">
       Artista / Ministério
@@ -553,7 +417,6 @@
       placeholder="Ex.: Bethel Music"
     >
 
-
     <div class="linha">
 
       <div>
@@ -563,7 +426,6 @@
         </label>
 
         <select id="tom">
-
           <option value="C">C</option>
           <option value="C#">C#</option>
           <option value="D">D</option>
@@ -576,11 +438,9 @@
           <option value="A">A</option>
           <option value="A#">A#</option>
           <option value="B">B</option>
-
         </select>
 
       </div>
-
 
       <div>
 
@@ -599,11 +459,6 @@
       </div>
 
     </div>
-
-
-    <!-- =================================================
-         EDITOR
-         ================================================= -->
 
     <label>
       🎼 Cifra + letra
@@ -624,94 +479,24 @@
 
         <div class="barra-acordes">
 
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('C')"
-          >C</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('D')"
-          >D</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('E')"
-          >E</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('F')"
-          >F</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('G')"
-          >G</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('A')"
-          >A</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('B')"
-          >B</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('C#m')"
-          >C#m</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('Em')"
-          >Em</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('Am')"
-          >Am</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('D7')"
-          >D7</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('B4')"
-          >B4</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('A9')"
-          >A9</button>
-
-          <button
-            type="button"
-            class="acorde-btn"
-            onclick="inserirAcorde('G/B')"
-          >G/B</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('C')">C</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('D')">D</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('E')">E</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('F')">F</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('G')">G</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('A')">A</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('B')">B</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('C#m')">C#m</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('Em')">Em</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('Am')">Am</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('D7')">D7</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('B4')">B4</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('A9')">A9</button>
+          <button type="button" class="acorde-btn" onclick="inserirAcorde('G/B')">G/B</button>
 
         </div>
 
       </div>
-
 
       <div
         id="editor"
@@ -729,7 +514,6 @@ Que a lei de Moisés
 Me condenava por meus erros"
       ></div>
 
-
       <div class="editor-ajuda">
 
         💡
@@ -744,11 +528,6 @@ Me condenava por meus erros"
       </div>
 
     </div>
-
-
-    <!-- =================================================
-         ACORDE PERSONALIZADO
-         ================================================= -->
 
     <div
       style="
@@ -776,7 +555,6 @@ Me condenava por meus erros"
 
     </div>
 
-
     <button
       type="button"
       class="botao-cinza"
@@ -786,11 +564,6 @@ Me condenava por meus erros"
       ↩ Remover último acorde
     </button>
 
-
-    <!-- =================================================
-         PRÉVIA
-         ================================================= -->
-
     <button
       type="button"
       class="botao-secundario"
@@ -799,15 +572,12 @@ Me condenava por meus erros"
       👁️ VER PRÉVIA
     </button>
 
-
     <div
       id="preview"
       class="preview"
     >
 
-      <h3>
-        🎼 Prévia da cifra
-      </h3>
+      <h3>🎼 Prévia da cifra</h3>
 
       <div
         id="previewCifra"
@@ -815,11 +585,6 @@ Me condenava por meus erros"
       ></div>
 
     </div>
-
-
-    <!-- =================================================
-         CULTO
-         ================================================= -->
 
     <label for="culto">
       Adicionar ao culto
@@ -833,7 +598,6 @@ Me condenava por meus erros"
 
     </select>
 
-
     <label for="ordem">
       Ordem no repertório
     </label>
@@ -845,11 +609,6 @@ Me condenava por meus erros"
       value="1"
     >
 
-
-    <!-- =================================================
-         SALVAR
-         ================================================= -->
-
     <button
       id="botao"
       type="button"
@@ -859,14 +618,12 @@ Me condenava por meus erros"
       🎵 CADASTRAR MÚSICA
     </button>
 
-
     <div
       id="mensagem"
       class="mensagem"
     ></div>
 
   </div>
-
 
   <a
     class="voltar"
@@ -877,72 +634,35 @@ Me condenava por meus erros"
 
 </div>
 
-
 <script>
 
 /* =====================================================
-   CONFIGURAÇÃO
+   PROTEÇÃO
+   A SENHA É PEDIDA SOMENTE NA PÁGINA INICIAL
    ===================================================== */
 
-const SENHA =
-  "leonardo";
+const autorizado =
+  sessionStorage.getItem("cadastro_autorizado");
 
+if (autorizado !== "sim") {
+  window.location.replace("/");
+}
+
+
+/* =====================================================
+   CONFIGURAÇÃO SUPABASE
+   ===================================================== */
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
-
 
 const SUPABASE_KEY =
   "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
 
 /* =====================================================
-   LOGIN
+   SAIR
    ===================================================== */
-
-function entrar() {
-
-  const senha =
-    document
-      .getElementById("senha")
-      .value;
-
-
-  const erro =
-    document
-      .getElementById("loginErro");
-
-
-  if (senha === SENHA) {
-
-    sessionStorage.setItem(
-      "cadastro_autorizado",
-      "sim"
-    );
-
-
-    document
-      .getElementById("bloqueio")
-      .style.display = "none";
-
-
-    erro.style.display =
-      "none";
-
-
-  } else {
-
-    erro.style.display =
-      "block";
-
-    document
-      .getElementById("senha")
-      .select();
-
-  }
-
-}
-
 
 function sair() {
 
@@ -950,32 +670,7 @@ function sair() {
     "cadastro_autorizado"
   );
 
-  location.reload();
-
-}
-
-
-/* =====================================================
-   VERIFICAR LOGIN
-   ===================================================== */
-
-function verificarLogin() {
-
-  const autorizado =
-    sessionStorage.getItem(
-      "cadastro_autorizado"
-    );
-
-
-  if (
-    autorizado === "sim"
-  ) {
-
-    document
-      .getElementById("bloqueio")
-      .style.display = "none";
-
-  }
+  window.location.href = "/";
 
 }
 
@@ -1022,14 +717,9 @@ async function supabaseRequest(
 
     let erro = texto;
 
-
     try {
-
-      erro =
-        JSON.parse(texto);
-
+      erro = JSON.parse(texto);
     } catch {}
-
 
     throw new Error(
       typeof erro === "object"
@@ -1059,17 +749,18 @@ async function supabaseRequest(
 
 
 /* =====================================================
-   POSIÇÃO DO CURSOR
+   EDITOR
    ===================================================== */
 
 const editor =
-  document.getElementById(
-    "editor"
-  );
-
+  document.getElementById("editor");
 
 let ultimaSelecao = null;
 
+
+/* =====================================================
+   SALVAR SELEÇÃO
+   ===================================================== */
 
 function salvarSelecao() {
 
@@ -1081,9 +772,7 @@ function salvarSelecao() {
     !selecao ||
     selecao.rangeCount === 0
   ) {
-
     return;
-
   }
 
 
@@ -1092,14 +781,13 @@ function salvarSelecao() {
       selecao.anchorNode
     )
   ) {
-
     return;
-
   }
 
 
   ultimaSelecao =
-    selecao.getRangeAt(0)
+    selecao
+      .getRangeAt(0)
       .cloneRange();
 
 
@@ -1107,6 +795,10 @@ function salvarSelecao() {
 
 }
 
+
+/* =====================================================
+   POSIÇÃO
+   ===================================================== */
 
 function atualizarPosicao() {
 
@@ -1121,9 +813,7 @@ function atualizarPosicao() {
       selecao.anchorNode
     )
   ) {
-
     return;
-
   }
 
 
@@ -1157,6 +847,10 @@ function atualizarPosicao() {
 }
 
 
+/* =====================================================
+   CALCULAR POSIÇÃO
+   ===================================================== */
+
 function calcularPosicaoCursor(
   raiz,
   no,
@@ -1168,9 +862,7 @@ function calcularPosicaoCursor(
 
   function percorrer(elemento) {
 
-    if (
-      elemento === no
-    ) {
+    if (elemento === no) {
 
       total += offset;
 
@@ -1180,7 +872,8 @@ function calcularPosicaoCursor(
 
 
     if (
-      elemento.nodeType === Node.TEXT_NODE
+      elemento.nodeType ===
+      Node.TEXT_NODE
     ) {
 
       total +=
@@ -1238,6 +931,11 @@ editor.addEventListener(
   salvarSelecao
 );
 
+editor.addEventListener(
+  "focus",
+  salvarSelecao
+);
+
 
 /* =====================================================
    INSERIR ACORDE
@@ -1247,9 +945,7 @@ function inserirAcorde(
   acorde
 ) {
 
-  if (
-    !ultimaSelecao
-  ) {
+  if (!ultimaSelecao) {
 
     alert(
       "Primeiro clique no lugar da letra onde o acorde deve entrar."
@@ -1277,16 +973,8 @@ function inserirAcorde(
 
 
   const range =
-    ultimaSelecao;
+    selecao.getRangeAt(0);
 
-
-  /*
-    Se houver texto selecionado,
-    substitui a seleção pelo acorde.
-
-    Se não houver seleção,
-    insere no cursor.
-  */
 
   const span =
     document.createElement(
@@ -1310,29 +998,16 @@ function inserirAcorde(
 
   range.deleteContents();
 
+  range.insertNode(span);
 
-  range.insertNode(
-    span
-  );
-
-
-  /*
-    Coloca o cursor imediatamente
-    depois do acorde.
-  */
 
   const novoRange =
     document.createRange();
 
 
-  novoRange.setStartAfter(
-    span
-  );
+  novoRange.setStartAfter(span);
 
-
-  novoRange.collapse(
-    true
-  );
+  novoRange.collapse(true);
 
 
   selecao.removeAllRanges();
@@ -1364,7 +1039,9 @@ function inserirAcordePersonalizado() {
 
 
   const acorde =
-    campo.value.trim();
+    campo.value
+      .trim()
+      .replace(/\s/g, "");
 
 
   if (!acorde) {
@@ -1380,26 +1057,23 @@ function inserirAcordePersonalizado() {
   }
 
 
-  if (
-    !validarAcorde(acorde)
-  ) {
+  if (!validarAcorde(acorde)) {
 
     alert(
-      "Esse acorde não parece válido.\n\nExemplos: C, C#m, B4, A9, G/B, Dsus4"
+      "Esse acorde não parece válido.\n\n" +
+      "Exemplos: C, C#m, B4, A9, G/B, Dsus4"
     );
+
+    campo.focus();
 
     return;
 
   }
 
 
-  inserirAcorde(
-    acorde
-  );
+  inserirAcorde(acorde);
 
-
-  campo.value =
-    "";
+  campo.value = "";
 
 }
 
@@ -1408,36 +1082,18 @@ function inserirAcordePersonalizado() {
    VALIDAR ACORDE
    ===================================================== */
 
-function validarAcorde(
-  acorde
-) {
+function validarAcorde(acorde) {
 
-  return /^
-    [A-G]
-    (?:#|b)?
-    (?:
-      m|
-      maj|
-      maj7|
-      7|
-      9|
-      11|
-      13|
-      4|
-      5|
-      6|
-      sus|
-      sus2|
-      sus4|
-      dim|
-      aug
-    )?
-    (?:[0-9]+)?
-    (?:\/[A-G](?:#|b)?)?
-  $/x.test(
-    acorde
-      .replace(/\s/g, "")
-  );
+  const texto =
+    String(acorde)
+      .replace(/\s/g, "");
+
+
+  const regex =
+    /^[A-G](?:#|b)?(?:m|maj|maj7|7|9|11|13|4|5|6|sus|sus2|sus4|dim|aug)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?$/;
+
+
+  return regex.test(texto);
 
 }
 
@@ -1475,9 +1131,7 @@ function removerUltimoAcorde() {
 
   ultimo.remove();
 
-
   editor.focus();
-
 
   salvarSelecao();
 
@@ -1485,20 +1139,10 @@ function removerUltimoAcorde() {
 
 
 /* =====================================================
-   CONVERTER EDITOR PARA FORMATO DO BANCO
+   CONVERTER EDITOR PARA BANCO
    ===================================================== */
 
 function obterCifra() {
-
-  /*
-    O editor visual possui:
-
-    [C]Eu me deparei...
-    [D]Com o dedo...
-
-    Transformamos os spans em texto normal
-    antes de salvar.
-  */
 
   const clone =
     editor.cloneNode(true);
@@ -1568,16 +1212,22 @@ function mostrarPreview() {
     );
 
 
+  const textoEscapado =
+    escapar(cifra);
+
+
+  const textoFormatado =
+    textoEscapado.replace(
+      /\[([A-G](?:#|b)?(?:m|maj|maj7|7|9|11|13|4|5|6|sus|sus2|sus4|dim|aug)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?)\]/g,
+      '<span class="preview-acorde">[$1]</span>'
+    );
+
+
   elemento.innerHTML =
-    escapar(cifra)
-      .replace(
-        /\[([A-G](?:#|b)?(?:m|maj|maj7|7|9|11|13|4|5|6|sus|sus2|sus4|dim|aug)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?)\]/g,
-        '<span class="preview-acorde">[$1]</span>'
-      )
-      .replace(
-        /\n/g,
-        "<br>"
-      );
+    textoFormatado.replace(
+      /\n/g,
+      "<br>"
+    );
 
 
   preview.style.display =
@@ -1611,9 +1261,7 @@ async function carregarCultos() {
     if (
       !Array.isArray(cultos)
     ) {
-
       return;
-
     }
 
 
@@ -1753,9 +1401,7 @@ async function cadastrarMusica() {
       "Salvando...";
 
 
-    /*
-      Verifica se já existe.
-    */
+    /* Verifica se já existe */
 
     const tituloFiltro =
       encodeURIComponent(
@@ -1784,9 +1430,7 @@ async function cadastrarMusica() {
     }
 
 
-    /*
-      Salva música.
-    */
+    /* Salva música */
 
     const resultado =
       await supabaseRequest(
@@ -1830,9 +1474,7 @@ async function cadastrarMusica() {
 
 
     if (
-      Array.isArray(
-        resultado
-      )
+      Array.isArray(resultado)
     ) {
 
       musica =
@@ -1858,9 +1500,7 @@ async function cadastrarMusica() {
     }
 
 
-    /*
-      Adiciona ao culto.
-    */
+    /* Adiciona ao culto */
 
     if (cultoId) {
 
@@ -1881,22 +1521,17 @@ async function cadastrarMusica() {
             JSON.stringify({
 
               culto_id:
-                Number(
-                  cultoId
-                ),
+                Number(cultoId),
 
               musica_id:
-                Number(
-                  musica.id
-                ),
+                Number(musica.id),
 
               ordem:
                 ordem
 
             })
 
-          }
-
+        }
       );
 
     }
@@ -1908,9 +1543,7 @@ async function cadastrarMusica() {
     );
 
 
-    /*
-      Limpar formulário.
-    */
+    /* Limpa formulário */
 
     document
       .getElementById("titulo")
@@ -1931,6 +1564,10 @@ async function cadastrarMusica() {
       "";
 
 
+    ultimaSelecao =
+      null;
+
+
     document
       .getElementById("ordem")
       .value = "1";
@@ -1939,6 +1576,12 @@ async function cadastrarMusica() {
     document
       .getElementById("preview")
       .style.display = "none";
+
+
+    document
+      .getElementById("posicao")
+      .textContent =
+        "coloque o cursor na letra";
 
 
   } catch (erro) {
@@ -2050,22 +1693,27 @@ function escapar(
   return String(
     texto ?? ""
   )
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -2081,8 +1729,6 @@ function escapar(
 document.addEventListener(
   "DOMContentLoaded",
   function() {
-
-    verificarLogin();
 
     carregarCultos();
 
