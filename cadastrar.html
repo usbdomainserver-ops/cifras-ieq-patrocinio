@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +37,7 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
       padding: 20px;
     }
@@ -46,6 +47,7 @@
       padding: 22px;
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,.07);
+      margin-bottom: 15px;
     }
 
     label {
@@ -66,10 +68,18 @@
       font-family: Arial, sans-serif;
     }
 
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #6d28d9;
+    }
+
     textarea {
-      min-height: 250px;
+      min-height: 400px;
       resize: vertical;
       line-height: 1.6;
+      font-family: "Courier New", monospace;
     }
 
     .linha {
@@ -100,6 +110,15 @@
       cursor: wait;
     }
 
+    .botao-organizar {
+      background: #2563eb;
+      margin-top: 12px;
+    }
+
+    .botao-organizar:hover {
+      background: #1d4ed8;
+    }
+
     .mensagem {
       margin-top: 18px;
       padding: 14px;
@@ -120,6 +139,12 @@
       color: #991b1b;
     }
 
+    .info {
+      display: block;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
     .voltar {
       display: block;
       text-align: center;
@@ -130,16 +155,66 @@
 
     .observacao {
       background: #f3e8ff;
-      padding: 13px;
+      padding: 15px;
       border-radius: 10px;
       margin-top: 15px;
       font-size: 14px;
       color: #4c1d95;
+      line-height: 1.5;
+    }
+
+    .exemplo {
+      background: #111827;
+      color: #f9fafb;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    .preview {
+      background: #fafafa;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 18px;
+      display: none;
+    }
+
+    .preview h3 {
+      margin-top: 0;
+      color: #4c1d95;
+    }
+
+    .campo-detectado {
+      background: #f3f4f6;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .campo-detectado strong {
+      color: #6d28d9;
     }
 
     @media (max-width: 500px) {
       .linha {
         grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      textarea {
+        min-height: 350px;
       }
     }
   </style>
@@ -149,7 +224,7 @@
 
 <header>
   <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
-  <p>Cadastrar nova música</p>
+  <p>Cadastrar música</p>
 </header>
 
 <div class="container">
@@ -159,13 +234,73 @@
     <h2>➕ Nova música</h2>
 
     <div class="observacao">
-      Use os acordes entre colchetes.
+      <strong>📋 Cole a cifra completa abaixo.</strong>
       <br><br>
-      Exemplo:
-      <br>
-      [G] Grande é o Senhor
-      <br>
-      [Em] E digno de todo louvor
+      O sistema vai tentar identificar automaticamente o título,
+      artista e tom.
+      <br><br>
+      Você pode copiar a cifra de outro site e colar aqui.
+    </div>
+
+    <div class="exemplo">Bondade de Deus
+Bethel Music
+Tom: G
+
+[G] Eu amo você
+[Em] Oh Deus, tua bondade
+[C] Me acompanha
+[D] Todos os dias
+
+[G] Com cada respiração
+[Em] Eu sou testemunha
+[C] Da tua bondade
+[D] Senhor</div>
+
+    <label for="cifra">📋 Cole a cifra completa *</label>
+
+    <textarea
+      id="cifra"
+      placeholder="Cole aqui a cifra completa...
+
+Exemplo:
+
+Bondade de Deus
+Bethel Music
+Tom: G
+
+[G] Eu amo você
+[Em] Oh Deus, tua bondade
+[C] Me acompanha
+[D] Todos os dias"
+    ></textarea>
+
+    <button
+      type="button"
+      class="botao-organizar"
+      onclick="organizarCifra()"
+    >
+      ✨ ORGANIZAR CIFRA
+    </button>
+
+    <div id="preview" class="preview">
+
+      <h3>🔎 Informações encontradas</h3>
+
+      <div class="campo-detectado">
+        <strong>Título:</strong>
+        <span id="previewTitulo">-</span>
+      </div>
+
+      <div class="campo-detectado">
+        <strong>Artista:</strong>
+        <span id="previewArtista">-</span>
+      </div>
+
+      <div class="campo-detectado">
+        <strong>Tom:</strong>
+        <span id="previewTom">-</span>
+      </div>
+
     </div>
 
     <label for="titulo">Título da música *</label>
@@ -173,7 +308,7 @@
     <input
       id="titulo"
       type="text"
-      placeholder="Ex.: Bondade de Deus"
+      placeholder="Será identificado automaticamente"
     >
 
     <label for="artista">Artista / Ministério</label>
@@ -181,7 +316,7 @@
     <input
       id="artista"
       type="text"
-      placeholder="Ex.: Bethel Music"
+      placeholder="Será identificado automaticamente"
     >
 
     <div class="linha">
@@ -198,7 +333,7 @@
           <option value="E">E</option>
           <option value="F">F</option>
           <option value="F#">F#</option>
-          <option value="G" selected>G</option>
+          <option value="G">G</option>
           <option value="G#">G#</option>
           <option value="A">A</option>
           <option value="A#">A#</option>
@@ -223,19 +358,6 @@
 
     </div>
 
-    <label for="cifra">Cifra + letra *</label>
-
-    <textarea
-      id="cifra"
-      placeholder="[G] Coloque aqui a letra e os acordes
-
-[Em] Exemplo de uma música
-
-[C] Você pode escrever várias linhas
-
-[D] E separar as partes normalmente"
-    ></textarea>
-
     <label for="culto">Adicionar ao culto</label>
 
     <select id="culto">
@@ -257,6 +379,7 @@
 
     <button
       id="botao"
+      type="button"
       onclick="cadastrarMusica()"
     >
       🎵 CADASTRAR MÚSICA
@@ -281,29 +404,18 @@
 <script>
 
 /* =====================================================
-   CONFIGURAÇÃO SUPABASE
+   SUPABASE
    ===================================================== */
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
-
-
-/*
-   COLE AQUI A SUA PUBLISHABLE KEY DO SUPABASE.
-
-   Ela começa com:
-
-   sb_publishable_
-
-   NÃO coloque a Secret Key.
-*/
 
 const SUPABASE_KEY =
   "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
 
 /* =====================================================
-   FUNÇÃO DE COMUNICAÇÃO COM O SUPABASE
+   COMUNICAÇÃO COM SUPABASE
    ===================================================== */
 
 async function supabaseRequest(url, options = {}) {
@@ -314,28 +426,15 @@ async function supabaseRequest(url, options = {}) {
       ...options,
 
       headers: {
-
-        /*
-          A Publishable Key vai no apikey.
-
-          NÃO usamos:
-          Authorization: Bearer + Publishable Key
-        */
-
         "apikey": SUPABASE_KEY,
-
-        "Content-Type":
-          "application/json",
-
+        "Content-Type": "application/json",
         ...(options.headers || {})
       }
     }
   );
 
-
   const texto =
     await resposta.text();
-
 
   if (!resposta.ok) {
 
@@ -350,25 +449,17 @@ async function supabaseRequest(url, options = {}) {
         ? JSON.stringify(erro)
         : erro
     );
-
   }
-
 
   if (!texto) {
     return null;
   }
 
-
   try {
-
     return JSON.parse(texto);
-
   } catch {
-
     return texto;
-
   }
-
 }
 
 
@@ -385,38 +476,29 @@ async function carregarCultos() {
         "/rest/v1/cultos?select=*&order=data_culto.desc"
       );
 
-
     const select =
       document.getElementById("culto");
-
 
     if (!Array.isArray(cultos)) {
       return;
     }
-
 
     cultos.forEach(function(culto) {
 
       const option =
         document.createElement("option");
 
-
       option.value =
         culto.id;
-
 
       option.textContent =
         culto.nome +
         " — " +
-        formatarData(
-          culto.data_culto
-        );
-
+        formatarData(culto.data_culto);
 
       select.appendChild(option);
 
     });
-
 
   } catch (erro) {
 
@@ -426,6 +508,287 @@ async function carregarCultos() {
     );
 
   }
+}
+
+
+/* =====================================================
+   ORGANIZAR CIFRA
+   ===================================================== */
+
+function organizarCifra() {
+
+  const campo =
+    document.getElementById("cifra");
+
+  const texto =
+    campo.value.trim();
+
+  if (!texto) {
+
+    mostrarMensagem(
+      "Cole uma cifra no campo antes de organizar.",
+      true
+    );
+
+    return;
+  }
+
+  const linhas =
+    texto
+      .split(/\r?\n/)
+      .map(linha => linha.trim())
+      .filter(linha => linha !== "");
+
+  let titulo = "";
+  let artista = "";
+  let tom = "";
+
+  /*
+    Procurar "Tom: G", "Tonalidade: G",
+    "Key: G", etc.
+  */
+
+  for (const linha of linhas) {
+
+    const encontrado =
+      linha.match(
+        /^(?:tom|tonalidade|key|chord key)\s*[:\-]?\s*([A-G](?:#|b)?)$/i
+      );
+
+    if (encontrado) {
+
+      tom =
+        normalizarTom(
+          encontrado[1]
+        );
+
+      break;
+    }
+  }
+
+
+  /*
+    Procurar tom em formatos como:
+
+    Tom: G
+    Tom = G
+    Tom G
+  */
+
+  if (!tom) {
+
+    for (const linha of linhas) {
+
+      const encontrado =
+        linha.match(
+          /\b(?:tom|tonalidade|key)\s*[:=\-]?\s*([A-G](?:#|b)?)\b/i
+        );
+
+      if (encontrado) {
+
+        tom =
+          normalizarTom(
+            encontrado[1]
+          );
+
+        break;
+      }
+    }
+  }
+
+
+  /*
+    Tentar identificar título e artista.
+
+    Normalmente as primeiras linhas
+    da cifra são:
+
+    Título
+    Artista
+    Tom: G
+  */
+
+  const linhasCabecalho =
+    linhas.filter(function(linha) {
+
+      return !/^(?:tom|tonalidade|key|chord key)\s*[:=\-]?/i.test(linha);
+
+    });
+
+
+  if (linhasCabecalho.length > 0) {
+
+    titulo =
+      limparCabecalho(
+        linhasCabecalho[0]
+      );
+  }
+
+
+  if (linhasCabecalho.length > 1) {
+
+    const segunda =
+      limparCabecalho(
+        linhasCabecalho[1]
+      );
+
+    /*
+      Só consideramos a segunda linha
+      artista se ela não parecer uma
+      linha de cifra.
+    */
+
+    if (
+      segunda &&
+      !pareceLinhaDeCifra(segunda)
+    ) {
+
+      artista = segunda;
+
+    }
+  }
+
+
+  /*
+    Se não encontrou título,
+    usa o primeiro texto disponível.
+  */
+
+  if (!titulo) {
+
+    titulo =
+      "Música sem título";
+  }
+
+
+  /*
+    Se não encontrou tom, tenta
+    descobrir pelo primeiro acorde.
+  */
+
+  if (!tom) {
+
+    const acorde =
+      texto.match(
+        /\[([A-G](?:#|b)?)(?:m|maj7|7|sus2|sus4|dim|aug)?(?:\/[A-G](?:#|b)?)?\]/
+      );
+
+    if (acorde) {
+
+      tom =
+        normalizarTom(
+          acorde[1]
+        );
+    }
+  }
+
+
+  /*
+    Se ainda não encontrou tom,
+    deixa G como padrão.
+  */
+
+  if (!tom) {
+    tom = "G";
+  }
+
+
+  document
+    .getElementById("titulo")
+    .value = titulo;
+
+  document
+    .getElementById("artista")
+    .value = artista;
+
+  document
+    .getElementById("tom")
+    .value = tom;
+
+
+  document
+    .getElementById("previewTitulo")
+    .textContent = titulo;
+
+  document
+    .getElementById("previewArtista")
+    .textContent =
+      artista || "Não identificado";
+
+  document
+    .getElementById("previewTom")
+    .textContent = tom;
+
+
+  document
+    .getElementById("preview")
+    .style.display = "block";
+
+
+  mostrarMensagem(
+    "✅ Cifra organizada. Confira os dados abaixo e clique em CADASTRAR MÚSICA.",
+    false
+  );
+
+}
+
+
+/* =====================================================
+   LIMPAR CABEÇALHO
+   ===================================================== */
+
+function limparCabecalho(texto) {
+
+  return texto
+    .replace(/^título\s*[:=\-]\s*/i, "")
+    .replace(/^titulo\s*[:=\-]\s*/i, "")
+    .replace(/^música\s*[:=\-]\s*/i, "")
+    .replace(/^musica\s*[:=\-]\s*/i, "")
+    .replace(/^artista\s*[:=\-]\s*/i, "")
+    .replace(/^ministério\s*[:=\-]\s*/i, "")
+    .trim();
+
+}
+
+
+/* =====================================================
+   VERIFICAR SE PARECE LINHA DE CIFRA
+   ===================================================== */
+
+function pareceLinhaDeCifra(texto) {
+
+  if (!texto) {
+    return false;
+  }
+
+  const quantidadeAcordes =
+    (
+      texto.match(
+        /\b[A-G](?:#|b)?(?:m|maj7|7|sus2|sus4|dim|aug)?(?:\/[A-G](?:#|b)?)?\b/g
+      ) || []
+    ).length;
+
+  return quantidadeAcordes >= 2;
+}
+
+
+/* =====================================================
+   NORMALIZAR TOM
+   ===================================================== */
+
+function normalizarTom(nota) {
+
+  const equivalentes = {
+
+    "Db": "C#",
+    "Eb": "D#",
+    "Gb": "F#",
+    "Ab": "G#",
+    "Bb": "A#"
+
+  };
+
+  return equivalentes[nota] || nota;
 
 }
 
@@ -442,19 +805,16 @@ async function cadastrarMusica() {
       .value
       .trim();
 
-
   const artista =
     document
       .getElementById("artista")
       .value
       .trim();
 
-
   const tom =
     document
       .getElementById("tom")
       .value;
-
 
   const capo =
     Number(
@@ -463,19 +823,16 @@ async function cadastrarMusica() {
         .value || 0
     );
 
-
   const cifra =
     document
       .getElementById("cifra")
       .value
       .trim();
 
-
   const cultoId =
     document
       .getElementById("culto")
       .value;
-
 
   const ordem =
     Number(
@@ -484,17 +841,8 @@ async function cadastrarMusica() {
         .value || 1
     );
 
-
-  const mensagem =
-    document.getElementById(
-      "mensagem"
-    );
-
-
   const botao =
-    document.getElementById(
-      "botao"
-    );
+    document.getElementById("botao");
 
 
   /* -----------------------------
@@ -509,19 +857,16 @@ async function cadastrarMusica() {
     );
 
     return;
-
   }
-
 
   if (!cifra) {
 
     mostrarMensagem(
-      "Preencha a cifra + letra.",
+      "Cole a cifra completa.",
       true
     );
 
     return;
-
   }
 
 
@@ -534,7 +879,40 @@ async function cadastrarMusica() {
 
 
     /* =================================================
-       1 — SALVAR MÚSICA
+       VERIFICAR DUPLICATA
+       ================================================= */
+
+    const tituloFiltro =
+      encodeURIComponent(titulo);
+
+    const artistaFiltro =
+      encodeURIComponent(artista);
+
+
+    const existentes =
+      await supabaseRequest(
+        "/rest/v1/musicas" +
+        "?select=id,titulo,artista" +
+        "&titulo=eq." +
+        tituloFiltro +
+        "&artista=eq." +
+        artistaFiltro
+      );
+
+
+    if (
+      Array.isArray(existentes) &&
+      existentes.length > 0
+    ) {
+
+      throw new Error(
+        "Essa música já está cadastrada."
+      );
+    }
+
+
+    /* =================================================
+       SALVAR MÚSICA
        ================================================= */
 
     const resultado =
@@ -545,11 +923,6 @@ async function cadastrarMusica() {
           method: "POST",
 
           headers: {
-
-            /*
-              Faz o Supabase devolver
-              a música criada.
-            */
 
             "Prefer":
               "return=representation"
@@ -580,10 +953,6 @@ async function cadastrarMusica() {
       );
 
 
-    /* =================================================
-       PEGAR ID DA MÚSICA
-       ================================================= */
-
     let musica = null;
 
 
@@ -596,27 +965,22 @@ async function cadastrarMusica() {
 
       musica =
         resultado;
-
     }
 
 
-    if (!musica || !musica.id) {
+    if (
+      !musica ||
+      !musica.id
+    ) {
 
       throw new Error(
-        "A música foi enviada, mas o Supabase não retornou o ID."
+        "A música foi salva, mas o banco não retornou o ID."
       );
-
     }
-
-
-    console.log(
-      "Música criada:",
-      musica
-    );
 
 
     /* =================================================
-       2 — COLOCAR MÚSICA NO CULTO
+       ADICIONAR AO CULTO
        ================================================= */
 
     if (cultoId) {
@@ -650,7 +1014,6 @@ async function cadastrarMusica() {
 
         }
       );
-
     }
 
 
@@ -672,25 +1035,25 @@ async function cadastrarMusica() {
       .getElementById("titulo")
       .value = "";
 
-
     document
       .getElementById("artista")
       .value = "";
-
 
     document
       .getElementById("capo")
       .value = "0";
 
-
     document
       .getElementById("cifra")
       .value = "";
 
-
     document
       .getElementById("ordem")
       .value = "1";
+
+    document
+      .getElementById("preview")
+      .style.display = "none";
 
 
   } catch (erro) {
@@ -700,13 +1063,11 @@ async function cadastrarMusica() {
       erro
     );
 
-
     mostrarMensagem(
       "❌ Erro ao cadastrar:\n\n" +
       erro.message,
       true
     );
-
 
   } finally {
 
@@ -714,7 +1075,6 @@ async function cadastrarMusica() {
 
     botao.textContent =
       "🎵 CADASTRAR MÚSICA";
-
   }
 
 }
@@ -734,10 +1094,8 @@ function mostrarMensagem(
       "mensagem"
     );
 
-
   elemento.textContent =
     texto;
-
 
   elemento.className =
     "mensagem " +
@@ -746,7 +1104,6 @@ function mostrarMensagem(
         ? "erro"
         : "sucesso"
     );
-
 }
 
 
@@ -760,15 +1117,12 @@ function formatarData(data) {
     return "";
   }
 
-
   const partes =
     data.split("-");
-
 
   if (partes.length !== 3) {
     return data;
   }
-
 
   return (
     partes[2] +
@@ -777,7 +1131,6 @@ function formatarData(data) {
     "/" +
     partes[0]
   );
-
 }
 
 
