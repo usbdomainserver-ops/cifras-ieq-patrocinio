@@ -105,6 +105,7 @@
       padding: 14px;
       border-radius: 10px;
       display: none;
+      white-space: pre-wrap;
     }
 
     .sucesso {
@@ -168,6 +169,7 @@
     </div>
 
     <label for="titulo">Título da música *</label>
+
     <input
       id="titulo"
       type="text"
@@ -175,6 +177,7 @@
     >
 
     <label for="artista">Artista / Ministério</label>
+
     <input
       id="artista"
       type="text"
@@ -184,6 +187,7 @@
     <div class="linha">
 
       <div>
+
         <label for="tom">Tom *</label>
 
         <select id="tom">
@@ -200,9 +204,11 @@
           <option value="A#">A#</option>
           <option value="B">B</option>
         </select>
+
       </div>
 
       <div>
+
         <label for="capo">Capo</label>
 
         <input
@@ -212,6 +218,7 @@
           max="12"
           value="0"
         >
+
       </div>
 
     </div>
@@ -232,7 +239,11 @@
     <label for="culto">Adicionar ao culto</label>
 
     <select id="culto">
-      <option value="">Não adicionar a um culto agora</option>
+
+      <option value="">
+        Não adicionar a um culto agora
+      </option>
+
     </select>
 
     <label for="ordem">Ordem no repertório</label>
@@ -244,15 +255,24 @@
       value="1"
     >
 
-    <button id="botao" onclick="cadastrarMusica()">
+    <button
+      id="botao"
+      onclick="cadastrarMusica()"
+    >
       🎵 CADASTRAR MÚSICA
     </button>
 
-    <div id="mensagem" class="mensagem"></div>
+    <div
+      id="mensagem"
+      class="mensagem"
+    ></div>
 
   </div>
 
-  <a class="voltar" href="/">
+  <a
+    class="voltar"
+    href="/"
+  >
     ← Voltar para Cifras IEQ Patrocínio
   </a>
 
@@ -260,12 +280,31 @@
 
 <script>
 
+/* =====================================================
+   CONFIGURAÇÃO SUPABASE
+   ===================================================== */
+
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
 
-const SUPABASE_KEY =
-  "COLOQUE_AQUI_SUA_PUBLISHABLE_KEY";
 
+/*
+   COLE AQUI A SUA PUBLISHABLE KEY DO SUPABASE.
+
+   Ela começa com:
+
+   sb_publishable_
+
+   NÃO coloque a Secret Key.
+*/
+
+const SUPABASE_KEY =
+  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+
+
+/* =====================================================
+   FUNÇÃO DE COMUNICAÇÃO COM O SUPABASE
+   ===================================================== */
 
 async function supabaseRequest(url, options = {}) {
 
@@ -275,111 +314,209 @@ async function supabaseRequest(url, options = {}) {
       ...options,
 
       headers: {
+
+        /*
+          A Publishable Key vai no apikey.
+
+          NÃO usamos:
+          Authorization: Bearer + Publishable Key
+        */
+
         "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
+
+        "Content-Type":
+          "application/json",
+
         ...(options.headers || {})
       }
     }
   );
 
+
+  const texto =
+    await resposta.text();
+
+
   if (!resposta.ok) {
 
-    const erro = await resposta.text();
+    let erro = texto;
 
-    throw new Error(erro || "Erro no Supabase");
+    try {
+      erro = JSON.parse(texto);
+    } catch {}
+
+    throw new Error(
+      typeof erro === "object"
+        ? JSON.stringify(erro)
+        : erro
+    );
 
   }
 
-  const texto = await resposta.text();
 
   if (!texto) {
     return null;
   }
 
+
   try {
+
     return JSON.parse(texto);
+
   } catch {
+
     return texto;
+
   }
 
 }
 
 
+/* =====================================================
+   CARREGAR CULTOS
+   ===================================================== */
+
 async function carregarCultos() {
 
   try {
 
-    const cultos = await supabaseRequest(
-      "/rest/v1/cultos?select=*&order=data_culto.desc"
-    );
+    const cultos =
+      await supabaseRequest(
+        "/rest/v1/cultos?select=*&order=data_culto.desc"
+      );
+
 
     const select =
       document.getElementById("culto");
 
+
     if (!Array.isArray(cultos)) {
       return;
     }
+
 
     cultos.forEach(function(culto) {
 
       const option =
         document.createElement("option");
 
-      option.value = culto.id;
+
+      option.value =
+        culto.id;
+
 
       option.textContent =
         culto.nome +
         " — " +
-        formatarData(culto.data_culto);
+        formatarData(
+          culto.data_culto
+        );
+
 
       select.appendChild(option);
 
     });
 
+
   } catch (erro) {
 
-    console.error("Erro ao carregar cultos:", erro);
+    console.error(
+      "Erro ao carregar cultos:",
+      erro
+    );
 
   }
 
 }
 
 
+/* =====================================================
+   CADASTRAR MÚSICA
+   ===================================================== */
+
 async function cadastrarMusica() {
 
   const titulo =
-    document.getElementById("titulo").value.trim();
+    document
+      .getElementById("titulo")
+      .value
+      .trim();
+
 
   const artista =
-    document.getElementById("artista").value.trim();
+    document
+      .getElementById("artista")
+      .value
+      .trim();
+
 
   const tom =
-    document.getElementById("tom").value;
+    document
+      .getElementById("tom")
+      .value;
+
 
   const capo =
-    Number(document.getElementById("capo").value || 0);
+    Number(
+      document
+        .getElementById("capo")
+        .value || 0
+    );
+
 
   const cifra =
-    document.getElementById("cifra").value.trim();
+    document
+      .getElementById("cifra")
+      .value
+      .trim();
+
 
   const cultoId =
-    document.getElementById("culto").value;
+    document
+      .getElementById("culto")
+      .value;
+
 
   const ordem =
-    Number(document.getElementById("ordem").value || 1);
+    Number(
+      document
+        .getElementById("ordem")
+        .value || 1
+    );
+
 
   const mensagem =
-    document.getElementById("mensagem");
+    document.getElementById(
+      "mensagem"
+    );
+
 
   const botao =
-    document.getElementById("botao");
+    document.getElementById(
+      "botao"
+    );
 
 
-  if (!titulo || !cifra) {
+  /* -----------------------------
+     VALIDAÇÃO
+     ----------------------------- */
+
+  if (!titulo) {
 
     mostrarMensagem(
-      "Preencha o título e a cifra.",
+      "Preencha o título da música.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (!cifra) {
+
+    mostrarMensagem(
+      "Preencha a cifra + letra.",
       true
     );
 
@@ -396,71 +533,130 @@ async function cadastrarMusica() {
       "Salvando...";
 
 
-    // 1 — Salvar a música
+    /* =================================================
+       1 — SALVAR MÚSICA
+       ================================================= */
 
     const resultado =
       await supabaseRequest(
         "/rest/v1/musicas",
         {
+
           method: "POST",
 
           headers: {
+
+            /*
+              Faz o Supabase devolver
+              a música criada.
+            */
+
             "Prefer":
-              "return=representation,resolution=merge-duplicates"
+              "return=representation"
+
           },
 
-          body: JSON.stringify({
-            titulo: titulo,
-            artista: artista,
-            tom: tom,
-            capo: capo,
-            cifra: cifra
-          })
+          body:
+            JSON.stringify({
+
+              titulo:
+                titulo,
+
+              artista:
+                artista,
+
+              tom:
+                tom,
+
+              capo:
+                capo,
+
+              cifra:
+                cifra
+
+            })
+
         }
       );
 
 
-    let musica;
+    /* =================================================
+       PEGAR ID DA MÚSICA
+       ================================================= */
+
+    let musica = null;
+
 
     if (Array.isArray(resultado)) {
-      musica = resultado[0];
+
+      musica =
+        resultado[0];
+
     } else {
-      musica = resultado;
+
+      musica =
+        resultado;
+
     }
 
 
     if (!musica || !musica.id) {
 
       throw new Error(
-        "O Supabase não retornou o ID da música."
+        "A música foi enviada, mas o Supabase não retornou o ID."
       );
 
     }
 
 
-    // 2 — Colocar a música no culto
+    console.log(
+      "Música criada:",
+      musica
+    );
+
+
+    /* =================================================
+       2 — COLOCAR MÚSICA NO CULTO
+       ================================================= */
 
     if (cultoId) {
 
       await supabaseRequest(
         "/rest/v1/culto_musicas",
         {
+
           method: "POST",
 
           headers: {
-            "Prefer": "return=minimal"
+
+            "Prefer":
+              "return=minimal"
+
           },
 
-          body: JSON.stringify({
-            culto_id: Number(cultoId),
-            musica_id: Number(musica.id),
-            ordem: ordem
-          })
+          body:
+            JSON.stringify({
+
+              culto_id:
+                Number(cultoId),
+
+              musica_id:
+                Number(musica.id),
+
+              ordem:
+                ordem
+
+            })
+
         }
       );
 
     }
 
+
+    /* =================================================
+       SUCESSO
+       ================================================= */
 
     mostrarMensagem(
       "✅ Música cadastrada com sucesso!",
@@ -468,27 +664,49 @@ async function cadastrarMusica() {
     );
 
 
-    // Limpar formulário
+    /* =================================================
+       LIMPAR FORMULÁRIO
+       ================================================= */
 
-    document.getElementById("titulo").value = "";
+    document
+      .getElementById("titulo")
+      .value = "";
 
-    document.getElementById("artista").value = "";
 
-    document.getElementById("capo").value = "0";
+    document
+      .getElementById("artista")
+      .value = "";
 
-    document.getElementById("cifra").value = "";
 
-    document.getElementById("ordem").value = "1";
+    document
+      .getElementById("capo")
+      .value = "0";
+
+
+    document
+      .getElementById("cifra")
+      .value = "";
+
+
+    document
+      .getElementById("ordem")
+      .value = "1";
 
 
   } catch (erro) {
 
-    console.error("ERRO COMPLETO:", erro);
+    console.error(
+      "ERRO COMPLETO:",
+      erro
+    );
+
 
     mostrarMensagem(
-      "❌ Erro ao cadastrar: " + erro.message,
+      "❌ Erro ao cadastrar:\n\n" +
+      erro.message,
       true
     );
+
 
   } finally {
 
@@ -502,33 +720,70 @@ async function cadastrarMusica() {
 }
 
 
-function mostrarMensagem(texto, erro) {
+/* =====================================================
+   MENSAGEM
+   ===================================================== */
+
+function mostrarMensagem(
+  texto,
+  erro
+) {
 
   const elemento =
-    document.getElementById("mensagem");
+    document.getElementById(
+      "mensagem"
+    );
 
-  elemento.textContent = texto;
+
+  elemento.textContent =
+    texto;
+
 
   elemento.className =
     "mensagem " +
-    (erro ? "erro" : "sucesso");
+    (
+      erro
+        ? "erro"
+        : "sucesso"
+    );
 
 }
 
 
+/* =====================================================
+   FORMATAR DATA
+   ===================================================== */
+
 function formatarData(data) {
+
+  if (!data) {
+    return "";
+  }
+
 
   const partes =
     data.split("-");
 
-  return partes[2] +
+
+  if (partes.length !== 3) {
+    return data;
+  }
+
+
+  return (
+    partes[2] +
     "/" +
     partes[1] +
     "/" +
-    partes[0];
+    partes[0]
+  );
 
 }
 
+
+/* =====================================================
+   INICIAR
+   ===================================================== */
 
 carregarCultos();
 
