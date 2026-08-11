@@ -1,12 +1,9 @@
-export default async function handler(req, res) {
-  try {
-    const q = req.query?.q;
-
-    if (!q) {
-      return res.status(400).json({
-        error: "Digite o nome da música."
-      });
-    }
+export default function handler(req, res) {
+  return res.status(200).json({
+    ok: true,
+    mensagem: "A Function da Vercel está funcionando!"
+  });
+}
 
     const url =
       "https://cifralize.com.br/search?q=" +
