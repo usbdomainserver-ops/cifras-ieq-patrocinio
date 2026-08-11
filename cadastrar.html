@@ -258,14 +258,13 @@
 
 </div>
 
-
 <script>
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+  "COLOQUE_AQUI_SUA_PUBLISHABLE_KEY";
 
 
 async function supabaseRequest(url, options = {}) {
@@ -292,7 +291,17 @@ async function supabaseRequest(url, options = {}) {
 
   }
 
-  return resposta.json();
+  const texto = await resposta.text();
+
+  if (!texto) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(texto);
+  } catch {
+    return texto;
+  }
 
 }
 
@@ -307,6 +316,10 @@ async function carregarCultos() {
 
     const select =
       document.getElementById("culto");
+
+    if (!Array.isArray(cultos)) {
+      return;
+    }
 
     cultos.forEach(function(culto) {
 
@@ -326,7 +339,7 @@ async function carregarCultos() {
 
   } catch (erro) {
 
-    console.error(erro);
+    console.error("Erro ao carregar cultos:", erro);
 
   }
 
@@ -385,14 +398,15 @@ async function cadastrarMusica() {
 
     // 1 — Salvar a música
 
-    const musicas =
+    const resultado =
       await supabaseRequest(
         "/rest/v1/musicas",
         {
           method: "POST",
 
           headers: {
-            "Prefer": "return=representation"
+            "Prefer":
+              "return=representation,resolution=merge-duplicates"
           },
 
           body: JSON.stringify({
@@ -406,12 +420,25 @@ async function cadastrarMusica() {
       );
 
 
-    const musica =
-      musicas[0];
+    let musica;
+
+    if (Array.isArray(resultado)) {
+      musica = resultado[0];
+    } else {
+      musica = resultado;
+    }
 
 
-    // 2 — Se um culto foi escolhido,
-    // colocar a música no repertório
+    if (!musica || !musica.id) {
+
+      throw new Error(
+        "O Supabase não retornou o ID da música."
+      );
+
+    }
+
+
+    // 2 — Colocar a música no culto
 
     if (cultoId) {
 
@@ -420,9 +447,13 @@ async function cadastrarMusica() {
         {
           method: "POST",
 
+          headers: {
+            "Prefer": "return=minimal"
+          },
+
           body: JSON.stringify({
             culto_id: Number(cultoId),
-            musica_id: musica.id,
+            musica_id: Number(musica.id),
             ordem: ordem
           })
         }
@@ -452,10 +483,10 @@ async function cadastrarMusica() {
 
   } catch (erro) {
 
-    console.error(erro);
+    console.error("ERRO COMPLETO:", erro);
 
     mostrarMensagem(
-      "❌ Não foi possível cadastrar a música. Verifique a conexão com o banco.",
+      "❌ Erro ao cadastrar: " + erro.message,
       true
     );
 
