@@ -244,4 +244,1039 @@
     }
 
     @keyframes rolagem {
-     
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-100px);
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 12px;
+      }
+
+      .letra {
+        padding: 16px;
+        font-size: 15px;
+        line-height: 1.4;
+        border-radius: 12px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .acoes {
+        flex-direction: column;
+      }
+
+      header {
+        padding: 22px 15px;
+      }
+
+      header h1 {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
+  <p>Louvor • Adoração • Repertórios</p>
+</header>
+
+<div class="container">
+
+  <!-- =====================================================
+       INÍCIO / REPERTÓRIO
+       ===================================================== -->
+
+  <div id="inicio">
+
+    <div class="card">
+
+      <h2 id="nomeCulto">
+        Carregando culto...
+      </h2>
+
+      <p id="dataCulto"></p>
+
+      <div id="repertorio">
+        <div class="carregando">
+          🎵 Carregando repertório...
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PÁGINA DA MÚSICA
+       ===================================================== -->
+
+  <div id="paginaMusica" class="oculto">
+
+    <button
+      class="voltar"
+      onclick="voltar()"
+    >
+      ← Voltar para o repertório
+    </button>
+
+    <div class="card">
+
+      <h2 id="tituloMusica"></h2>
+
+      <p
+        id="artistaMusica"
+        class="artista"
+      ></p>
+
+      <!-- CONTROLE DE TOM -->
+
+      <div class="controles">
+
+        <button
+          onclick="mudarTom(-1)"
+          title="Baixar meio tom"
+        >
+          −
+        </button>
+
+        <span id="tomAtual">
+          -
+        </span>
+
+        <button
+          onclick="mudarTom(1)"
+          title="Subir meio tom"
+        >
+          +
+        </button>
+
+      </div>
+
+      <!-- AÇÕES -->
+
+      <div class="acoes">
+
+        <button
+          id="botaoRolagem"
+          class="acao"
+          onclick="rolar()"
+        >
+          ▶ Rolagem
+        </button>
+
+        <button
+          class="acao"
+          onclick="modoCulto()"
+        >
+          🌙 Modo Culto
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- CIFRA -->
+
+    <div
+      id="cifra"
+      class="letra"
+    ></div>
+
+  </div>
+
+
+  <div class="rodape">
+    Cifras IEQ Patrocínio
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+   ===================================================== */
+
+const SUPABASE_URL =
+  "https://jbkeshenygonmgogkodd.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+
+
+/* =====================================================
+   VARIÁVEIS
+   ===================================================== */
+
+let musicaAtual = null;
+
+let tomOriginal = 0;
+
+let tomAtual = 0;
+
+let rolagemAtiva = false;
+
+
+/*
+   Lista de notas.
+
+   Usamos sustenidos como padrão.
+*/
+
+const tons = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B"
+];
+
+
+/* =====================================================
+   CONSULTA SUPABASE
+   ===================================================== */
+
+async function buscar(url) {
+
+  const resposta = await fetch(
+    SUPABASE_URL + url,
+    {
+      method: "GET",
+
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization":
+          "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+
+  const texto = await resposta.text();
+
+
+  if (!resposta.ok) {
+
+    throw new Error(
+      texto ||
+      "Erro ao consultar o Supabase."
+    );
+
+  }
+
+
+  if (!texto) {
+    return null;
+  }
+
+
+  try {
+
+    return JSON.parse(texto);
+
+  } catch (erro) {
+
+    throw new Error(
+      "O Supabase retornou uma resposta inválida."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CARREGAR CULTO
+   ===================================================== */
+
+async function carregarCulto() {
+
+  const nomeCulto =
+    document.getElementById("nomeCulto");
+
+  const dataCulto =
+    document.getElementById("dataCulto");
+
+  const repertorio =
+    document.getElementById("repertorio");
+
+
+  try {
+
+    /*
+      Busca o culto mais recente.
+    */
+
+    const cultos =
+      await buscar(
+        "/rest/v1/cultos" +
+        "?select=*" +
+        "&order=data_culto.desc" +
+        "&limit=1"
+      );
+
+
+    if (
+      !cultos ||
+      !Array.isArray(cultos) ||
+      cultos.length === 0
+    ) {
+
+      nomeCulto.textContent =
+        "Nenhum culto cadastrado";
+
+      dataCulto.textContent = "";
+
+      repertorio.innerHTML = `
+        <div class="vazio">
+          Cadastre um culto para começar.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    const culto = cultos[0];
+
+
+    nomeCulto.textContent =
+      "📅 " +
+      (culto.nome || "Culto");
+
+
+    dataCulto.textContent =
+      formatarData(
+        culto.data_culto
+      );
+
+
+    /*
+      Busca as músicas relacionadas
+      ao culto.
+    */
+
+    const itens =
+      await buscar(
+        "/rest/v1/culto_musicas" +
+        "?select=ordem,musicas(*)" +
+        "&culto_id=eq." +
+        encodeURIComponent(culto.id) +
+        "&order=ordem.asc"
+      );
+
+
+    repertorio.innerHTML = "";
+
+
+    if (
+      !itens ||
+      !Array.isArray(itens) ||
+      itens.length === 0
+    ) {
+
+      repertorio.innerHTML = `
+        <div class="vazio">
+          Nenhuma música cadastrada neste culto.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    itens.forEach(
+      function(item) {
+
+        const musica =
+          item.musicas;
+
+
+        if (!musica) {
+          return;
+        }
+
+
+        const div =
+          document.createElement("div");
+
+
+        div.className =
+          "musica";
+
+
+        const ordem =
+          item.ordem != null
+            ? String(item.ordem)
+                .padStart(2, "0")
+            : "--";
+
+
+        div.innerHTML = `
+          <div>
+            <strong>
+              ${escapar(ordem)}
+              — ${escapar(
+                musica.titulo ||
+                "Música sem título"
+              )}
+            </strong>
+
+            <div class="tom">
+              Tom:
+              ${escapar(
+                musica.tom || "-"
+              )}
+            </div>
+          </div>
+
+          <div class="seta">
+            ›
+          </div>
+        `;
+
+
+        div.onclick =
+          function() {
+            abrirMusica(musica);
+          };
+
+
+        repertorio.appendChild(div);
+
+      }
+    );
+
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao carregar culto:",
+      erro
+    );
+
+
+    nomeCulto.textContent =
+      "Erro ao carregar culto";
+
+
+    dataCulto.textContent = "";
+
+
+    repertorio.innerHTML = `
+      <div class="erro">
+        <strong>
+          ❌ Não foi possível carregar o repertório.
+        </strong>
+
+        <br><br>
+
+        ${escapar(
+          erro.message
+        )}
+
+        <br><br>
+
+        Verifique se o Supabase está configurado
+        corretamente e tente atualizar a página.
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   ABRIR MÚSICA
+   ===================================================== */
+
+function abrirMusica(musica) {
+
+  musicaAtual =
+    musica;
+
+
+  tomOriginal =
+    indiceTom(
+      musica.tom || "C"
+    );
+
+
+  if (tomOriginal === -1) {
+    tomOriginal = 0;
+  }
+
+
+  tomAtual =
+    tomOriginal;
+
+
+  /*
+    Desliga rolagem quando abre
+    outra música.
+  */
+
+  pararRolagem();
+
+
+  document
+    .getElementById("inicio")
+    .classList
+    .add("oculto");
+
+
+  document
+    .getElementById("paginaMusica")
+    .classList
+    .remove("oculto");
+
+
+  document
+    .getElementById("tituloMusica")
+    .textContent =
+      "🎵 " +
+      (
+        musica.titulo ||
+        "Música"
+      );
+
+
+  document
+    .getElementById("artistaMusica")
+    .textContent =
+      musica.artista || "";
+
+
+  document
+    .getElementById("tomAtual")
+    .textContent =
+      musica.tom || "C";
+
+
+  mostrarCifra();
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+/* =====================================================
+   MOSTRAR CIFRA
+   ===================================================== */
+
+function mostrarCifra() {
+
+  if (!musicaAtual) {
+    return;
+  }
+
+
+  const elemento =
+    document.getElementById("cifra");
+
+
+  const texto =
+    musicaAtual.cifra || "";
+
+
+  if (!texto.trim()) {
+
+    elemento.innerHTML = `
+      <div class="vazio">
+        Esta música ainda não possui uma cifra cadastrada.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const diferenca =
+    tomAtual -
+    tomOriginal;
+
+
+  /*
+    Divide a cifra por linhas.
+  */
+
+  const linhas =
+    texto.split("\n");
+
+
+  const linhasProcessadas =
+    linhas.map(
+      function(linha) {
+
+        return processarLinha(
+          linha,
+          diferenca
+        );
+
+      }
+    );
+
+
+  elemento.innerHTML =
+    linhasProcessadas.join("\n");
+
+}
+
+
+/* =====================================================
+   PROCESSAR LINHA
+   ===================================================== */
+
+function processarLinha(
+  linha,
+  diferenca
+) {
+
+  /*
+    Aceita acordes dentro de:
+
+    [G]
+    [Em]
+    [C]
+    [D7]
+    [Am]
+    [G/B]
+    [F#]
+    [Bb]
+    [Cmaj7]
+    [Dsus4]
+  */
+
+  const regex =
+    /\[([A-G](?:#|b)?(?:m|7|maj7|sus4|sus2|dim|aug)?(?:\/[A-G](?:#|b)?)?)\]/g;
+
+
+  let resultado = "";
+
+  let ultimaPosicao = 0;
+
+  let encontrado;
+
+
+  while (
+    (encontrado =
+      regex.exec(linha)) !== null
+  ) {
+
+    /*
+      Texto antes do acorde.
+    */
+
+    resultado +=
+      escapar(
+        linha.substring(
+          ultimaPosicao,
+          encontrado.index
+        )
+      );
+
+
+    /*
+      Acorde encontrado.
+    */
+
+    const acordeOriginal =
+      encontrado[1];
+
+
+    const acordeNovo =
+      transporAcorde(
+        acordeOriginal,
+        diferenca
+      );
+
+
+    resultado +=
+      '<span class="acorde">' +
+      escapar(acordeNovo) +
+      '</span>';
+
+
+    ultimaPosicao =
+      regex.lastIndex;
+
+  }
+
+
+  /*
+    Texto restante.
+  */
+
+  resultado +=
+    escapar(
+      linha.substring(
+        ultimaPosicao
+      )
+    );
+
+
+  return resultado;
+
+}
+
+
+/* =====================================================
+   MUDAR TOM
+   ===================================================== */
+
+function mudarTom(direcao) {
+
+  if (!musicaAtual) {
+    return;
+  }
+
+
+  tomAtual =
+    (
+      tomAtual +
+      direcao +
+      12
+    ) % 12;
+
+
+  document
+    .getElementById("tomAtual")
+    .textContent =
+      tons[tomAtual];
+
+
+  mostrarCifra();
+
+}
+
+
+/* =====================================================
+   TRANSPOR ACORDE
+   ===================================================== */
+
+function transporAcorde(
+  acorde,
+  diferenca
+) {
+
+  /*
+    Exemplo:
+
+    G
+    Em
+    D7
+    C#
+    G/B
+  */
+
+  const resultado =
+    acorde.match(
+      /^([A-G](?:#|b)?)(.*)$/
+    );
+
+
+  if (!resultado) {
+    return acorde;
+  }
+
+
+  const nota =
+    resultado[1];
+
+
+  const complemento =
+    resultado[2];
+
+
+  let indice =
+    indiceTom(nota);
+
+
+  if (indice === -1) {
+    return acorde;
+  }
+
+
+  indice =
+    (
+      indice +
+      diferenca +
+      12
+    ) % 12;
+
+
+  return (
+    tons[indice] +
+    complemento
+  );
+
+}
+
+
+/* =====================================================
+   IDENTIFICAR TOM
+   ===================================================== */
+
+function indiceTom(nota) {
+
+  const equivalentes = {
+
+    "Db": "C#",
+    "Eb": "D#",
+    "Gb": "F#",
+    "Ab": "G#",
+    "Bb": "A#"
+
+  };
+
+
+  nota =
+    equivalentes[nota] ||
+    nota;
+
+
+  return tons.indexOf(nota);
+
+}
+
+
+/* =====================================================
+   ROLAGEM
+   ===================================================== */
+
+function rolar() {
+
+  if (rolagemAtiva) {
+
+    pararRolagem();
+
+    return;
+
+  }
+
+
+  rolagemAtiva = true;
+
+
+  document.body
+    .classList
+    .add("rolagem-ativa");
+
+
+  const botao =
+    document.getElementById(
+      "botaoRolagem"
+    );
+
+
+  if (botao) {
+
+    botao.textContent =
+      "⏹ Parar rolagem";
+
+  }
+
+}
+
+
+/* =====================================================
+   PARAR ROLAGEM
+   ===================================================== */
+
+function pararRolagem() {
+
+  rolagemAtiva = false;
+
+
+  document.body
+    .classList
+    .remove("rolagem-ativa");
+
+
+  const botao =
+    document.getElementById(
+      "botaoRolagem"
+    );
+
+
+  if (botao) {
+
+    botao.textContent =
+      "▶ Rolagem";
+
+  }
+
+}
+
+
+/* =====================================================
+   MODO CULTO
+   ===================================================== */
+
+function modoCulto() {
+
+  document.body
+    .classList
+    .toggle("modo-culto");
+
+}
+
+
+/* =====================================================
+   VOLTAR
+   ===================================================== */
+
+function voltar() {
+
+  pararRolagem();
+
+
+  document.body
+    .classList
+    .remove("modo-culto");
+
+
+  document
+    .getElementById(
+      "paginaMusica"
+    )
+    .classList
+    .add("oculto");
+
+
+  document
+    .getElementById(
+      "inicio"
+    )
+    .classList
+    .remove("oculto");
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+/* =====================================================
+   FORMATAR DATA
+   ===================================================== */
+
+function formatarData(data) {
+
+  if (!data) {
+    return "";
+  }
+
+
+  /*
+    Se vier como:
+
+    2026-08-10
+
+    transforma para:
+
+    10/08/2026
+  */
+
+  const partes =
+    String(data)
+      .substring(0, 10)
+      .split("-");
+
+
+  if (partes.length !== 3) {
+    return data;
+  }
+
+
+  return (
+    partes[2] +
+    "/" +
+    partes[1] +
+    "/" +
+    partes[0]
+  );
+
+}
+
+
+/* =====================================================
+   ESCAPAR HTML
+   ===================================================== */
+
+function escapar(texto) {
+
+  return String(texto ?? "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   INICIAR SITE
+   ===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    carregarCulto();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
