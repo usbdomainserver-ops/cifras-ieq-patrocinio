@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Importar músicas — Cifras IEQ</title>
+  <title>Importar músicas — Cifras IEQ Patrocínio</title>
 
   <style>
     * {
@@ -43,9 +44,9 @@
 
     .card {
       background: white;
-      padding: 20px;
+      padding: 22px;
       border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
     }
 
     .busca {
@@ -55,13 +56,19 @@
 
     #pesquisa {
       flex: 1;
+      min-width: 0;
       padding: 14px;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
+      outline: none;
     }
 
-    .botao-buscar {
+    #pesquisa:focus {
+      border-color: #6d28d9;
+    }
+
+    .buscar {
       border: none;
       background: #6d28d9;
       color: white;
@@ -71,11 +78,16 @@
       cursor: pointer;
     }
 
+    .buscar:hover {
+      background: #5b21b6;
+    }
+
     .resultado {
       border: 1px solid #e5e7eb;
       border-radius: 12px;
       padding: 16px;
       margin-top: 15px;
+      background: #fff;
     }
 
     .resultado h3 {
@@ -85,16 +97,28 @@
 
     .artista {
       color: #666;
-      margin-top: 6px;
+      margin-top: 7px;
     }
 
-    .info {
+    .tom {
       color: #6d28d9;
       font-weight: bold;
       margin-top: 8px;
     }
 
-    .botao-importar {
+    .genero {
+      color: #777;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .visualizacoes {
+      color: #999;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .importar {
       width: 100%;
       border: none;
       background: #16a34a;
@@ -102,11 +126,16 @@
       padding: 13px;
       border-radius: 10px;
       font-weight: bold;
-      cursor: pointer;
       margin-top: 15px;
+      cursor: pointer;
+      font-size: 15px;
     }
 
-    .botao-importar:disabled {
+    .importar:hover {
+      background: #15803d;
+    }
+
+    .importar:disabled {
       opacity: .6;
       cursor: wait;
     }
@@ -132,8 +161,22 @@
 
     .carregando {
       text-align: center;
-      padding: 20px;
+      padding: 25px 10px;
       color: #666;
+    }
+
+    .nenhum {
+      text-align: center;
+      padding: 25px 10px;
+      color: #666;
+    }
+
+    .voltar {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #6d28d9;
+      text-decoration: none;
     }
 
     @media (max-width: 500px) {
@@ -141,7 +184,7 @@
         flex-direction: column;
       }
 
-      .botao-buscar {
+      .buscar {
         padding: 14px;
       }
     }
@@ -152,8 +195,9 @@
 
 <header>
   <h1>🤖 IMPORTAR MÚSICA</h1>
-  <p>Pesquisar no Cifralize</p>
+  <p>Pesquisar músicas no Cifralize</p>
 </header>
+
 
 <div class="container">
 
@@ -167,11 +211,13 @@
         id="pesquisa"
         type="text"
         placeholder="Ex.: Invoca-me"
-        onkeydown="if(event.key === 'Enter') pesquisar()"
+        autocomplete="off"
+        onkeydown="if (event.key === 'Enter') pesquisar()"
       >
 
       <button
-        class="botao-buscar"
+        id="botaoBuscar"
+        class="buscar"
         onclick="pesquisar()"
       >
         BUSCAR
@@ -185,39 +231,42 @@
 
   </div>
 
+  <a class="voltar" href="/">
+    ← Voltar para Cifras IEQ Patrocínio
+  </a>
+
 </div>
 
 
 <script>
 
-/*
-====================================================
-SUPABASE
-====================================================
-*/
+/* ==================================================
+   SUPABASE
+   ================================================== */
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
 
+
+/*
+  COLOQUE AQUI A MESMA PUBLISHABLE KEY
+  QUE JÁ FUNCIONA NO SEU CADASTRAR.HTML.
+*/
+
 const SUPABASE_KEY =
-  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+  "COLE_AQUI_A_SUA_PUBLISHABLE_KEY";
 
 
-/*
-====================================================
-API DO CIFRALIZE
-====================================================
-*/
+/* ==================================================
+   RESULTADOS ATUAIS
+   ================================================== */
 
-const CIFRALIZE_URL =
-  "https://cifralize.com.br";
+let resultadosAtuais = [];
 
 
-/*
-====================================================
-PESQUISAR NO CIFRALIZE
-====================================================
-*/
+/* ==================================================
+   PESQUISAR NO CIFRALIZE
+   ================================================== */
 
 async function pesquisar() {
 
@@ -230,35 +279,57 @@ async function pesquisar() {
   const resultados =
     document.getElementById("resultados");
 
+  const botao =
+    document.getElementById("botaoBuscar");
+
 
   if (!texto) {
 
     resultados.innerHTML =
-      "<p>Digite o nome da música.</p>";
+      `
+        <div class="nenhum">
+          Digite o nome de uma música.
+        </div>
+      `;
 
     return;
   }
 
 
+  botao.disabled = true;
+  botao.textContent = "BUSCANDO...";
+
+
   resultados.innerHTML =
-    '<div class="carregando">🔎 Pesquisando...</div>';
+    `
+      <div class="carregando">
+        🔎 Procurando no Cifralize...
+      </div>
+    `;
 
 
   try {
 
+    /*
+      Chamamos nossa função da Vercel.
+      Ela consulta o Cifralize pelo servidor.
+    */
+
     const resposta =
       await fetch(
-        CIFRALIZE_URL +
-        "/search?q=" +
-        encodeURIComponent(texto) +
-        "&format=json"
+        "/api/cifralize?q=" +
+        encodeURIComponent(texto)
       );
 
 
     if (!resposta.ok) {
 
+      const erroTexto =
+        await resposta.text();
+
       throw new Error(
-        "Erro na pesquisa do Cifralize."
+        erroTexto ||
+        "Erro ao consultar o Cifralize."
       );
 
     }
@@ -274,81 +345,81 @@ async function pesquisar() {
     );
 
 
-    mostrarResultados(dados);
+    /*
+      O Cifralize retorna:
+
+      {
+        songs: [...]
+        artists: [...]
+        playlists: [...]
+      }
+    */
+
+    resultadosAtuais =
+      Array.isArray(dados.songs)
+        ? dados.songs
+        : [];
+
+
+    mostrarResultados(
+      resultadosAtuais
+    );
 
 
   } catch (erro) {
 
     console.error(erro);
 
-    resultados.innerHTML = `
-      <div class="erro">
-        ❌ Não foi possível pesquisar.
-        <br><br>
-        ${escapar(erro.message)}
-      </div>
-    `;
+    resultados.innerHTML =
+      `
+        <div class="erro">
+          ❌ Não foi possível pesquisar.
+          <br><br>
+          ${escapar(erro.message)}
+        </div>
+      `;
+
+  } finally {
+
+    botao.disabled = false;
+    botao.textContent = "BUSCAR";
 
   }
 
 }
 
 
-/*
-====================================================
-MOSTRAR RESULTADOS
-====================================================
-*/
+/* ==================================================
+   MOSTRAR RESULTADOS
+   ================================================== */
 
-function mostrarResultados(dados) {
+function mostrarResultados(lista) {
 
   const resultados =
     document.getElementById("resultados");
 
+
   resultados.innerHTML = "";
-
-
-  /*
-    A API pode retornar os resultados
-    em diferentes estruturas.
-  */
-
-  let lista = [];
-
-
-  if (Array.isArray(dados)) {
-
-    lista = dados;
-
-  } else if (Array.isArray(dados.results)) {
-
-    lista = dados.results;
-
-  } else if (Array.isArray(dados.musicas)) {
-
-    lista = dados.musicas;
-
-  } else if (Array.isArray(dados.songs)) {
-
-    lista = dados.songs;
-
-  }
 
 
   if (!lista.length) {
 
     resultados.innerHTML =
-      "<p>Nenhuma música encontrada.</p>";
+      `
+        <div class="nenhum">
+          Nenhuma música encontrada.
+        </div>
+      `;
 
     return;
   }
 
 
   lista.forEach(
-    function(item) {
+    function(item, indice) {
 
       const musica =
-        normalizarResultado(item);
+        normalizar(item);
 
 
       if (!musica.titulo) {
@@ -364,34 +435,57 @@ function mostrarResultados(dados) {
         "resultado";
 
 
-      div.innerHTML = `
+      div.innerHTML =
+        `
+          <h3>
+            🎵 ${escapar(musica.titulo)}
+          </h3>
 
-        <h3>
-          🎵 ${escapar(musica.titulo)}
-        </h3>
+          <div class="artista">
+            ${escapar(
+              musica.artista ||
+              "Artista não informado"
+            )}
+          </div>
 
-        <div class="artista">
-          ${escapar(musica.artista || "Artista não informado")}
-        </div>
+          <div class="tom">
+            Tom: ${escapar(
+              musica.tom || "-"
+            )}
+          </div>
 
-        ${
-          musica.tom
-            ? `
-              <div class="info">
-                Tom: ${escapar(musica.tom)}
-              </div>
-            `
-            : ""
-        }
+          ${
+            musica.genero
+              ?
+              `
+                <div class="genero">
+                  ${escapar(musica.genero)}
+                </div>
+              `
+              :
+              ""
+          }
 
-        <button
-          class="botao-importar"
-          onclick='importarMusica(${JSON.stringify(musica).replace(/'/g, "&#39;")})'
-        >
-          ➕ IMPORTAR PARA O MEU BANCO
-        </button>
+          ${
+            musica.views !== null
+              ?
+              `
+                <div class="visualizacoes">
+                  👁 ${musica.views} visualizações
+                </div>
+              `
+              :
+              ""
+          }
 
-      `;
+          <button
+            class="importar"
+            id="importar-${indice}"
+            onclick="importarMusica(${indice})"
+          >
+            ➕ IMPORTAR PARA O MEU BANCO
+          </button>
+        `;
 
 
       resultados.appendChild(div);
@@ -402,37 +496,54 @@ function mostrarResultados(dados) {
 }
 
 
-/*
-====================================================
-NORMALIZAR RESULTADO
-====================================================
-*/
+/* ==================================================
+   CONVERTER FORMATO DO CIFRALIZE
+   ================================================== */
 
-function normalizarResultado(item) {
+function normalizar(item) {
 
   return {
 
+    id:
+      item.id || null,
+
     titulo:
-      item.titulo ||
       item.title ||
+      item.titulo ||
       item.name ||
       "",
 
     artista:
+      item.artist_name ||
       item.artista ||
       item.artist ||
       item.author ||
       "",
 
     tom:
-      item.tom ||
       item.key ||
+      item.tom ||
       "",
+
+    bpm:
+      item.bpm ||
+      null,
+
+    genero:
+      item.genre ||
+      "",
+
+    views:
+      typeof item.views === "number"
+        ? item.views
+        : null,
 
     url:
       item.url ||
-      item.href ||
-      item.link ||
+      "",
+
+    embed_url:
+      item.embed_url ||
       ""
 
   };
@@ -440,62 +551,139 @@ function normalizarResultado(item) {
 }
 
 
-/*
-====================================================
-IMPORTAR
-====================================================
-*/
+/* ==================================================
+   IMPORTAR PARA O SUPABASE
+   ================================================== */
 
-async function importarMusica(musica) {
+async function importarMusica(indice) {
 
-  mostrarMensagem(
-    "⏳ Procurando a cifra completa...",
-    false
-  );
+  const item =
+    resultadosAtuais[indice];
+
+
+  if (!item) {
+
+    mostrarMensagem(
+      "❌ Música não encontrada.",
+      true
+    );
+
+    return;
+  }
+
+
+  const musica =
+    normalizar(item);
+
+
+  const botao =
+    document.getElementById(
+      "importar-" + indice
+    );
 
 
   try {
 
-    /*
-      Primeiro tentamos usar a URL retornada
-      pela API.
-
-      Se houver slug/artista/música,
-      também podemos montar a URL pública.
-    */
-
-    let cifra = "";
+    botao.disabled = true;
+    botao.textContent = "IMPORTANDO...";
 
 
-    if (musica.url) {
-
-      cifra =
-        await buscarCifra(
-          musica.url
-        );
-
-    }
+    mostrarMensagem(
+      "⏳ Verificando a música...",
+      false
+    );
 
 
     /*
-      Se ainda não conseguimos obter a cifra,
-      mostramos uma mensagem clara.
+      Verifica se já existe uma música
+      com o mesmo título e artista.
     */
 
-    if (!cifra) {
-
-      throw new Error(
-        "A pesquisa encontrou a música, mas a API não retornou a cifra completa."
+    const filtroTitulo =
+      encodeURIComponent(
+        musica.titulo
       );
 
+
+    const filtroArtista =
+      encodeURIComponent(
+        musica.artista
+      );
+
+
+    const respostaVerificacao =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/musicas" +
+        "?select=id,titulo,artista" +
+        "&titulo=eq." +
+        filtroTitulo +
+        "&artista=eq." +
+        filtroArtista,
+        {
+
+          method: "GET",
+
+          headers: {
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Authorization":
+              "Bearer " +
+              SUPABASE_KEY
+
+          }
+
+        }
+      );
+
+
+    if (!respostaVerificacao.ok) {
+
+      const erro =
+        await respostaVerificacao.text();
+
+      throw new Error(erro);
+
+    }
+
+
+    const existentes =
+      await respostaVerificacao.json();
+
+
+    if (existentes.length > 0) {
+
+      mostrarMensagem(
+        "⚠️ Essa música já está cadastrada no seu banco.",
+        true
+      );
+
+      botao.disabled = false;
+      botao.textContent =
+        "➕ IMPORTAR PARA O MEU BANCO";
+
+      return;
     }
 
 
     /*
-      Agora salvamos no Supabase.
+      Nesta etapa salvamos título,
+      artista e tom.
+
+      A cifra completa será ligada
+      na próxima etapa, usando a URL
+      retornada pelo Cifralize.
     */
 
-    const resposta =
+    mostrarMensagem(
+      "⏳ Salvando música...",
+      false
+    );
+
+
+    const respostaCadastro =
       await fetch(
         SUPABASE_URL +
         "/rest/v1/musicas",
@@ -520,39 +708,48 @@ async function importarMusica(musica) {
 
           },
 
-          body: JSON.stringify({
+          body:
+            JSON.stringify({
 
-            titulo:
-              musica.titulo,
+              titulo:
+                musica.titulo,
 
-            artista:
-              musica.artista,
+              artista:
+                musica.artista || "",
 
-            tom:
-              musica.tom || "C",
+              tom:
+                musica.tom || "C",
 
-            capo:
-              0,
+              capo:
+                0,
 
-            cifra:
-              cifra
+              cifra:
+                ""
 
-          })
+            })
 
         }
       );
 
 
-    if (!resposta.ok) {
+    if (!respostaCadastro.ok) {
 
       const erro =
-        await resposta.text();
+        await respostaCadastro.text();
 
-      throw new Error(
-        erro
-      );
+      throw new Error(erro);
 
     }
+
+
+    const salvo =
+      await respostaCadastro.json();
+
+
+    console.log(
+      "Música salva:",
+      salvo
+    );
 
 
     mostrarMensagem(
@@ -561,9 +758,20 @@ async function importarMusica(musica) {
     );
 
 
+    botao.textContent =
+      "✅ IMPORTADA";
+
+    botao.style.background =
+      "#166534";
+
+
   } catch (erro) {
 
-    console.error(erro);
+    console.error(
+      "Erro ao importar:",
+      erro
+    );
+
 
     mostrarMensagem(
       "❌ Erro ao importar: " +
@@ -571,100 +779,20 @@ async function importarMusica(musica) {
       true
     );
 
+
+    botao.disabled = false;
+
+    botao.textContent =
+      "➕ IMPORTAR PARA O MEU BANCO";
+
   }
 
 }
 
 
-/*
-====================================================
-BUSCAR CIFRA COMPLETA
-====================================================
-*/
-
-async function buscarCifra(url) {
-
-  /*
-    Esta função é propositalmente separada.
-
-    Assim conseguimos adaptar exatamente ao
-    formato que a API do Cifralize devolver.
-  */
-
-
-  const resposta =
-    await fetch(url);
-
-
-  if (!resposta.ok) {
-
-    throw new Error(
-      "Não foi possível abrir a cifra."
-    );
-
-  }
-
-
-  /*
-    Por enquanto o endpoint público de página
-    retorna HTML.
-
-    Precisamos transformar o conteúdo em texto
-    antes de salvar.
-  */
-
-  const html =
-    await resposta.text();
-
-
-  const documento =
-    new DOMParser()
-      .parseFromString(
-        html,
-        "text/html"
-      );
-
-
-  /*
-    Procuramos o conteúdo principal da cifra.
-  */
-
-  const elementos =
-    documento.querySelectorAll(
-      "pre, .cifra, .lyrics, article"
-    );
-
-
-  let texto = "";
-
-
-  elementos.forEach(
-    function(elemento) {
-
-      if (
-        elemento.innerText.length >
-        texto.length
-      ) {
-
-        texto =
-          elemento.innerText;
-
-      }
-
-    }
-  );
-
-
-  return texto.trim();
-
-}
-
-
-/*
-====================================================
-MENSAGEM
-====================================================
-*/
+/* ==================================================
+   MENSAGEM
+   ================================================== */
 
 function mostrarMensagem(
   texto,
@@ -692,11 +820,9 @@ function mostrarMensagem(
 }
 
 
-/*
-====================================================
-SEGURANÇA
-====================================================
-*/
+/* ==================================================
+   ESCAPAR HTML
+   ================================================== */
 
 function escapar(texto) {
 
