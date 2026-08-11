@@ -226,7 +226,7 @@ const SUPABASE_URL =
 
 
 const SUPABASE_KEY =
-  "COLOQUE_AQUI_A_MESMA_PUBLISHABLE_KEY_DO_SEU_CADASTRAR";
+  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
 
 /*
