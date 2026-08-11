@@ -82,6 +82,11 @@
       background: #5b21b6;
     }
 
+    .buscar:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
     .resultado {
       border: 1px solid #e5e7eb;
       border-radius: 12px;
@@ -180,6 +185,7 @@
     }
 
     @media (max-width: 500px) {
+
       .busca {
         flex-direction: column;
       }
@@ -187,15 +193,22 @@
       .buscar {
         padding: 14px;
       }
+
     }
   </style>
+
 </head>
 
 <body>
 
 <header>
+
   <h1>🤖 IMPORTAR MÚSICA</h1>
-  <p>Pesquisar músicas no Cifralize</p>
+
+  <p>
+    Pesquisar músicas no Cifralize
+  </p>
+
 </header>
 
 
@@ -225,11 +238,13 @@
 
     </div>
 
+
     <div id="resultados"></div>
 
     <div id="mensagem" class="mensagem"></div>
 
   </div>
+
 
   <a class="voltar" href="/">
     ← Voltar para Cifras IEQ Patrocínio
@@ -242,31 +257,33 @@
 
 /* ==================================================
    SUPABASE
-   ================================================== */
+================================================== */
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
-
-
-/*
-  COLOQUE AQUI A MESMA PUBLISHABLE KEY
-  QUE JÁ FUNCIONA NO SEU CADASTRAR.HTML.
-*/
 
 const SUPABASE_KEY =
   "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
 
 /* ==================================================
-   RESULTADOS ATUAIS
-   ================================================== */
+   CIFRALIZE
+================================================== */
+
+const CIFRALIZE_URL =
+  "https://cifralize.com.br";
+
+
+/* ==================================================
+   RESULTADOS
+================================================== */
 
 let resultadosAtuais = [];
 
 
 /* ==================================================
-   PESQUISAR NO CIFRALIZE
-   ================================================== */
+   PESQUISAR
+================================================== */
 
 async function pesquisar() {
 
@@ -285,41 +302,64 @@ async function pesquisar() {
 
   if (!texto) {
 
-    resultados.innerHTML =
-      `
-        <div class="nenhum">
-          Digite o nome de uma música.
-        </div>
-      `;
+    resultados.innerHTML = `
+      <div class="nenhum">
+        Digite o nome de uma música.
+      </div>
+    `;
 
     return;
   }
 
 
   botao.disabled = true;
-  botao.textContent = "BUSCANDO...";
+
+  botao.textContent =
+    "BUSCANDO...";
 
 
-  resultados.innerHTML =
-    `
-      <div class="carregando">
-        🔎 Procurando no Cifralize...
-      </div>
-    `;
+  resultados.innerHTML = `
+    <div class="carregando">
+      🔎 Procurando no Cifralize...
+    </div>
+  `;
 
 
   try {
 
     /*
-      Chamamos nossa função da Vercel.
-      Ela consulta o Cifralize pelo servidor.
+      CONSULTA DIRETA AO CIFRALIZE.
+
+      Não usamos mais:
+      /api/cifralize
+
+      A consulta agora vai diretamente
+      para o endereço do Cifralize.
     */
 
+    const url =
+      CIFRALIZE_URL +
+      "/search?q=" +
+      encodeURIComponent(texto) +
+      "&format=json";
+
+
+    console.log(
+      "Consultando Cifralize:",
+      url
+    );
+
+
     const resposta =
-      await fetch(
-        "/api/cifralize?q=" +
-        encodeURIComponent(texto)
-      );
+      await fetch(url, {
+
+        method: "GET",
+
+        headers: {
+          "Accept": "application/json"
+        }
+
+      });
 
 
     if (!resposta.ok) {
@@ -329,7 +369,7 @@ async function pesquisar() {
 
       throw new Error(
         erroTexto ||
-        "Erro ao consultar o Cifralize."
+        "Erro HTTP " + resposta.status
       );
 
     }
@@ -345,16 +385,6 @@ async function pesquisar() {
     );
 
 
-    /*
-      O Cifralize retorna:
-
-      {
-        songs: [...]
-        artists: [...]
-        playlists: [...]
-      }
-    */
-
     resultadosAtuais =
       Array.isArray(dados.songs)
         ? dados.songs
@@ -368,494 +398,35 @@ async function pesquisar() {
 
   } catch (erro) {
 
-    console.error(erro);
+    console.error(
+      "Erro na pesquisa:",
+      erro
+    );
 
-    resultados.innerHTML =
-      `
-        <div class="erro">
-          ❌ Não foi possível pesquisar.
-          <br><br>
-          ${escapar(erro.message)}
-        </div>
-      `;
+
+    resultados.innerHTML = `
+      <div class="erro">
+
+        ❌ Não foi possível pesquisar.
+
+        <br><br>
+
+        ${escapar(erro.message)}
+
+        <br><br>
+
+        <small>
+          Se aparecer "Failed to fetch",
+          o navegador provavelmente bloqueou
+          a consulta por CORS.
+        </small>
+
+      </div>
+    `;
 
   } finally {
 
     botao.disabled = false;
-    botao.textContent = "BUSCAR";
-
-  }
-
-}
-
-
-/* ==================================================
-   MOSTRAR RESULTADOS
-   ================================================== */
-
-function mostrarResultados(lista) {
-
-  const resultados =
-    document.getElementById("resultados");
-
-
-  resultados.innerHTML = "";
-
-
-  if (!lista.length) {
-
-    resultados.innerHTML =
-      `
-        <div class="nenhum">
-          Nenhuma música encontrada.
-        </div>
-      `;
-
-    return;
-  }
-
-
-  lista.forEach(
-    function(item, indice) {
-
-      const musica =
-        normalizar(item);
-
-
-      if (!musica.titulo) {
-        return;
-      }
-
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "resultado";
-
-
-      div.innerHTML =
-        `
-          <h3>
-            🎵 ${escapar(musica.titulo)}
-          </h3>
-
-          <div class="artista">
-            ${escapar(
-              musica.artista ||
-              "Artista não informado"
-            )}
-          </div>
-
-          <div class="tom">
-            Tom: ${escapar(
-              musica.tom || "-"
-            )}
-          </div>
-
-          ${
-            musica.genero
-              ?
-              `
-                <div class="genero">
-                  ${escapar(musica.genero)}
-                </div>
-              `
-              :
-              ""
-          }
-
-          ${
-            musica.views !== null
-              ?
-              `
-                <div class="visualizacoes">
-                  👁 ${musica.views} visualizações
-                </div>
-              `
-              :
-              ""
-          }
-
-          <button
-            class="importar"
-            id="importar-${indice}"
-            onclick="importarMusica(${indice})"
-          >
-            ➕ IMPORTAR PARA O MEU BANCO
-          </button>
-        `;
-
-
-      resultados.appendChild(div);
-
-    }
-  );
-
-}
-
-
-/* ==================================================
-   CONVERTER FORMATO DO CIFRALIZE
-   ================================================== */
-
-function normalizar(item) {
-
-  return {
-
-    id:
-      item.id || null,
-
-    titulo:
-      item.title ||
-      item.titulo ||
-      item.name ||
-      "",
-
-    artista:
-      item.artist_name ||
-      item.artista ||
-      item.artist ||
-      item.author ||
-      "",
-
-    tom:
-      item.key ||
-      item.tom ||
-      "",
-
-    bpm:
-      item.bpm ||
-      null,
-
-    genero:
-      item.genre ||
-      "",
-
-    views:
-      typeof item.views === "number"
-        ? item.views
-        : null,
-
-    url:
-      item.url ||
-      "",
-
-    embed_url:
-      item.embed_url ||
-      ""
-
-  };
-
-}
-
-
-/* ==================================================
-   IMPORTAR PARA O SUPABASE
-   ================================================== */
-
-async function importarMusica(indice) {
-
-  const item =
-    resultadosAtuais[indice];
-
-
-  if (!item) {
-
-    mostrarMensagem(
-      "❌ Música não encontrada.",
-      true
-    );
-
-    return;
-  }
-
-
-  const musica =
-    normalizar(item);
-
-
-  const botao =
-    document.getElementById(
-      "importar-" + indice
-    );
-
-
-  try {
-
-    botao.disabled = true;
-    botao.textContent = "IMPORTANDO...";
-
-
-    mostrarMensagem(
-      "⏳ Verificando a música...",
-      false
-    );
-
-
-    /*
-      Verifica se já existe uma música
-      com o mesmo título e artista.
-    */
-
-    const filtroTitulo =
-      encodeURIComponent(
-        musica.titulo
-      );
-
-
-    const filtroArtista =
-      encodeURIComponent(
-        musica.artista
-      );
-
-
-    const respostaVerificacao =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/musicas" +
-        "?select=id,titulo,artista" +
-        "&titulo=eq." +
-        filtroTitulo +
-        "&artista=eq." +
-        filtroArtista,
-        {
-
-          method: "GET",
-
-          headers: {
-
-            "apikey":
-              SUPABASE_KEY,
-
-            "Authorization":
-              "Bearer " +
-              SUPABASE_KEY
-
-          }
-
-        }
-      );
-
-
-    if (!respostaVerificacao.ok) {
-
-      const erro =
-        await respostaVerificacao.text();
-
-      throw new Error(erro);
-
-    }
-
-
-    const existentes =
-      await respostaVerificacao.json();
-
-
-    if (existentes.length > 0) {
-
-      mostrarMensagem(
-        "⚠️ Essa música já está cadastrada no seu banco.",
-        true
-      );
-
-      botao.disabled = false;
-      botao.textContent =
-        "➕ IMPORTAR PARA O MEU BANCO";
-
-      return;
-    }
-
-
-    /*
-      Nesta etapa salvamos título,
-      artista e tom.
-
-      A cifra completa será ligada
-      na próxima etapa, usando a URL
-      retornada pelo Cifralize.
-    */
-
-    mostrarMensagem(
-      "⏳ Salvando música...",
-      false
-    );
-
-
-    const respostaCadastro =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/musicas",
-        {
-
-          method: "POST",
-
-          headers: {
-
-            "apikey":
-              SUPABASE_KEY,
-
-            "Authorization":
-              "Bearer " +
-              SUPABASE_KEY,
-
-            "Content-Type":
-              "application/json",
-
-            "Prefer":
-              "return=representation"
-
-          },
-
-          body:
-            JSON.stringify({
-
-              titulo:
-                musica.titulo,
-
-              artista:
-                musica.artista || "",
-
-              tom:
-                musica.tom || "C",
-
-              capo:
-                0,
-
-              cifra:
-                ""
-
-            })
-
-        }
-      );
-
-
-    if (!respostaCadastro.ok) {
-
-      const erro =
-        await respostaCadastro.text();
-
-      throw new Error(erro);
-
-    }
-
-
-    const salvo =
-      await respostaCadastro.json();
-
-
-    console.log(
-      "Música salva:",
-      salvo
-    );
-
-
-    mostrarMensagem(
-      "✅ Música importada com sucesso!",
-      false
-    );
-
 
     botao.textContent =
-      "✅ IMPORTADA";
-
-    botao.style.background =
-      "#166534";
-
-
-  } catch (erro) {
-
-    console.error(
-      "Erro ao importar:",
-      erro
-    );
-
-
-    mostrarMensagem(
-      "❌ Erro ao importar: " +
-      erro.message,
-      true
-    );
-
-
-    botao.disabled = false;
-
-    botao.textContent =
-      "➕ IMPORTAR PARA O MEU BANCO";
-
-  }
-
-}
-
-
-/* ==================================================
-   MENSAGEM
-   ================================================== */
-
-function mostrarMensagem(
-  texto,
-  erro
-) {
-
-  const elemento =
-    document.getElementById(
-      "mensagem"
-    );
-
-
-  elemento.textContent =
-    texto;
-
-
-  elemento.className =
-    "mensagem " +
-    (
-      erro
-        ? "erro"
-        : "sucesso"
-    );
-
-}
-
-
-/* ==================================================
-   ESCAPAR HTML
-   ================================================== */
-
-function escapar(texto) {
-
-  return String(texto)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-</script>
-
-</body>
-</html>
+      "BUS
