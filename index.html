@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Cifras IEQ Patrocínio</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -33,7 +36,7 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
       padding: 20px;
     }
@@ -116,15 +119,43 @@
       text-align: center;
     }
 
+    /*
+      ÁREA DA CIFRA
+
+      Monospace + white-space: pre
+      preserva exatamente os espaços
+      digitados pelo músico.
+    */
+
     .letra {
       background: white;
       padding: 22px;
       border-radius: 16px;
-      line-height: 2;
-      font-size: 19px;
-      white-space: pre-wrap;
-      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+      font-size: 17px;
+
+      line-height: 1.45;
+
+      white-space: pre;
+
+      overflow-x: auto;
+
+      box-shadow:
+        0 4px 15px rgba(0,0,0,.07);
+
+      color: #222;
+
+      -webkit-overflow-scrolling: touch;
     }
+
+    /*
+      Os acordes ficam destacados
+    */
 
     .acorde {
       color: #6d28d9;
@@ -160,6 +191,32 @@
       padding: 15px;
       border-radius: 10px;
     }
+
+    /*
+      CELULAR
+    */
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 12px;
+      }
+
+      .letra {
+        padding: 16px;
+
+        font-size: 15px;
+
+        line-height: 1.4;
+
+        border-radius: 12px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+    }
   </style>
 </head>
 
@@ -173,38 +230,84 @@
 <div class="container">
 
   <div id="inicio">
+
     <div class="card">
-      <h2 id="nomeCulto">Carregando culto...</h2>
+
+      <h2 id="nomeCulto">
+        Carregando culto...
+      </h2>
+
       <p id="dataCulto"></p>
+
       <div id="repertorio"></div>
+
     </div>
+
   </div>
+
 
   <div id="paginaMusica" class="oculto">
 
-    <button class="voltar" onclick="voltar()">
+    <button
+      class="voltar"
+      onclick="voltar()"
+    >
       ← Voltar para o repertório
     </button>
 
+
     <div class="card">
+
       <h2 id="tituloMusica"></h2>
+
       <p id="artistaMusica"></p>
 
+
       <div class="controles">
-        <button onclick="mudarTom(-1)">−</button>
-        <span id="tomAtual">-</span>
-        <button onclick="mudarTom(1)">+</button>
+
+        <button onclick="mudarTom(-1)">
+          −
+        </button>
+
+        <span id="tomAtual">
+          -
+        </span>
+
+        <button onclick="mudarTom(1)">
+          +
+        </button>
+
       </div>
+
 
       <div class="acoes">
-        <button class="acao" onclick="rolar()">▶ Rolagem</button>
-        <button class="acao" onclick="modoCulto()">🌙 Modo Culto</button>
+
+        <button
+          class="acao"
+          onclick="rolar()"
+        >
+          ▶ Rolagem
+        </button>
+
+        <button
+          class="acao"
+          onclick="modoCulto()"
+        >
+          🌙 Modo Culto
+        </button>
+
       </div>
+
     </div>
 
-    <div id="cifra" class="letra"></div>
+
+    <div
+      id="cifra"
+      class="letra"
+    ></div>
 
   </div>
+
 
   <div class="rodape">
     Cifras IEQ Patrocínio
@@ -212,291 +315,645 @@
 
 </div>
 
+
 <script>
+
+/* =====================================================
+   SUPABASE
+   ===================================================== */
 
 const SUPABASE_URL =
   "https://jbkeshenygonmgogkodd.supabase.co";
 
+
 const SUPABASE_KEY =
-  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+  "COLE_AQUI_SUA_PUBLISHABLE_KEY";
+
+
+/* =====================================================
+   VARIÁVEIS
+   ===================================================== */
 
 let musicaAtual = null;
+
 let tomOriginal = null;
+
 let tomAtual = null;
 
+
 const tons = [
-  "C", "C#", "D", "D#", "E", "F",
-  "F#", "G", "G#", "A", "A#", "B"
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B"
 ];
+
+
+/* =====================================================
+   CONSULTA SUPABASE
+   ===================================================== */
 
 async function buscar(url) {
 
-  const resposta = await fetch(
-    SUPABASE_URL + url,
-    {
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY
+  const resposta =
+    await fetch(
+      SUPABASE_URL + url,
+      {
+        headers: {
+          "apikey": SUPABASE_KEY
+        }
       }
-    }
-  );
+    );
+
+
+  const texto =
+    await resposta.text();
+
 
   if (!resposta.ok) {
-    throw new Error("Erro ao consultar o Supabase");
+
+    throw new Error(
+      texto ||
+      "Erro ao consultar o Supabase"
+    );
+
   }
 
-  return resposta.json();
+
+  if (!texto) {
+    return null;
+  }
+
+
+  return JSON.parse(texto);
+
 }
 
+
+/* =====================================================
+   CARREGAR CULTO
+   ===================================================== */
 
 async function carregarCulto() {
 
   try {
 
-    const cultos = await buscar(
-      "/rest/v1/cultos?select=*&order=data_culto.desc&limit=1"
-    );
+    const cultos =
+      await buscar(
+        "/rest/v1/cultos?select=*&order=data_culto.desc&limit=1"
+      );
 
-    if (!cultos.length) {
-      document.getElementById("nomeCulto").textContent =
-        "Nenhum culto cadastrado";
+
+    if (!cultos || !cultos.length) {
+
+      document
+        .getElementById("nomeCulto")
+        .textContent =
+          "Nenhum culto cadastrado";
+
       return;
+
     }
 
-    const culto = cultos[0];
 
-    document.getElementById("nomeCulto").textContent =
-      "📅 " + culto.nome;
+    const culto =
+      cultos[0];
 
-    document.getElementById("dataCulto").textContent =
-      formatarData(culto.data_culto);
 
-    const itens = await buscar(
-      "/rest/v1/culto_musicas?select=ordem,musicas(*)&culto_id=eq." +
-      culto.id +
-      "&order=ordem.asc"
-    );
+    document
+      .getElementById("nomeCulto")
+      .textContent =
+        "📅 " + culto.nome;
+
+
+    document
+      .getElementById("dataCulto")
+      .textContent =
+        formatarData(
+          culto.data_culto
+        );
+
+
+    const itens =
+      await buscar(
+        "/rest/v1/culto_musicas" +
+        "?select=ordem,musicas(*)" +
+        "&culto_id=eq." +
+        culto.id +
+        "&order=ordem.asc"
+      );
+
 
     const repertorio =
-      document.getElementById("repertorio");
+      document.getElementById(
+        "repertorio"
+      );
+
 
     repertorio.innerHTML = "";
 
-    itens.forEach(function(item) {
 
-      const musica = item.musicas;
+    if (!itens || !itens.length) {
 
-      const div = document.createElement("div");
+      repertorio.innerHTML =
+        "<p>Nenhuma música cadastrada neste culto.</p>";
 
-      div.className = "musica";
+      return;
 
-      div.innerHTML = `
-        <div>
-          <strong>${item.ordem.toString().padStart(2, "0")} — ${escapar(musica.titulo)}</strong>
-          <div class="tom">Tom: ${escapar(musica.tom || "-")}</div>
-        </div>
-        <div class="seta">›</div>
-      `;
+    }
 
-      div.onclick = function() {
-        abrirMusica(musica);
-      };
 
-      repertorio.appendChild(div);
+    itens.forEach(
+      function(item) {
 
-    });
+        const musica =
+          item.musicas;
+
+
+        if (!musica) {
+          return;
+        }
+
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "musica";
+
+
+        div.innerHTML = `
+          <div>
+            <strong>
+              ${item.ordem
+                .toString()
+                .padStart(2, "0")}
+              — 
+              ${escapar(musica.titulo)}
+            </strong>
+
+            <div class="tom">
+              Tom:
+              ${escapar(
+                musica.tom || "-"
+              )}
+            </div>
+          </div>
+
+          <div class="seta">
+            ›
+          </div>
+        `;
+
+
+        div.onclick =
+          function() {
+
+            abrirMusica(
+              musica
+            );
+
+          };
+
+
+        repertorio.appendChild(
+          div
+        );
+
+      }
+    );
+
 
   } catch (erro) {
 
-    console.error(erro);
+    console.error(
+      erro
+    );
 
-    document.getElementById("repertorio").innerHTML = `
-      <div class="erro">
-        Não foi possível carregar o repertório.
-        <br><br>
-        Verifique a conexão com o Supabase.
-      </div>
-    `;
+
+    document
+      .getElementById(
+        "repertorio"
+      )
+      .innerHTML = `
+        <div class="erro">
+          Não foi possível carregar o repertório.
+          <br><br>
+          ${escapar(
+            erro.message
+          )}
+        </div>
+      `;
+
   }
+
 }
 
 
-function abrirMusica(musica) {
+/* =====================================================
+   ABRIR MÚSICA
+   ===================================================== */
 
-  musicaAtual = musica;
+function abrirMusica(
+  musica
+) {
 
-  tomOriginal = indiceTom(musica.tom || "C");
-  tomAtual = tomOriginal;
+  musicaAtual =
+    musica;
 
-  document.getElementById("inicio").classList.add("oculto");
+
+  tomOriginal =
+    indiceTom(
+      musica.tom || "C"
+    );
+
+
+  tomAtual =
+    tomOriginal;
+
+
+  document
+    .getElementById("inicio")
+    .classList
+    .add("oculto");
+
 
   document
     .getElementById("paginaMusica")
-    .classList.remove("oculto");
+    .classList
+    .remove("oculto");
 
-  document.getElementById("tituloMusica").textContent =
-    "🎵 " + musica.titulo;
 
-  document.getElementById("artistaMusica").textContent =
-    musica.artista || "";
+  document
+    .getElementById("tituloMusica")
+    .textContent =
+      "🎵 " +
+      musica.titulo;
 
-  document.getElementById("tomAtual").textContent =
-    musica.tom || "-";
+
+  document
+    .getElementById("artistaMusica")
+    .textContent =
+      musica.artista || "";
+
+
+  document
+    .getElementById("tomAtual")
+    .textContent =
+      musica.tom || "-";
+
 
   mostrarCifra();
 
-  window.scrollTo(0, 0);
+
+  window.scrollTo(
+    0,
+    0
+  );
+
 }
 
+
+/* =====================================================
+   MOSTRAR CIFRA
+   ===================================================== */
 
 function mostrarCifra() {
 
-  let texto = musicaAtual.cifra || "";
+  if (!musicaAtual) {
+    return;
+  }
 
-  let diferenca = tomAtual - tomOriginal;
 
-  texto = texto.replace(
-    /\[([A-G](?:#|b)?(?:m|7|maj7|sus4|sus2|dim|aug)?)\]/g,
-    function(match, acorde) {
+  let texto =
+    musicaAtual.cifra || "";
 
-      return `
-        <span class="acorde">
-          ${transporAcorde(acorde, diferenca)}
-        </span>
-      `;
 
-    }
-  );
+  const diferenca =
+    tomAtual -
+    tomOriginal;
 
-  texto = texto.replace(/\n/g, "<br>");
 
-  document.getElementById("cifra").innerHTML = texto;
+  /*
+    IMPORTANTE:
+
+    Agora não transformamos cada linha
+    em HTML com <br>.
+
+    Mantemos o texto como texto puro.
+
+    Isso preserva TODOS os espaços.
+  */
+
+
+  const linhas =
+    texto.split("\n");
+
+
+  const linhasProcessadas =
+    linhas.map(
+      function(linha) {
+
+        return processarLinha(
+          linha,
+          diferenca
+        );
+
+      }
+    );
+
+
+  /*
+    O resultado é colocado em HTML,
+    mas cada linha mantém sua
+    posição horizontal.
+  */
+
+  document
+    .getElementById("cifra")
+    .innerHTML =
+      linhasProcessadas.join(
+        "\n"
+      );
+
 }
 
 
-function mudarTom(direcao) {
+/* =====================================================
+   PROCESSAR LINHA
+   ===================================================== */
 
-  if (!musicaAtual) return;
+function processarLinha(
+  linha,
+  diferenca
+) {
+
+  /*
+    Procuramos acordes escritos assim:
+
+    [G]
+    [Em]
+    [C]
+    [D7]
+    [Am]
+    [G/B]
+  */
+
+  const regex =
+    /\[([A-G](?:#|b)?(?:m|7|maj7|sus4|sus2|dim|aug)?(?:\/[A-G](?:#|b)?)?)\]/g;
+
+
+  let resultado = "";
+
+  let ultimaPosicao = 0;
+
+
+  let encontrado;
+
+
+  while (
+    (encontrado =
+      regex.exec(linha)) !== null
+  ) {
+
+    /*
+      Texto antes do acorde
+    */
+
+    resultado +=
+      escapar(
+        linha.substring(
+          ultimaPosicao,
+          encontrado.index
+        )
+      );
+
+
+    /*
+      Acorde
+    */
+
+    const acordeOriginal =
+      encontrado[1];
+
+
+    const acordeNovo =
+      transporAcorde(
+        acordeOriginal,
+        diferenca
+      );
+
+
+    resultado +=
+      '<span class="acorde">' +
+      escapar(
+        acordeNovo
+      ) +
+      '</span>';
+
+
+    ultimaPosicao =
+      regex.lastIndex;
+
+  }
+
+
+  /*
+    Restante da linha
+  */
+
+  resultado +=
+    escapar(
+      linha.substring(
+        ultimaPosicao
+      )
+    );
+
+
+  return resultado;
+
+}
+
+
+/* =====================================================
+   MUDAR TOM
+   ===================================================== */
+
+function mudarTom(
+  direcao
+) {
+
+  if (!musicaAtual) {
+    return;
+  }
+
 
   tomAtual =
-    (tomAtual + direcao + 12) % 12;
+    (
+      tomAtual +
+      direcao +
+      12
+    ) % 12;
 
-  document.getElementById("tomAtual").textContent =
-    tons[tomAtual];
+
+  document
+    .getElementById("tomAtual")
+    .textContent =
+      tons[tomAtual];
+
 
   mostrarCifra();
+
 }
 
 
-function transporAcorde(acorde, diferenca) {
+/* =====================================================
+   TRANSPOR ACORDE
+   ===================================================== */
+
+function transporAcorde(
+  acorde,
+  diferenca
+) {
+
+  /*
+    Exemplo:
+
+    G
+    Em
+    D7
+    C#
+    G/B
+  */
 
   const resultado =
-    acorde.match(/^([A-G](?:#|b)?)(.*)$/);
+    acorde.match(
+      /^([A-G](?:#|b)?)(.*)$/
+    );
 
-  if (!resultado) return acorde;
 
-  const nota = resultado[1];
-  const complemento = resultado[2];
+  if (!resultado) {
+    return acorde;
+  }
 
-  let indice = indiceTom(nota);
 
-  if (indice === -1) return acorde;
+  const nota =
+    resultado[1];
+
+
+  const complemento =
+    resultado[2];
+
+
+  let indice =
+    indiceTom(
+      nota
+    );
+
+
+  if (indice === -1) {
+    return acorde;
+  }
+
 
   indice =
-    (indice + diferenca + 12) % 12;
+    (
+      indice +
+      diferenca +
+      12
+    ) % 12;
 
-  return tons[indice] + complemento;
+
+  return (
+    tons[indice] +
+    complemento
+  );
+
 }
 
 
-function indiceTom(nota) {
+/* =====================================================
+   IDENTIFICAR TOM
+   ===================================================== */
+
+function indiceTom(
+  nota
+) {
 
   const equivalentes = {
+
     "Db": "C#",
+
     "Eb": "D#",
+
     "Gb": "F#",
+
     "Ab": "G#",
+
     "Bb": "A#"
+
   };
 
-  nota = equivalentes[nota] || nota;
 
-  return tons.indexOf(nota);
+  nota =
+    equivalentes[nota] ||
+    nota;
+
+
+  return tons.indexOf(
+    nota
+  );
+
 }
 
+
+/* =====================================================
+   VOLTAR
+   ===================================================== */
 
 function voltar() {
 
   document
-    .getElementById("paginaMusica")
-    .classList.add("oculto");
+    .getElementById(
+      "paginaMusica"
+    )
+    .classList
+    .add("oculto");
+
 
   document
-    .getElementById("inicio")
-    .classList.remove("oculto");
+    .getElementById(
+      "inicio"
+    )
+    .classList
+    .remove("oculto");
 
-  window.scrollTo(0, 0);
+
+  window.scrollTo(
+    0,
+    0
+  );
+
 }
 
 
-function formatarData(data) {
+/* =====================================================
+   DATA
+   ===================================================== */
 
-  const partes = data.split("-");
+function formatarData(
+  data
+) {
 
-  return partes[2] + "/" +
-         partes[1] + "/" +
-         partes[0];
-}
-
-
-function escapar(texto) {
-
-  return String(texto)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-function rolar() {
-
-  const intervalo =
-    setInterval(function() {
-
-      window.scrollBy(0, 1);
-
-      if (
-        window.innerHeight +
-        window.scrollY >=
-        document.body.offsetHeight
-      ) {
-        clearInterval(intervalo);
-      }
-
-    }, 40);
-}
-
-
-function modoCulto() {
-
-  document.body.style.background = "#000";
-  document.body.style.color = "#fff";
-
-  document.querySelectorAll(".card, .letra")
-    .forEach(function(elemento) {
-
-      elemento.style.background = "#111";
-      elemento.style.color = "#fff";
-
-    });
-}
-
-
-carregarCulto();
-
-</script>
-
-</body>
-</html>
+ 
