@@ -95,4 +95,413 @@
       background: #5b21b6;
     }
 
-   
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .mensagem {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .sucesso {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .erro {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .voltar {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #6d28d9;
+      text-decoration: none;
+    }
+
+    .observacao {
+      background: #f3e8ff;
+      padding: 13px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #4c1d95;
+    }
+
+    @media (max-width: 500px) {
+      .linha {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
+  <p>Cadastrar nova música</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h2>➕ Nova música</h2>
+
+    <div class="observacao">
+      Use os acordes entre colchetes.
+      <br><br>
+      Exemplo:
+      <br>
+      [G] Grande é o Senhor
+      <br>
+      [Em] E digno de todo louvor
+    </div>
+
+    <label for="titulo">Título da música *</label>
+    <input
+      id="titulo"
+      type="text"
+      placeholder="Ex.: Bondade de Deus"
+    >
+
+    <label for="artista">Artista / Ministério</label>
+    <input
+      id="artista"
+      type="text"
+      placeholder="Ex.: Bethel Music"
+    >
+
+    <div class="linha">
+
+      <div>
+        <label for="tom">Tom *</label>
+
+        <select id="tom">
+          <option value="C">C</option>
+          <option value="C#">C#</option>
+          <option value="D">D</option>
+          <option value="D#">D#</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="F#">F#</option>
+          <option value="G" selected>G</option>
+          <option value="G#">G#</option>
+          <option value="A">A</option>
+          <option value="A#">A#</option>
+          <option value="B">B</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="capo">Capo</label>
+
+        <input
+          id="capo"
+          type="number"
+          min="0"
+          max="12"
+          value="0"
+        >
+      </div>
+
+    </div>
+
+    <label for="cifra">Cifra + letra *</label>
+
+    <textarea
+      id="cifra"
+      placeholder="[G] Coloque aqui a letra e os acordes
+
+[Em] Exemplo de uma música
+
+[C] Você pode escrever várias linhas
+
+[D] E separar as partes normalmente"
+    ></textarea>
+
+    <label for="culto">Adicionar ao culto</label>
+
+    <select id="culto">
+      <option value="">Não adicionar a um culto agora</option>
+    </select>
+
+    <label for="ordem">Ordem no repertório</label>
+
+    <input
+      id="ordem"
+      type="number"
+      min="1"
+      value="1"
+    >
+
+    <button id="botao" onclick="cadastrarMusica()">
+      🎵 CADASTRAR MÚSICA
+    </button>
+
+    <div id="mensagem" class="mensagem"></div>
+
+  </div>
+
+  <a class="voltar" href="/">
+    ← Voltar para Cifras IEQ Patrocínio
+  </a>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://jbkeshenygonmgogkodd.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+
+
+async function supabaseRequest(url, options = {}) {
+
+  const resposta = await fetch(
+    SUPABASE_URL + url,
+    {
+      ...options,
+
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      }
+    }
+  );
+
+  if (!resposta.ok) {
+
+    const erro = await resposta.text();
+
+    throw new Error(erro || "Erro no Supabase");
+
+  }
+
+  return resposta.json();
+
+}
+
+
+async function carregarCultos() {
+
+  try {
+
+    const cultos = await supabaseRequest(
+      "/rest/v1/cultos?select=*&order=data_culto.desc"
+    );
+
+    const select =
+      document.getElementById("culto");
+
+    cultos.forEach(function(culto) {
+
+      const option =
+        document.createElement("option");
+
+      option.value = culto.id;
+
+      option.textContent =
+        culto.nome +
+        " — " +
+        formatarData(culto.data_culto);
+
+      select.appendChild(option);
+
+    });
+
+  } catch (erro) {
+
+    console.error(erro);
+
+  }
+
+}
+
+
+async function cadastrarMusica() {
+
+  const titulo =
+    document.getElementById("titulo").value.trim();
+
+  const artista =
+    document.getElementById("artista").value.trim();
+
+  const tom =
+    document.getElementById("tom").value;
+
+  const capo =
+    Number(document.getElementById("capo").value || 0);
+
+  const cifra =
+    document.getElementById("cifra").value.trim();
+
+  const cultoId =
+    document.getElementById("culto").value;
+
+  const ordem =
+    Number(document.getElementById("ordem").value || 1);
+
+  const mensagem =
+    document.getElementById("mensagem");
+
+  const botao =
+    document.getElementById("botao");
+
+
+  if (!titulo || !cifra) {
+
+    mostrarMensagem(
+      "Preencha o título e a cifra.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "Salvando...";
+
+
+    // 1 — Salvar a música
+
+    const musicas =
+      await supabaseRequest(
+        "/rest/v1/musicas",
+        {
+          method: "POST",
+
+          headers: {
+            "Prefer": "return=representation"
+          },
+
+          body: JSON.stringify({
+            titulo: titulo,
+            artista: artista,
+            tom: tom,
+            capo: capo,
+            cifra: cifra
+          })
+        }
+      );
+
+
+    const musica =
+      musicas[0];
+
+
+    // 2 — Se um culto foi escolhido,
+    // colocar a música no repertório
+
+    if (cultoId) {
+
+      await supabaseRequest(
+        "/rest/v1/culto_musicas",
+        {
+          method: "POST",
+
+          body: JSON.stringify({
+            culto_id: Number(cultoId),
+            musica_id: musica.id,
+            ordem: ordem
+          })
+        }
+      );
+
+    }
+
+
+    mostrarMensagem(
+      "✅ Música cadastrada com sucesso!",
+      false
+    );
+
+
+    // Limpar formulário
+
+    document.getElementById("titulo").value = "";
+
+    document.getElementById("artista").value = "";
+
+    document.getElementById("capo").value = "0";
+
+    document.getElementById("cifra").value = "";
+
+    document.getElementById("ordem").value = "1";
+
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    mostrarMensagem(
+      "❌ Não foi possível cadastrar a música. Verifique a conexão com o banco.",
+      true
+    );
+
+  } finally {
+
+    botao.disabled = false;
+
+    botao.textContent =
+      "🎵 CADASTRAR MÚSICA";
+
+  }
+
+}
+
+
+function mostrarMensagem(texto, erro) {
+
+  const elemento =
+    document.getElementById("mensagem");
+
+  elemento.textContent = texto;
+
+  elemento.className =
+    "mensagem " +
+    (erro ? "erro" : "sucesso");
+
+}
+
+
+function formatarData(data) {
+
+  const partes =
+    data.split("-");
+
+  return partes[2] +
+    "/" +
+    partes[1] +
+    "/" +
+    partes[0];
+
+}
+
+
+carregarCultos();
+
+</script>
+
+</body>
+</html>
