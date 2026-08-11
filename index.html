@@ -1,14 +1,6 @@
-<!-- NO ARQUIVO PRINCIPAL (index.html)
-     SUBSTITUA TODO O SEU <script> POR ESTE -->
-
 <script>
-
-const SUPABASE_URL =
-  "https://jbkeshenygonmgogkodd.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
-
+const SUPABASE_URL = "https://jbkeshenygonmgogkodd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 const SENHA_CADASTRO = "leonardo";
 
 let musicaAtual = null;
@@ -22,73 +14,76 @@ const tons = [
 ];
 
 /* =====================================================
-   ABRIR ÁREA DE CADASTRO
-   A SENHA É PEDIDA SOMENTE AQUI
+   LOGIN DO CADASTRO
    ===================================================== */
 
 function abrirLoginCadastro() {
-
   const janela = document.getElementById("loginCadastro");
   const campo = document.getElementById("senhaCadastro");
   const erro = document.getElementById("erroSenha");
 
-  erro.style.display = "none";
-  campo.value = "";
+  if (!janela) {
+    console.error("Elemento #loginCadastro não encontrado.");
+    return;
+  }
+
+  if (erro) {
+    erro.style.display = "none";
+  }
+
+  if (campo) {
+    campo.value = "";
+  }
 
   janela.classList.add("aberto");
 
   setTimeout(() => {
-    campo.focus();
+    if (campo) {
+      campo.focus();
+    }
   }, 100);
 }
 
 
-/* =====================================================
-   VERIFICAR SENHA
-   ===================================================== */
-
 function verificarSenhaCadastro() {
-
   const campo = document.getElementById("senhaCadastro");
   const erro = document.getElementById("erroSenha");
 
+  if (!campo) {
+    return;
+  }
+
   if (campo.value === SENHA_CADASTRO) {
 
-    /* AUTORIZAÇÃO FICA SALVA */
-    localStorage.setItem(
+    sessionStorage.setItem(
       "cadastro_autorizado",
       "sim"
     );
 
-    /* VAI DIRETO PARA CADASTRO */
     window.location.href = "/cadastrar.html";
 
     return;
   }
 
-  erro.style.display = "block";
+  if (erro) {
+    erro.style.display = "block";
+  }
 
   campo.value = "";
-
   campo.focus();
 }
 
 
-/* =====================================================
-   FECHAR LOGIN
-   ===================================================== */
-
 function fecharLoginCadastro() {
+  const janela = document.getElementById("loginCadastro");
 
-  document
-    .getElementById("loginCadastro")
-    .classList
-    .remove("aberto");
+  if (janela) {
+    janela.classList.remove("aberto");
+  }
 }
 
 
 function clicouForaDaSenha(event) {
-
   if (event.target.id === "loginCadastro") {
     fecharLoginCadastro();
   }
@@ -148,6 +143,13 @@ async function carregarCulto() {
 
   const repertorio =
     document.getElementById("repertorio");
+
+  if (!nomeCulto || !dataCulto || !repertorio) {
+    console.warn(
+      "Elementos do culto não encontrados no HTML."
+    );
+    return;
+  }
 
   try {
 
@@ -304,30 +306,43 @@ function abrirMusica(musica) {
 
   pararRolagem();
 
-  document
-    .getElementById("inicio")
-    .classList
-    .add("oculto");
+  const inicio =
+    document.getElementById("inicio");
 
-  document
-    .getElementById("paginaMusica")
-    .classList
-    .remove("oculto");
+  const paginaMusica =
+    document.getElementById("paginaMusica");
 
-  document
-    .getElementById("tituloMusica")
-    .textContent =
+  if (inicio) {
+    inicio.classList.add("oculto");
+  }
+
+  if (paginaMusica) {
+    paginaMusica.classList.remove("oculto");
+  }
+
+  const titulo =
+    document.getElementById("tituloMusica");
+
+  const artista =
+    document.getElementById("artistaMusica");
+
+  const tom =
+    document.getElementById("tomAtual");
+
+  if (titulo) {
+    titulo.textContent =
       "🎵 " + (musica.titulo || "Música");
+  }
 
-  document
-    .getElementById("artistaMusica")
-    .textContent =
+  if (artista) {
+    artista.textContent =
       musica.artista || "";
+  }
 
-  document
-    .getElementById("tomAtual")
-    .textContent =
+  if (tom) {
+    tom.textContent =
       musica.tom || "C";
+  }
 
   mostrarCifra();
 
@@ -347,6 +362,10 @@ function mostrarCifra() {
 
   const elemento =
     document.getElementById("cifra");
+
+  if (!elemento) {
+    return;
+  }
 
   const texto =
     musicaAtual.cifra || "";
@@ -375,7 +394,7 @@ function mostrarCifra() {
     );
 
   elemento.innerHTML =
-    linhasProcessadas.join("\n");
+    linhasProcessadas.join("<br>");
 }
 
 
@@ -415,7 +434,7 @@ function processarLinha(linha, diferenca) {
     resultado +=
       '<span class="acorde">' +
       escapar(acordeNovo) +
-      '</span>';
+      "</span>";
 
     ultimaPosicao =
       regex.lastIndex;
@@ -442,10 +461,13 @@ function mudarTom(direcao) {
   tomAtual =
     (tomAtual + direcao + 12) % 12;
 
-  document
-    .getElementById("tomAtual")
-    .textContent =
+  const elemento =
+    document.getElementById("tomAtual");
+
+  if (elemento) {
+    elemento.textContent =
       tons[tomAtual];
+  }
 
   mostrarCifra();
 }
@@ -466,10 +488,14 @@ function transporAcorde(acorde, diferenca) {
     return acorde;
   }
 
-  const nota = resultado[1];
-  const complemento = resultado[2];
+  const nota =
+    resultado[1];
 
-  let indice = indiceTom(nota);
+  const complemento =
+    resultado[2];
+
+  let indice =
+    indiceTom(nota);
 
   if (indice === -1) {
     return acorde;
@@ -572,15 +598,19 @@ function voltar() {
     .classList
     .remove("modo-culto");
 
-  document
-    .getElementById("paginaMusica")
-    .classList
-    .add("oculto");
+  const paginaMusica =
+    document.getElementById("paginaMusica");
 
-  document
-    .getElementById("inicio")
-    .classList
-    .remove("oculto");
+  const inicio =
+    document.getElementById("inicio");
+
+  if (paginaMusica) {
+    paginaMusica.classList.add("oculto");
+  }
+
+  if (inicio) {
+    inicio.classList.remove("oculto");
+  }
 
   window.scrollTo(0, 0);
 }
@@ -631,14 +661,33 @@ function escapar(texto) {
 
 
 /* =====================================================
+   TECLA ENTER NA SENHA
+   ===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter" &&
+      event.target &&
+      event.target.id === "senhaCadastro"
+    ) {
+      verificarSenhaCadastro();
+    }
+
+  }
+);
+
+
+/* =====================================================
    INICIAR
    ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
-  () => {
+  function() {
     carregarCulto();
   }
 );
-
 </script>
