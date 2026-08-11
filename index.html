@@ -49,6 +49,22 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
     }
 
+    .botao-cadastro {
+      width: 100%;
+      border: none;
+      background: #6d28d9;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .botao-cadastro:hover {
+      background: #5b21b6;
+    }
+
     .musica {
       display: flex;
       justify-content: space-between;
@@ -83,7 +99,7 @@
     }
 
     .oculto {
-      display: none;
+      display: none !important;
     }
 
     .voltar {
@@ -202,6 +218,96 @@
       padding: 25px 10px;
     }
 
+    /* =====================================================
+       JANELA DE SENHA
+       ===================================================== */
+
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .60);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .login-overlay.aberto {
+      display: flex;
+    }
+
+    .login-caixa {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, .30);
+    }
+
+    .login-caixa h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .login-caixa p {
+      color: #666;
+      margin-top: 0;
+    }
+
+    .campo-senha {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .campo-senha:focus {
+      border-color: #6d28d9;
+    }
+
+    .botao-entrar {
+      width: 100%;
+      border: none;
+      background: #16a34a;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .botao-entrar:hover {
+      background: #15803d;
+    }
+
+    .botao-cancelar {
+      width: 100%;
+      border: none;
+      background: #eee;
+      color: #333;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .erro-senha {
+      color: #b91c1c;
+      background: #fee2e2;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+
     body.modo-culto {
       background: #111;
       color: white;
@@ -295,6 +401,22 @@
 <div class="container">
 
   <!-- =====================================================
+       BOTÃO DE CADASTRO
+       ===================================================== -->
+
+  <div class="card">
+
+    <button
+      class="botao-cadastro"
+      onclick="abrirLoginCadastro()"
+    >
+      🔒 Área de Cadastro
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
        INÍCIO / REPERTÓRIO
        ===================================================== -->
 
@@ -341,6 +463,7 @@
         class="artista"
       ></p>
 
+
       <!-- CONTROLE DE TOM -->
 
       <div class="controles">
@@ -365,6 +488,7 @@
 
       </div>
 
+
       <!-- AÇÕES -->
 
       <div class="acoes">
@@ -388,6 +512,7 @@
 
     </div>
 
+
     <!-- CIFRA -->
 
     <div
@@ -400,6 +525,66 @@
 
   <div class="rodape">
     Cifras IEQ Patrocínio
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     JANELA DE SENHA
+     ===================================================== -->
+
+<div
+  id="loginCadastro"
+  class="login-overlay"
+  onclick="clicouForaDaSenha(event)"
+>
+
+  <div
+    class="login-caixa"
+    onclick="event.stopPropagation()"
+  >
+
+    <h2>🔒 Área de Cadastro</h2>
+
+    <p>
+      Digite a senha para cadastrar músicas.
+    </p>
+
+    <input
+      id="senhaCadastro"
+      class="campo-senha"
+      type="password"
+      placeholder="Digite a senha"
+      autocomplete="off"
+      onkeydown="
+        if (event.key === 'Enter') {
+          verificarSenhaCadastro();
+        }
+      "
+    >
+
+    <div
+      id="erroSenha"
+      class="erro-senha"
+    >
+      ❌ Senha incorreta.
+    </div>
+
+    <button
+      class="botao-entrar"
+      onclick="verificarSenhaCadastro()"
+    >
+      ENTRAR
+    </button>
+
+    <button
+      class="botao-cancelar"
+      onclick="fecharLoginCadastro()"
+    >
+      CANCELAR
+    </button>
+
   </div>
 
 </div>
@@ -433,8 +618,6 @@ let rolagemAtiva = false;
 
 /*
    Lista de notas.
-
-   Usamos sustenidos como padrão.
 */
 
 const tons = [
@@ -454,26 +637,173 @@ const tons = [
 
 
 /* =====================================================
+   SENHA DO CADASTRO
+   ===================================================== */
+
+const SENHA_CADASTRO = "leonardo";
+
+
+/* =====================================================
+   ABRIR JANELA DE LOGIN
+   ===================================================== */
+
+function abrirLoginCadastro() {
+
+  const janela =
+    document.getElementById(
+      "loginCadastro"
+    );
+
+  const campo =
+    document.getElementById(
+      "senhaCadastro"
+    );
+
+  const erro =
+    document.getElementById(
+      "erroSenha"
+    );
+
+
+  erro.style.display =
+    "none";
+
+
+  campo.value =
+    "";
+
+
+  janela.classList.add(
+    "aberto"
+  );
+
+
+  setTimeout(
+    function() {
+
+      campo.focus();
+
+    },
+    100
+  );
+
+}
+
+
+/* =====================================================
+   FECHAR JANELA DE LOGIN
+   ===================================================== */
+
+function fecharLoginCadastro() {
+
+  document
+    .getElementById("loginCadastro")
+    .classList
+    .remove("aberto");
+
+}
+
+
+/* =====================================================
+   CLICAR FORA DA CAIXA
+   ===================================================== */
+
+function clicouForaDaSenha(event) {
+
+  if (
+    event.target.id ===
+    "loginCadastro"
+  ) {
+
+    fecharLoginCadastro();
+
+  }
+
+}
+
+
+/* =====================================================
+   VERIFICAR SENHA
+   ===================================================== */
+
+function verificarSenhaCadastro() {
+
+  const campo =
+    document.getElementById(
+      "senhaCadastro"
+    );
+
+  const erro =
+    document.getElementById(
+      "erroSenha"
+    );
+
+
+  const senha =
+    campo.value;
+
+
+  if (
+    senha ===
+    SENHA_CADASTRO
+  ) {
+
+    /*
+      Senha correta:
+      abre a página de cadastro.
+    */
+
+    window.location.href =
+      "/cadastrar.html";
+
+    return;
+
+  }
+
+
+  /*
+    Senha incorreta.
+  */
+
+  erro.style.display =
+    "block";
+
+
+  campo.value =
+    "";
+
+
+  campo.focus();
+
+}
+
+
+/* =====================================================
    CONSULTA SUPABASE
    ===================================================== */
 
 async function buscar(url) {
 
-  const resposta = await fetch(
-    SUPABASE_URL + url,
-    {
-      method: "GET",
+  const resposta =
+    await fetch(
+      SUPABASE_URL + url,
+      {
+        method: "GET",
 
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization":
-          "Bearer " + SUPABASE_KEY
+        headers: {
+          "apikey":
+            SUPABASE_KEY,
+
+          "Authorization":
+            "Bearer " +
+            SUPABASE_KEY
+        }
       }
-    }
-  );
+    );
 
 
-  const texto = await resposta.text();
+  const texto =
+    await resposta.text();
 
 
   if (!resposta.ok) {
@@ -513,13 +843,19 @@ async function buscar(url) {
 async function carregarCulto() {
 
   const nomeCulto =
-    document.getElementById("nomeCulto");
+    document.getElementById(
+      "nomeCulto"
+    );
 
   const dataCulto =
-    document.getElementById("dataCulto");
+    document.getElementById(
+      "dataCulto"
+    );
 
   const repertorio =
-    document.getElementById("repertorio");
+    document.getElementById(
+      "repertorio"
+    );
 
 
   try {
@@ -546,7 +882,8 @@ async function carregarCulto() {
       nomeCulto.textContent =
         "Nenhum culto cadastrado";
 
-      dataCulto.textContent = "";
+      dataCulto.textContent =
+        "";
 
       repertorio.innerHTML = `
         <div class="vazio">
@@ -559,12 +896,16 @@ async function carregarCulto() {
     }
 
 
-    const culto = cultos[0];
+    const culto =
+      cultos[0];
 
 
     nomeCulto.textContent =
       "📅 " +
-      (culto.nome || "Culto");
+      (
+        culto.nome ||
+        "Culto"
+      );
 
 
     dataCulto.textContent =
@@ -583,12 +924,15 @@ async function carregarCulto() {
         "/rest/v1/culto_musicas" +
         "?select=ordem,musicas(*)" +
         "&culto_id=eq." +
-        encodeURIComponent(culto.id) +
+        encodeURIComponent(
+          culto.id
+        ) +
         "&order=ordem.asc"
       );
 
 
-    repertorio.innerHTML = "";
+    repertorio.innerHTML =
+      "";
 
 
     if (
@@ -621,7 +965,9 @@ async function carregarCulto() {
 
 
         const div =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
 
         div.className =
@@ -630,16 +976,22 @@ async function carregarCulto() {
 
         const ordem =
           item.ordem != null
-            ? String(item.ordem)
-                .padStart(2, "0")
+            ? String(
+                item.ordem
+              ).padStart(
+                2,
+                "0"
+              )
             : "--";
 
 
         div.innerHTML = `
           <div>
+
             <strong>
               ${escapar(ordem)}
-              — ${escapar(
+              —
+              ${escapar(
                 musica.titulo ||
                 "Música sem título"
               )}
@@ -648,9 +1000,11 @@ async function carregarCulto() {
             <div class="tom">
               Tom:
               ${escapar(
-                musica.tom || "-"
+                musica.tom ||
+                "-"
               )}
             </div>
+
           </div>
 
           <div class="seta">
@@ -661,11 +1015,17 @@ async function carregarCulto() {
 
         div.onclick =
           function() {
-            abrirMusica(musica);
+
+            abrirMusica(
+              musica
+            );
+
           };
 
 
-        repertorio.appendChild(div);
+        repertorio.appendChild(
+          div
+        );
 
       }
     );
@@ -683,11 +1043,13 @@ async function carregarCulto() {
       "Erro ao carregar culto";
 
 
-    dataCulto.textContent = "";
+    dataCulto.textContent =
+      "";
 
 
     repertorio.innerHTML = `
       <div class="erro">
+
         <strong>
           ❌ Não foi possível carregar o repertório.
         </strong>
@@ -702,6 +1064,7 @@ async function carregarCulto() {
 
         Verifique se o Supabase está configurado
         corretamente e tente atualizar a página.
+
       </div>
     `;
 
@@ -714,7 +1077,9 @@ async function carregarCulto() {
    ABRIR MÚSICA
    ===================================================== */
 
-function abrirMusica(musica) {
+function abrirMusica(
+  musica
+) {
 
   musicaAtual =
     musica;
@@ -722,12 +1087,18 @@ function abrirMusica(musica) {
 
   tomOriginal =
     indiceTom(
-      musica.tom || "C"
+      musica.tom ||
+      "C"
     );
 
 
-  if (tomOriginal === -1) {
-    tomOriginal = 0;
+  if (
+    tomOriginal === -1
+  ) {
+
+    tomOriginal =
+      0;
+
   }
 
 
@@ -744,19 +1115,25 @@ function abrirMusica(musica) {
 
 
   document
-    .getElementById("inicio")
+    .getElementById(
+      "inicio"
+    )
     .classList
     .add("oculto");
 
 
   document
-    .getElementById("paginaMusica")
+    .getElementById(
+      "paginaMusica"
+    )
     .classList
     .remove("oculto");
 
 
   document
-    .getElementById("tituloMusica")
+    .getElementById(
+      "tituloMusica"
+    )
     .textContent =
       "🎵 " +
       (
@@ -766,15 +1143,21 @@ function abrirMusica(musica) {
 
 
   document
-    .getElementById("artistaMusica")
+    .getElementById(
+      "artistaMusica"
+    )
     .textContent =
-      musica.artista || "";
+      musica.artista ||
+      "";
 
 
   document
-    .getElementById("tomAtual")
+    .getElementById(
+      "tomAtual"
+    )
     .textContent =
-      musica.tom || "C";
+      musica.tom ||
+      "C";
 
 
   mostrarCifra();
@@ -800,18 +1183,22 @@ function mostrarCifra() {
 
 
   const elemento =
-    document.getElementById("cifra");
+    document.getElementById(
+      "cifra"
+    );
 
 
   const texto =
-    musicaAtual.cifra || "";
+    musicaAtual.cifra ||
+    "";
 
 
   if (!texto.trim()) {
 
     elemento.innerHTML = `
       <div class="vazio">
-        Esta música ainda não possui uma cifra cadastrada.
+        Esta música ainda não possui
+        uma cifra cadastrada.
       </div>
     `;
 
@@ -847,7 +1234,9 @@ function mostrarCifra() {
 
 
   elemento.innerHTML =
-    linhasProcessadas.join("\n");
+    linhasProcessadas.join(
+      "\n"
+    );
 
 }
 
@@ -880,16 +1269,20 @@ function processarLinha(
     /\[([A-G](?:#|b)?(?:m|7|maj7|sus4|sus2|dim|aug)?(?:\/[A-G](?:#|b)?)?)\]/g;
 
 
-  let resultado = "";
+  let resultado =
+    "";
 
-  let ultimaPosicao = 0;
+  let ultimaPosicao =
+    0;
 
   let encontrado;
 
 
   while (
-    (encontrado =
-      regex.exec(linha)) !== null
+    (
+      encontrado =
+        regex.exec(linha)
+    ) !== null
   ) {
 
     /*
@@ -922,7 +1315,9 @@ function processarLinha(
 
     resultado +=
       '<span class="acorde">' +
-      escapar(acordeNovo) +
+      escapar(
+        acordeNovo
+      ) +
       '</span>';
 
 
@@ -953,7 +1348,9 @@ function processarLinha(
    MUDAR TOM
    ===================================================== */
 
-function mudarTom(direcao) {
+function mudarTom(
+  direcao
+) {
 
   if (!musicaAtual) {
     return;
@@ -969,7 +1366,9 @@ function mudarTom(direcao) {
 
 
   document
-    .getElementById("tomAtual")
+    .getElementById(
+      "tomAtual"
+    )
     .textContent =
       tons[tomAtual];
 
@@ -987,16 +1386,6 @@ function transporAcorde(
   acorde,
   diferenca
 ) {
-
-  /*
-    Exemplo:
-
-    G
-    Em
-    D7
-    C#
-    G/B
-  */
 
   const resultado =
     acorde.match(
@@ -1018,7 +1407,9 @@ function transporAcorde(
 
 
   let indice =
-    indiceTom(nota);
+    indiceTom(
+      nota
+    );
 
 
   if (indice === -1) {
@@ -1046,7 +1437,9 @@ function transporAcorde(
    IDENTIFICAR TOM
    ===================================================== */
 
-function indiceTom(nota) {
+function indiceTom(
+  nota
+) {
 
   const equivalentes = {
 
@@ -1064,7 +1457,9 @@ function indiceTom(nota) {
     nota;
 
 
-  return tons.indexOf(nota);
+  return tons.indexOf(
+    nota
+  );
 
 }
 
@@ -1084,12 +1479,15 @@ function rolar() {
   }
 
 
-  rolagemAtiva = true;
+  rolagemAtiva =
+    true;
 
 
   document.body
     .classList
-    .add("rolagem-ativa");
+    .add(
+      "rolagem-ativa"
+    );
 
 
   const botao =
@@ -1114,12 +1512,15 @@ function rolar() {
 
 function pararRolagem() {
 
-  rolagemAtiva = false;
+  rolagemAtiva =
+    false;
 
 
   document.body
     .classList
-    .remove("rolagem-ativa");
+    .remove(
+      "rolagem-ativa"
+    );
 
 
   const botao =
@@ -1146,7 +1547,9 @@ function modoCulto() {
 
   document.body
     .classList
-    .toggle("modo-culto");
+    .toggle(
+      "modo-culto"
+    );
 
 }
 
@@ -1162,7 +1565,9 @@ function voltar() {
 
   document.body
     .classList
-    .remove("modo-culto");
+    .remove(
+      "modo-culto"
+    );
 
 
   document
@@ -1170,7 +1575,9 @@ function voltar() {
       "paginaMusica"
     )
     .classList
-    .add("oculto");
+    .add(
+      "oculto"
+    );
 
 
   document
@@ -1178,7 +1585,9 @@ function voltar() {
       "inicio"
     )
     .classList
-    .remove("oculto");
+    .remove(
+      "oculto"
+    );
 
 
   window.scrollTo(
@@ -1193,31 +1602,30 @@ function voltar() {
    FORMATAR DATA
    ===================================================== */
 
-function formatarData(data) {
+function formatarData(
+  data
+) {
 
   if (!data) {
     return "";
   }
 
 
-  /*
-    Se vier como:
-
-    2026-08-10
-
-    transforma para:
-
-    10/08/2026
-  */
-
   const partes =
     String(data)
-      .substring(0, 10)
+      .substring(
+        0,
+        10
+      )
       .split("-");
 
 
-  if (partes.length !== 3) {
+  if (
+    partes.length !== 3
+  ) {
+
     return data;
+
   }
 
 
@@ -1236,25 +1644,34 @@ function formatarData(data) {
    ESCAPAR HTML
    ===================================================== */
 
-function escapar(texto) {
+function escapar(
+  texto
+) {
 
-  return String(texto ?? "")
+  return String(
+    texto ?? ""
+  )
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
