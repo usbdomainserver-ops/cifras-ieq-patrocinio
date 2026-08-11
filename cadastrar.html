@@ -166,14 +166,6 @@
       background: #1d4ed8;
     }
 
-    .botao-vermelho {
-      background: #dc2626;
-    }
-
-    .botao-vermelho:hover {
-      background: #b91c1c;
-    }
-
     .botao-cinza {
       background: #6b7280;
     }
@@ -355,8 +347,10 @@
       display: block;
       text-align: center;
       margin-top: 20px;
+      margin-bottom: 30px;
       color: #6d28d9;
       text-decoration: none;
+      font-weight: bold;
     }
 
     .sair {
@@ -408,1224 +402,1663 @@
 
 <body>
 
-<!-- LOGIN -->
+  <!-- =====================================================
+       LOGIN
+       ===================================================== -->
 
-<div id="bloqueio">
+  <div id="bloqueio">
 
-  <div class="login-card">
+    <div class="login-card">
 
-    <div style="font-size:48px;">🎸</div>
+      <div style="font-size:48px;">🎸</div>
 
-    <h2>Área de cadastro</h2>
+      <h2>Área de cadastro</h2>
 
-    <p>
-      Digite a senha para cadastrar músicas.
-    </p>
-
-    <input
-      id="senha"
-      type="password"
-      placeholder="Digite a senha"
-      autocomplete="off"
-    >
-
-    <button
-      type="button"
-      onclick="entrar()"
-      style="margin-top:15px;"
-    >
-      🔐 ENTRAR
-    </button>
-
-    <div id="loginErro" class="login-erro">
-      ❌ Senha incorreta.
-    </div>
-
-  </div>
-
-</div>
-
-<!-- SITE -->
-
-<header>
-
-  <button
-    class="sair"
-    type="button"
-    onclick="sair()"
-  >
-    Sair
-  </button>
-
-  <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
-
-  <p>Cadastro de músicas</p>
-
-</header>
-
-<div class="container">
-
-  <div class="card">
-
-    <h2>➕ Nova música</h2>
-
-    <div class="observacao">
-
-      <strong>🎵 Editor manual de cifras</strong>
-
-      <div class="passo">
-        <span class="numero">1</span>
-        <span>Cole ou digite a letra da música.</span>
-      </div>
-
-      <div class="passo">
-        <span class="numero">2</span>
-        <span>Coloque o cursor exatamente onde o acorde entra.</span>
-      </div>
-
-      <div class="passo">
-        <span class="numero">3</span>
-        <span>Clique no acorde ou digite um acorde personalizado.</span>
-      </div>
-
-      <div class="passo">
-        <span class="numero">4</span>
-        <span>Confira a prévia e salve.</span>
-      </div>
-
-    </div>
-
-    <label for="titulo">Título da música *</label>
-
-    <input
-      id="titulo"
-      type="text"
-      placeholder="Ex.: Bondade de Deus"
-    >
-
-    <label for="artista">Artista / Ministério</label>
-
-    <input
-      id="artista"
-      type="text"
-      placeholder="Ex.: Bethel Music"
-    >
-
-    <div class="linha">
-
-      <div>
-
-        <label for="tom">Tom *</label>
-
-        <select id="tom">
-          <option value="C">C</option>
-          <option value="C#">C#</option>
-          <option value="D">D</option>
-          <option value="D#">D#</option>
-          <option value="E">E</option>
-          <option value="F">F</option>
-          <option value="F#">F#</option>
-          <option value="G" selected>G</option>
-          <option value="G#">G#</option>
-          <option value="A">A</option>
-          <option value="A#">A#</option>
-          <option value="B">B</option>
-        </select>
-
-      </div>
-
-      <div>
-
-        <label for="capo">Capo</label>
-
-        <input
-          id="capo"
-          type="number"
-          min="0"
-          max="12"
-          value="0"
-        >
-
-      </div>
-
-    </div>
-
-    <label>🎼 Cifra + letra</label>
-
-    <div class="editor-area">
-
-      <div class="editor-topo">
-
-        <div class="editor-status">
-          Cursor:
-          <strong id="posicao">coloque o cursor na letra</strong>
-        </div>
-
-        <div class="barra-acordes">
-
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('C')">C</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('D')">D</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('E')">E</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('F')">F</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('G')">G</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('A')">A</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('B')">B</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('C#m')">C#m</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('Em')">Em</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('Am')">Am</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('D7')">D7</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('B4')">B4</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('A9')">A9</button>
-          <button type="button" class="acorde-btn" onclick="inserirAcorde('G/B')">G/B</button>
-
-        </div>
-
-      </div>
-
-      <div
-        id="editor"
-        class="editor"
-        contenteditable="true"
-        spellcheck="false"
-        data-placeholder="Cole ou digite aqui a letra...
-
-Exemplo:
-
-Eu me deparei com Aquele Mestre escrevendo
-Com o dedo no chão
-Ouvindo os fariseus a lhe falar
-Que a lei de Moisés
-Me condenava por meus erros"
-      ></div>
-
-      <div class="editor-ajuda">
-
-        💡 <strong>Dica:</strong>
-        coloque o cursor antes da palavra onde o acorde começa.
-        Depois clique no acorde desejado.
-
-        <br><br>
-
-        Para um acorde diferente, use o campo abaixo.
-
-      </div>
-
-    </div>
-
-    <div
-      style="
-        display:grid;
-        grid-template-columns:1fr auto;
-        gap:10px;
-        margin-top:12px;
-      "
-    >
+      <p>
+        Digite a senha para cadastrar músicas.
+      </p>
 
       <input
-        id="acordePersonalizado"
-        type="text"
-        placeholder="Ex.: C#m7, F#m, Bsus4..."
+        id="senha"
+        type="password"
+        placeholder="Digite a senha"
+        autocomplete="off"
       >
 
       <button
+        id="botaoEntrar"
         type="button"
-        onclick="inserirAcordePersonalizado()"
-        style="width:auto;margin:0;"
+        style="margin-top:15px;"
       >
-        + Acorde
+        🔐 ENTRAR
       </button>
+
+      <div id="loginErro" class="login-erro">
+        ❌ Senha incorreta.
+      </div>
 
     </div>
 
-    <button
-      type="button"
-      class="botao-cinza"
-      onclick="removerUltimoAcorde()"
-      style="margin-top:10px;"
-    >
-      ↩ Remover último acorde
-    </button>
+  </div>
+
+
+  <!-- =====================================================
+       CABEÇALHO
+       ===================================================== -->
+
+  <header>
 
     <button
+      id="botaoSair"
+      class="sair"
       type="button"
-      class="botao-secundario"
-      onclick="mostrarPreview()"
     >
-      👁️ VER PRÉVIA
+      Sair
     </button>
 
-    <div id="preview" class="preview">
+    <h1>🎸 CIFRAS IEQ PATROCÍNIO</h1>
 
-      <h3>🎼 Prévia da cifra</h3>
+    <p>Cadastro de músicas</p>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTEÚDO
+       ===================================================== -->
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>➕ Nova música</h2>
+
+      <div class="observacao">
+
+        <strong>🎵 Como cadastrar:</strong>
+
+        <div class="passo">
+          <span class="numero">1</span>
+          <span>Digite o título e os dados da música.</span>
+        </div>
+
+        <div class="passo">
+          <span class="numero">2</span>
+          <span>Cole ou digite a letra no editor.</span>
+        </div>
+
+        <div class="passo">
+          <span class="numero">3</span>
+          <span>Posicione o cursor e clique em um acorde.</span>
+        </div>
+
+        <div class="passo">
+          <span class="numero">4</span>
+          <span>Confira a prévia.</span>
+        </div>
+
+        <div class="passo">
+          <span class="numero">5</span>
+          <span>Clique em cadastrar música.</span>
+        </div>
+
+      </div>
+
+
+      <!-- DADOS -->
+
+      <label for="titulo">
+        Título da música *
+      </label>
+
+      <input
+        id="titulo"
+        type="text"
+        placeholder="Ex.: Bondade de Deus"
+        autocomplete="off"
+      >
+
+
+      <label for="artista">
+        Artista / Ministério
+      </label>
+
+      <input
+        id="artista"
+        type="text"
+        placeholder="Ex.: Bethel Music"
+        autocomplete="off"
+      >
+
+
+      <div class="linha">
+
+        <div>
+
+          <label for="tom">
+            Tom *
+          </label>
+
+          <select id="tom">
+            <option value="C">C</option>
+            <option value="C#">C#</option>
+            <option value="D">D</option>
+            <option value="D#">D#</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#">F#</option>
+            <option value="G" selected>G</option>
+            <option value="G#">G#</option>
+            <option value="A">A</option>
+            <option value="A#">A#</option>
+            <option value="B">B</option>
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label for="capo">
+            Capo
+          </label>
+
+          <input
+            id="capo"
+            type="number"
+            min="0"
+            max="12"
+            value="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- EDITOR -->
+
+      <label>
+        🎼 Cifra + letra
+      </label>
+
+      <div class="editor-area">
+
+        <div class="editor-topo">
+
+          <div class="editor-status">
+
+            Cursor:
+            <strong id="posicao">
+              coloque o cursor na letra
+            </strong>
+
+          </div>
+
+
+          <div class="barra-acordes">
+
+            <button type="button" class="acorde-btn" data-acorde="C">C</button>
+            <button type="button" class="acorde-btn" data-acorde="D">D</button>
+            <button type="button" class="acorde-btn" data-acorde="E">E</button>
+            <button type="button" class="acorde-btn" data-acorde="F">F</button>
+            <button type="button" class="acorde-btn" data-acorde="G">G</button>
+            <button type="button" class="acorde-btn" data-acorde="A">A</button>
+            <button type="button" class="acorde-btn" data-acorde="B">B</button>
+
+            <button type="button" class="acorde-btn" data-acorde="Cm">Cm</button>
+            <button type="button" class="acorde-btn" data-acorde="Dm">Dm</button>
+            <button type="button" class="acorde-btn" data-acorde="Em">Em</button>
+            <button type="button" class="acorde-btn" data-acorde="Fm">Fm</button>
+            <button type="button" class="acorde-btn" data-acorde="Am">Am</button>
+
+            <button type="button" class="acorde-btn" data-acorde="C#m">C#m</button>
+            <button type="button" class="acorde-btn" data-acorde="D7">D7</button>
+            <button type="button" class="acorde-btn" data-acorde="G7">G7</button>
+            <button type="button" class="acorde-btn" data-acorde="A9">A9</button>
+            <button type="button" class="acorde-btn" data-acorde="B4">B4</button>
+            <button type="button" class="acorde-btn" data-acorde="G/B">G/B</button>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="editor"
+          class="editor"
+          contenteditable="true"
+          spellcheck="false"
+          data-placeholder="Cole ou digite aqui a letra da música..."
+        ></div>
+
+
+        <div class="editor-ajuda">
+
+          💡 <strong>Dica:</strong>
+          coloque o cursor exatamente onde deseja inserir o acorde
+          e depois clique no acorde.
+
+          <br><br>
+
+          Para outro acorde, use o campo abaixo.
+
+        </div>
+
+      </div>
+
+
+      <!-- ACORDE PERSONALIZADO -->
 
       <div
-        id="previewCifra"
-        class="preview-cifra"
+        style="
+          display:grid;
+          grid-template-columns:1fr auto;
+          gap:10px;
+          margin-top:12px;
+        "
+      >
+
+        <input
+          id="acordePersonalizado"
+          type="text"
+          placeholder="Ex.: C#m7, F#m, Bsus4..."
+          autocomplete="off"
+        >
+
+        <button
+          id="botaoAcorde"
+          type="button"
+          style="width:auto;margin:0;"
+        >
+          + Acorde
+        </button>
+
+      </div>
+
+
+      <button
+        id="botaoRemoverAcorde"
+        type="button"
+        class="botao-cinza"
+        style="margin-top:10px;"
+      >
+        ↩ Remover último acorde
+      </button>
+
+
+      <!-- PREVIEW -->
+
+      <button
+        id="botaoPreview"
+        type="button"
+        class="botao-secundario"
+      >
+        👁️ VER PRÉVIA
+      </button>
+
+
+      <div
+        id="preview"
+        class="preview"
+      >
+
+        <h3>🎼 Prévia da cifra</h3>
+
+        <div
+          id="previewCifra"
+          class="preview-cifra"
+        ></div>
+
+      </div>
+
+
+      <!-- CULTO -->
+
+      <label for="culto">
+        Adicionar ao culto
+      </label>
+
+      <select id="culto">
+
+        <option value="">
+          Não adicionar a um culto agora
+        </option>
+
+      </select>
+
+
+      <label for="ordem">
+        Ordem no repertório
+      </label>
+
+      <input
+        id="ordem"
+        type="number"
+        min="1"
+        value="1"
+      >
+
+
+      <!-- CADASTRAR -->
+
+      <button
+        id="botao"
+        type="button"
+        class="botao-principal"
+      >
+        🎵 CADASTRAR MÚSICA
+      </button>
+
+
+      <div
+        id="mensagem"
+        class="mensagem"
       ></div>
 
     </div>
 
-    <label for="culto">Adicionar ao culto</label>
 
-    <select id="culto">
-
-      <option value="">
-        Não adicionar a um culto agora
-      </option>
-
-    </select>
-
-    <label for="ordem">Ordem no repertório</label>
-
-    <input
-      id="ordem"
-      type="number"
-      min="1"
-      value="1"
+    <a
+      class="voltar"
+      href="/"
     >
-
-    <button
-      id="botao"
-      type="button"
-      class="botao-principal"
-      onclick="cadastrarMusica()"
-    >
-      🎵 CADASTRAR MÚSICA
-    </button>
-
-    <div id="mensagem" class="mensagem"></div>
+      ← Voltar para Cifras IEQ Patrocínio
+    </a>
 
   </div>
 
-  <a class="voltar" href="/">
-    ← Voltar para Cifras IEQ Patrocínio
-  </a>
 
-</div>
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
 
-<script>
-/* =====================================================
-   CONFIGURAÇÃO
-   ===================================================== */
+  <script>
 
-const SENHA = "leonardo";
+    /* =====================================================
+       CONFIGURAÇÃO
+       ===================================================== */
 
-const SUPABASE_URL =
-  "https://jbkeshenygonmgogkodd.supabase.co";
+    const SENHA = "leonardo";
 
-const SUPABASE_KEY =
-  "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+    const SUPABASE_URL =
+      "https://jbkeshenygonmgogkodd.supabase.co";
 
-
-/* =====================================================
-   LOGIN
-   ===================================================== */
-
-function entrar() {
-
-  const campoSenha = document.getElementById("senha");
-  const erro = document.getElementById("loginErro");
-
-  const senha = campoSenha.value.trim();
-
-  if (senha === SENHA) {
-
-    sessionStorage.setItem(
-      "cadastro_autorizado",
-      "sim"
-    );
-
-    document.getElementById("bloqueio").style.display = "none";
-
-    erro.style.display = "none";
-
-  } else {
-
-    erro.style.display = "block";
-
-    campoSenha.focus();
-    campoSenha.select();
-
-  }
-
-}
+    const SUPABASE_KEY =
+      "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
 
-function sair() {
+    /* =====================================================
+       ELEMENTOS
+       ===================================================== */
 
-  sessionStorage.removeItem(
-    "cadastro_autorizado"
-  );
+    const bloqueio =
+      document.getElementById("bloqueio");
 
-  document.getElementById("bloqueio").style.display = "flex";
+    const campoSenha =
+      document.getElementById("senha");
 
-  document.getElementById("senha").value = "";
+    const botaoEntrar =
+      document.getElementById("botaoEntrar");
 
-  document.getElementById("senha").focus();
+    const loginErro =
+      document.getElementById("loginErro");
 
-}
+    const editor =
+      document.getElementById("editor");
 
 
-/* Enter no campo da senha */
+    let ultimaSelecao = null;
 
-document.addEventListener("DOMContentLoaded", function() {
 
-  document.getElementById("senha").addEventListener(
-    "keydown",
-    function(event) {
+    /* =====================================================
+       LOGIN
+       ===================================================== */
 
-      if (event.key === "Enter") {
-        event.preventDefault();
-        entrar();
+    function entrar() {
+
+      const senha =
+        campoSenha.value.trim();
+
+      if (senha === SENHA) {
+
+        sessionStorage.setItem(
+          "cadastro_autorizado",
+          "sim"
+        );
+
+        bloqueio.style.display = "none";
+
+        loginErro.style.display = "none";
+
+      } else {
+
+        loginErro.style.display = "block";
+
+        campoSenha.select();
+
+        campoSenha.focus();
+
       }
 
     }
-  );
-
-});
 
 
-/* =====================================================
-   VERIFICAR LOGIN
-   ===================================================== */
+    function sair() {
 
-function verificarLogin() {
+      sessionStorage.removeItem(
+        "cadastro_autorizado"
+      );
 
-  const autorizado =
-    sessionStorage.getItem("cadastro_autorizado");
+      location.reload();
 
-  const bloqueio =
-    document.getElementById("bloqueio");
-
-  if (autorizado === "sim") {
-    bloqueio.style.display = "none";
-  } else {
-    bloqueio.style.display = "flex";
-  }
-
-}
-
-
-/* =====================================================
-   SUPABASE
-   ===================================================== */
-
-async function supabaseRequest(url, options = {}) {
-
-  const resposta = await fetch(
-    SUPABASE_URL + url,
-    {
-      ...options,
-
-      headers: {
-        "apikey": SUPABASE_KEY,
-
-        "Authorization":
-          "Bearer " + SUPABASE_KEY,
-
-        "Content-Type":
-          "application/json",
-
-        ...(options.headers || {})
-      }
-    }
-  );
-
-  const texto = await resposta.text();
-
-  if (!resposta.ok) {
-
-    let erro = texto;
-
-    try {
-      erro = JSON.parse(texto);
-    } catch {}
-
-    throw new Error(
-      typeof erro === "object"
-        ? JSON.stringify(erro)
-        : erro
-    );
-
-  }
-
-  if (!texto) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(texto);
-  } catch {
-    return texto;
-  }
-
-}
-
-
-/* =====================================================
-   EDITOR
-   ===================================================== */
-
-const editor =
-  document.getElementById("editor");
-
-let ultimaSelecao = null;
-
-
-function salvarSelecao() {
-
-  const selecao = window.getSelection();
-
-  if (
-    !selecao ||
-    selecao.rangeCount === 0
-  ) {
-    return;
-  }
-
-  if (
-    !editor.contains(selecao.anchorNode)
-  ) {
-    return;
-  }
-
-  ultimaSelecao =
-    selecao.getRangeAt(0).cloneRange();
-
-  atualizarPosicao();
-
-}
-
-
-function atualizarPosicao() {
-
-  const selecao = window.getSelection();
-
-  if (
-    !selecao ||
-    !selecao.anchorNode ||
-    !editor.contains(selecao.anchorNode)
-  ) {
-    return;
-  }
-
-  const texto = editor.innerText;
-
-  const posicao =
-    calcularPosicaoCursor(
-      editor,
-      selecao.anchorNode,
-      selecao.anchorOffset
-    );
-
-  const linha =
-    texto
-      .substring(0, posicao)
-      .split("\n")
-      .length;
-
-  document.getElementById("posicao").textContent =
-    "linha " +
-    linha +
-    " • posição " +
-    posicao;
-
-}
-
-
-function calcularPosicaoCursor(
-  raiz,
-  no,
-  offset
-) {
-
-  let total = 0;
-  let encontrado = false;
-
-  function percorrer(elemento) {
-
-    if (encontrado) {
-      return;
     }
 
-    if (elemento === no) {
 
-      if (elemento.nodeType === Node.TEXT_NODE) {
-        total += offset;
+    function verificarLogin() {
+
+      const autorizado =
+        sessionStorage.getItem(
+          "cadastro_autorizado"
+        );
+
+      if (autorizado === "sim") {
+
+        bloqueio.style.display = "none";
+
+      } else {
+
+        bloqueio.style.display = "flex";
+
       }
 
-      encontrado = true;
-      return;
+    }
+
+
+    botaoEntrar.addEventListener(
+      "click",
+      entrar
+    );
+
+
+    campoSenha.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+          entrar();
+        }
+
+      }
+    );
+
+
+    document
+      .getElementById("botaoSair")
+      .addEventListener(
+        "click",
+        sair
+      );
+
+
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
+
+    async function supabaseRequest(
+      url,
+      options = {}
+    ) {
+
+      const resposta =
+        await fetch(
+          SUPABASE_URL + url,
+          {
+            ...options,
+
+            headers: {
+
+              "apikey":
+                SUPABASE_KEY,
+
+              "Authorization":
+                "Bearer " + SUPABASE_KEY,
+
+              "Content-Type":
+                "application/json",
+
+              ...(options.headers || {})
+
+            }
+
+          }
+        );
+
+
+      const texto =
+        await resposta.text();
+
+
+      if (!resposta.ok) {
+
+        let erro = texto;
+
+        try {
+          erro = JSON.parse(texto);
+        } catch (_) {}
+
+        throw new Error(
+          typeof erro === "object"
+            ? JSON.stringify(erro)
+            : erro
+        );
+
+      }
+
+
+      if (!texto) {
+        return null;
+      }
+
+
+      try {
+
+        return JSON.parse(texto);
+
+      } catch (_) {
+
+        return texto;
+
+      }
 
     }
 
-    if (elemento.nodeType === Node.TEXT_NODE) {
 
-      total += elemento.textContent.length;
-      return;
+    /* =====================================================
+       CURSOR DO EDITOR
+       ===================================================== */
 
-    }
+    function salvarSelecao() {
 
-    for (const filho of elemento.childNodes) {
+      const selecao =
+        window.getSelection();
 
-      percorrer(filho);
 
-      if (encontrado) {
+      if (
+        !selecao ||
+        selecao.rangeCount === 0
+      ) {
         return;
       }
 
-    }
 
-  }
-
-  percorrer(raiz);
-
-  return total;
-
-}
-
-
-/* =====================================================
-   EVENTOS DO EDITOR
-   ===================================================== */
-
-editor.addEventListener("keyup", salvarSelecao);
-editor.addEventListener("mouseup", salvarSelecao);
-editor.addEventListener("input", salvarSelecao);
-editor.addEventListener("click", salvarSelecao);
-editor.addEventListener("focus", salvarSelecao);
+      if (
+        !selecao.anchorNode ||
+        !editor.contains(
+          selecao.anchorNode
+        )
+      ) {
+        return;
+      }
 
 
-/* =====================================================
-   INSERIR ACORDE
-   ===================================================== */
+      ultimaSelecao =
+        selecao
+          .getRangeAt(0)
+          .cloneRange();
 
-function inserirAcorde(acorde) {
 
-  editor.focus();
-
-  const selecao = window.getSelection();
-
-  /*
-   * Se não houver seleção salva, tenta usar
-   * a posição atual do cursor.
-   */
-
-  let range = ultimaSelecao;
-
-  if (!range) {
-
-    if (
-      selecao &&
-      selecao.rangeCount > 0 &&
-      editor.contains(selecao.anchorNode)
-    ) {
-
-      range =
-        selecao.getRangeAt(0).cloneRange();
-
-    } else {
-
-      range =
-        document.createRange();
-
-      range.selectNodeContents(editor);
-      range.collapse(false);
+      atualizarPosicao();
 
     }
 
-  }
 
-  selecao.removeAllRanges();
-  selecao.addRange(range);
+    function atualizarPosicao() {
 
-  const span =
-    document.createElement("span");
+      const selecao =
+        window.getSelection();
 
-  span.className = "acorde-editor";
 
-  span.dataset.acorde = acorde;
+      if (
+        !selecao ||
+        !selecao.anchorNode ||
+        !editor.contains(
+          selecao.anchorNode
+        )
+      ) {
+        return;
+      }
 
-  span.textContent = "[" + acorde + "]";
 
-  range.deleteContents();
-
-  range.insertNode(span);
-
-  const novoRange =
-    document.createRange();
-
-  novoRange.setStartAfter(span);
-  novoRange.collapse(true);
-
-  selecao.removeAllRanges();
-  selecao.addRange(novoRange);
-
-  ultimaSelecao =
-    novoRange.cloneRange();
-
-  atualizarPosicao();
-
-}
-
-
-/* =====================================================
-   ACORDE PERSONALIZADO
-   ===================================================== */
-
-function inserirAcordePersonalizado() {
-
-  const campo =
-    document.getElementById("acordePersonalizado");
-
-  const acorde =
-    campo.value.trim();
-
-  if (!acorde) {
-
-    alert("Digite um acorde.");
-
-    campo.focus();
-
-    return;
-
-  }
-
-  if (!validarAcorde(acorde)) {
-
-    alert(
-      "Esse acorde não parece válido.\n\n" +
-      "Exemplos: C, C#m, B4, A9, G/B, Dsus4"
-    );
-
-    campo.focus();
-
-    return;
-
-  }
-
-  inserirAcorde(acorde);
-
-  campo.value = "";
-
-}
-
-
-/* =====================================================
-   VALIDAR ACORDE
-   ===================================================== */
-
-function validarAcorde(acorde) {
-
-  const valor =
-    acorde
-      .replace(/\s/g, "")
-      .trim();
-
-  /*
-   * Aceita:
-   * C
-   * C#
-   * Cm
-   * C#m7
-   * Dsus4
-   * A9
-   * G/B
-   * F#m7
-   * Bb
-   * etc.
-   */
-
-  return /^[A-G](?:#|b)?(?:maj7|maj|m7|m|dim|aug|sus2|sus4|sus|add9|add11|add13|7|9|11|13|4|5|6)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?$/.test(valor);
-
-}
-
-
-/* =====================================================
-   REMOVER ÚLTIMO ACORDE
-   ===================================================== */
-
-function removerUltimoAcorde() {
-
-  const acordes =
-    editor.querySelectorAll(".acorde-editor");
-
-  if (acordes.length === 0) {
-
-    alert("Não há acordes para remover.");
-
-    return;
-
-  }
-
-  const ultimo =
-    acordes[acordes.length - 1];
-
-  ultimo.remove();
-
-  editor.focus();
-
-  salvarSelecao();
-
-}
-
-
-/* =====================================================
-   CONVERTER EDITOR PARA FORMATO DO BANCO
-   ===================================================== */
-
-function obterCifra() {
-
-  const clone =
-    editor.cloneNode(true);
-
-  const acordes =
-    clone.querySelectorAll(".acorde-editor");
-
-  acordes.forEach(function(span) {
-
-    const texto =
-      document.createTextNode(
-        span.textContent
-      );
-
-    span.replaceWith(texto);
-
-  });
-
-  return clone.innerText
-    .replace(/\u00a0/g, " ")
-    .replace(/\r/g, "")
-    .trim();
-
-}
-
-
-/* =====================================================
-   PRÉVIA
-   ===================================================== */
-
-function mostrarPreview() {
-
-  const cifra =
-    obterCifra();
-
-  if (!cifra) {
-
-    alert(
-      "Digite ou cole a letra primeiro."
-    );
-
-    return;
-
-  }
-
-  const preview =
-    document.getElementById("preview");
-
-  const elemento =
-    document.getElementById("previewCifra");
-
-  const textoSeguro =
-    escapar(cifra);
-
-  elemento.innerHTML =
-    textoSeguro
-      .replace(
-        /\[([A-G](?:#|b)?(?:maj7|maj|m7|m|dim|aug|sus2|sus4|sus|add9|add11|add13|7|9|11|13|4|5|6)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?)\]/g,
-        '<span class="preview-acorde">[$1]</span>'
-      )
-      .replace(
-        /\n/g,
-        "<br>"
-      );
-
-  preview.style.display = "block";
-
-}
-
-
-/* =====================================================
-   CARREGAR CULTOS
-   ===================================================== */
-
-async function carregarCultos() {
-
-  try {
-
-    const cultos =
-      await supabaseRequest(
-        "/rest/v1/cultos" +
-        "?select=*" +
-        "&order=data_culto.desc"
-      );
-
-    const select =
-      document.getElementById("culto");
-
-    if (!Array.isArray(cultos)) {
-      return;
-    }
-
-    cultos.forEach(function(culto) {
-
-      const option =
-        document.createElement("option");
-
-      option.value = culto.id;
-
-      option.textContent =
-        (
-          culto.nome ||
-          "Culto"
-        ) +
-        " — " +
-        formatarData(
-          culto.data_culto
+      const posicao =
+        calcularPosicaoCursor(
+          editor,
+          selecao.anchorNode,
+          selecao.anchorOffset
         );
 
-      select.appendChild(option);
 
-    });
-
-  } catch (erro) {
-
-    console.error(
-      "Erro ao carregar cultos:",
-      erro
-    );
-
-  }
-
-}
+      const linha =
+        editor.innerText
+          .substring(0, posicao)
+          .split("\n")
+          .length;
 
 
-/* =====================================================
-   CADASTRAR MÚSICA
-   ===================================================== */
-
-async function cadastrarMusica() {
-
-  const titulo =
-    document
-      .getElementById("titulo")
-      .value
-      .trim();
-
-  const artista =
-    document
-      .getElementById("artista")
-      .value
-      .trim();
-
-  const tom =
-    document
-      .getElementById("tom")
-      .value;
-
-  const capo =
-    Number(
       document
-        .getElementById("capo")
-        .value || 0
-    );
-
-  const cifra =
-    obterCifra();
-
-  const cultoId =
-    document
-      .getElementById("culto")
-      .value;
-
-  const ordem =
-    Number(
-      document
-        .getElementById("ordem")
-        .value || 1
-    );
-
-  const botao =
-    document.getElementById("botao");
-
-
-  if (!titulo) {
-
-    mostrarMensagem(
-      "Preencha o título da música.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  if (!cifra) {
-
-    mostrarMensagem(
-      "Digite ou cole a letra da música.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    botao.disabled = true;
-
-    botao.textContent = "Salvando...";
-
-
-    /*
-     * Verifica se já existe.
-     */
-
-    const tituloFiltro =
-      encodeURIComponent(titulo);
-
-    const existentes =
-      await supabaseRequest(
-        "/rest/v1/musicas" +
-        "?select=id,titulo,artista" +
-        "&titulo=eq." +
-        tituloFiltro
-      );
-
-
-    if (
-      Array.isArray(existentes) &&
-      existentes.length > 0
-    ) {
-
-      throw new Error(
-        "Essa música já está cadastrada."
-      );
+        .getElementById("posicao")
+        .textContent =
+          "linha " +
+          linha +
+          " • posição " +
+          posicao;
 
     }
 
 
-    /*
-     * Salva música.
-     */
+    function calcularPosicaoCursor(
+      raiz,
+      no,
+      offset
+    ) {
 
-    const resultado =
-      await supabaseRequest(
-        "/rest/v1/musicas",
-        {
-          method: "POST",
+      let total = 0;
+      let encontrado = false;
 
-          headers: {
-            "Prefer":
-              "return=representation"
-          },
 
-          body:
-            JSON.stringify({
-              titulo: titulo,
-              artista: artista,
-              tom: tom,
-              capo: capo,
-              cifra: cifra
-            })
+      function percorrer(elemento) {
+
+        if (encontrado) {
+          return;
+        }
+
+
+        if (elemento === no) {
+
+          total += offset;
+
+          encontrado = true;
+
+          return;
+
+        }
+
+
+        if (
+          elemento.nodeType ===
+          Node.TEXT_NODE
+        ) {
+
+          total +=
+            elemento.textContent.length;
+
+          return;
+
+        }
+
+
+        for (
+          const filho of elemento.childNodes
+        ) {
+
+          percorrer(filho);
+
+          if (encontrado) {
+            return;
+          }
+
+        }
+
+      }
+
+
+      percorrer(raiz);
+
+      return total;
+
+    }
+
+
+    editor.addEventListener(
+      "keyup",
+      salvarSelecao
+    );
+
+    editor.addEventListener(
+      "mouseup",
+      salvarSelecao
+    );
+
+    editor.addEventListener(
+      "input",
+      salvarSelecao
+    );
+
+    editor.addEventListener(
+      "click",
+      salvarSelecao
+    );
+
+
+    /* =====================================================
+       INSERIR ACORDE
+       ===================================================== */
+
+    function inserirAcorde(acorde) {
+
+      if (!ultimaSelecao) {
+
+        alert(
+          "Primeiro clique no lugar da letra onde deseja colocar o acorde."
+        );
+
+        editor.focus();
+
+        return;
+
+      }
+
+
+      editor.focus();
+
+
+      const selecao =
+        window.getSelection();
+
+
+      selecao.removeAllRanges();
+
+      selecao.addRange(
+        ultimaSelecao
+      );
+
+
+      const range =
+        ultimaSelecao;
+
+
+      const span =
+        document.createElement(
+          "span"
+        );
+
+
+      span.className =
+        "acorde-editor";
+
+
+      span.dataset.acorde =
+        acorde;
+
+
+      span.textContent =
+        "[" + acorde + "]";
+
+
+      range.deleteContents();
+
+
+      range.insertNode(
+        span
+      );
+
+
+      const novoRange =
+        document.createRange();
+
+
+      novoRange.setStartAfter(
+        span
+      );
+
+
+      novoRange.collapse(
+        true
+      );
+
+
+      selecao.removeAllRanges();
+
+
+      selecao.addRange(
+        novoRange
+      );
+
+
+      ultimaSelecao =
+        novoRange.cloneRange();
+
+
+      atualizarPosicao();
+
+    }
+
+
+    /* =====================================================
+       BOTÕES DE ACORDES
+       ===================================================== */
+
+    document
+      .querySelectorAll(".acorde-btn")
+      .forEach(
+        function(botao) {
+
+          botao.addEventListener(
+            "click",
+            function() {
+
+              inserirAcorde(
+                botao.dataset.acorde
+              );
+
+            }
+          );
+
         }
       );
 
 
-    let musica;
+    /* =====================================================
+       ACORDE PERSONALIZADO
+       ===================================================== */
 
-    if (Array.isArray(resultado)) {
-      musica = resultado[0];
-    } else {
-      musica = resultado;
+    function inserirAcordePersonalizado() {
+
+      const campo =
+        document.getElementById(
+          "acordePersonalizado"
+        );
+
+
+      const acorde =
+        campo.value
+          .trim()
+          .replace(/\s/g, "");
+
+
+      if (!acorde) {
+
+        alert(
+          "Digite um acorde."
+        );
+
+        campo.focus();
+
+        return;
+
+      }
+
+
+      if (
+        !validarAcorde(acorde)
+      ) {
+
+        alert(
+          "Acorde inválido.\n\n" +
+          "Exemplos:\n" +
+          "C\n" +
+          "C#m\n" +
+          "F#m7\n" +
+          "Dsus4\n" +
+          "A9\n" +
+          "G/B"
+        );
+
+        campo.focus();
+
+        return;
+
+      }
+
+
+      inserirAcorde(acorde);
+
+      campo.value = "";
+
     }
 
 
-    if (
-      !musica ||
-      !musica.id
-    ) {
-
-      throw new Error(
-        "A música foi salva, mas o banco não retornou o ID."
+    document
+      .getElementById("botaoAcorde")
+      .addEventListener(
+        "click",
+        inserirAcordePersonalizado
       );
 
-    }
 
+    document
+      .getElementById("acordePersonalizado")
+      .addEventListener(
+        "keydown",
+        function(event) {
 
-    /*
-     * Adiciona ao culto.
-     */
+          if (
+            event.key === "Enter"
+          ) {
 
-    if (cultoId) {
+            event.preventDefault();
 
-      await supabaseRequest(
-        "/rest/v1/culto_musicas",
-        {
-          method: "POST",
+            inserirAcordePersonalizado();
 
-          headers: {
-            "Prefer":
-              "return=minimal"
-          },
+          }
 
-          body:
-            JSON.stringify({
-              culto_id:
-                Number(cultoId),
-
-              musica_id:
-                Number(musica.id),
-
-              ordem:
-                ordem
-            })
         }
       );
 
+
+    /* =====================================================
+       VALIDAR ACORDE
+       ===================================================== */
+
+    function validarAcorde(
+      acorde
+    ) {
+
+      const regex =
+        /^[A-G](?:#|b)?(?:m|maj|maj7|7|9|11|13|4|5|6|sus|sus2|sus4|dim|aug)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?$/;
+
+      return regex.test(
+        acorde
+      );
+
     }
 
 
-    mostrarMensagem(
-      "✅ Música cadastrada com sucesso!",
-      false
-    );
+    /* =====================================================
+       REMOVER ÚLTIMO ACORDE
+       ===================================================== */
+
+    function removerUltimoAcorde() {
+
+      const acordes =
+        editor.querySelectorAll(
+          ".acorde-editor"
+        );
 
 
-    /*
-     * Limpar formulário.
-     */
+      if (
+        acordes.length === 0
+      ) {
 
-    document.getElementById("titulo").value = "";
+        alert(
+          "Não há acordes para remover."
+        );
 
-    document.getElementById("artista").value = "";
+        return;
 
-    document.getElementById("capo").value = "0";
-
-    document.getElementById("editor").innerHTML = "";
-
-    document.getElementById("ordem").value = "1";
-
-    document.getElementById("preview").style.display = "none";
-
-    ultimaSelecao = null;
+      }
 
 
-  } catch (erro) {
+      acordes[
+        acordes.length - 1
+      ].remove();
 
-    console.error(
-      "ERRO AO CADASTRAR:",
+
+      editor.focus();
+
+      salvarSelecao();
+
+    }
+
+
+    document
+      .getElementById(
+        "botaoRemoverAcorde"
+      )
+      .addEventListener(
+        "click",
+        removerUltimoAcorde
+      );
+
+
+    /* =====================================================
+       OBTER CIFRA
+       ===================================================== */
+
+    function obterCifra() {
+
+      const clone =
+        editor.cloneNode(true);
+
+
+      clone
+        .querySelectorAll(
+          ".acorde-editor"
+        )
+        .forEach(
+          function(span) {
+
+            span.replaceWith(
+              document.createTextNode(
+                span.textContent
+              )
+            );
+
+          }
+        );
+
+
+      return clone.innerText
+        .replace(/\u00a0/g, " ")
+        .replace(/\r/g, "")
+        .trim();
+
+    }
+
+
+    /* =====================================================
+       ESCAPAR HTML
+       ===================================================== */
+
+    function escapar(
+      texto
+    ) {
+
+      return String(
+        texto ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       PRÉVIA
+       ===================================================== */
+
+    function mostrarPreview() {
+
+      const cifra =
+        obterCifra();
+
+
+      if (!cifra) {
+
+        alert(
+          "Digite ou cole a letra primeiro."
+        );
+
+        return;
+
+      }
+
+
+      const preview =
+        document.getElementById(
+          "preview"
+        );
+
+
+      const elemento =
+        document.getElementById(
+          "previewCifra"
+        );
+
+
+      elemento.innerHTML =
+        escapar(cifra)
+          .replace(
+            /\[([A-G](?:#|b)?(?:m|maj|maj7|7|9|11|13|4|5|6|sus|sus2|sus4|dim|aug)?(?:[0-9]+)?(?:\/[A-G](?:#|b)?)?)\]/g,
+            '<span class="preview-acorde">[$1]</span>'
+          )
+          .replace(
+            /\n/g,
+            "<br>"
+          );
+
+
+      preview.style.display =
+        "block";
+
+    }
+
+
+    document
+      .getElementById(
+        "botaoPreview"
+      )
+      .addEventListener(
+        "click",
+        mostrarPreview
+      );
+
+
+    /* =====================================================
+       CARREGAR CULTOS
+       ===================================================== */
+
+    async function carregarCultos() {
+
+      try {
+
+        const cultos =
+          await supabaseRequest(
+            "/rest/v1/cultos" +
+            "?select=*" +
+            "&order=data_culto.desc"
+          );
+
+
+        const select =
+          document.getElementById(
+            "culto"
+          );
+
+
+        if (
+          !Array.isArray(cultos)
+        ) {
+          return;
+        }
+
+
+        cultos.forEach(
+          function(culto) {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              culto.id;
+
+
+            option.textContent =
+              (
+                culto.nome ||
+                "Culto"
+              ) +
+              " — " +
+              formatarData(
+                culto.data_culto
+              );
+
+
+            select.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+      } catch (erro) {
+
+        console.error(
+          "Erro ao carregar cultos:",
+          erro
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       CADASTRAR MÚSICA
+       ===================================================== */
+
+    let salvando = false;
+
+
+    async function cadastrarMusica() {
+
+      if (salvando) {
+        return;
+      }
+
+
+      const titulo =
+        document
+          .getElementById("titulo")
+          .value
+          .trim();
+
+
+      const artista =
+        document
+          .getElementById("artista")
+          .value
+          .trim();
+
+
+      const tom =
+        document
+          .getElementById("tom")
+          .value;
+
+
+      const capo =
+        Number(
+          document
+            .getElementById("capo")
+            .value || 0
+        );
+
+
+      const cifra =
+        obterCifra();
+
+
+      const cultoId =
+        document
+          .getElementById("culto")
+          .value;
+
+
+      const ordem =
+        Number(
+          document
+            .getElementById("ordem")
+            .value || 1
+        );
+
+
+      const botao =
+        document.getElementById(
+          "botao"
+        );
+
+
+      if (!titulo) {
+
+        mostrarMensagem(
+          "Preencha o título da música.",
+          true
+        );
+
+        document
+          .getElementById("titulo")
+          .focus();
+
+        return;
+
+      }
+
+
+      if (!cifra) {
+
+        mostrarMensagem(
+          "Digite ou cole a letra da música.",
+          true
+        );
+
+        editor.focus();
+
+        return;
+
+      }
+
+
+      if (
+        capo < 0 ||
+        capo > 12
+      ) {
+
+        mostrarMensagem(
+          "O capo deve estar entre 0 e 12.",
+          true
+        );
+
+        return;
+
+      }
+
+
+      salvando = true;
+
+      botao.disabled = true;
+
+      botao.textContent =
+        "⏳ Salvando...";
+
+
+      try {
+
+        /*
+          Verifica se já existe.
+        */
+
+        const filtro =
+          encodeURIComponent(
+            titulo
+          );
+
+
+        const existentes =
+          await supabaseRequest(
+            "/rest/v1/musicas" +
+            "?select=id,titulo,artista" +
+            "&titulo=eq." +
+            filtro
+          );
+
+
+        if (
+          Array.isArray(existentes) &&
+          existentes.length > 0
+        ) {
+
+          throw new Error(
+            "Essa música já está cadastrada."
+          );
+
+        }
+
+
+        /*
+          Cadastra a música.
+        */
+
+        const resultado =
+          await supabaseRequest(
+            "/rest/v1/musicas",
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Prefer":
+                  "return=representation"
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  titulo:
+                    titulo,
+
+                  artista:
+                    artista,
+
+                  tom:
+                    tom,
+
+                  capo:
+                    capo,
+
+                  cifra:
+                    cifra
+
+                })
+
+            }
+          );
+
+
+        let musica;
+
+
+        if (
+          Array.isArray(
+            resultado
+          )
+        ) {
+
+          musica =
+            resultado[0];
+
+        } else {
+
+          musica =
+            resultado;
+
+        }
+
+
+        if (
+          !musica ||
+          !musica.id
+        ) {
+
+          throw new Error(
+            "O banco não retornou o ID da música."
+          );
+
+        }
+
+
+        /*
+          Adiciona ao culto.
+        */
+
+        if (cultoId) {
+
+          await supabaseRequest(
+            "/rest/v1/culto_musicas",
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Prefer":
+                  "return=minimal"
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  culto_id:
+                    Number(cultoId),
+
+                  musica_id:
+                    Number(musica.id),
+
+                  ordem:
+                    ordem
+
+                })
+
+            }
+          );
+
+        }
+
+
+        mostrarMensagem(
+          "✅ Música cadastrada com sucesso!",
+          false
+        );
+
+
+        /*
+          Limpa formulário.
+        */
+
+        document
+          .getElementById("titulo")
+          .value = "";
+
+
+        document
+          .getElementById("artista")
+          .value = "";
+
+
+        document
+          .getElementById("tom")
+          .value = "G";
+
+
+        document
+          .getElementById("capo")
+          .value = "0";
+
+
+        document
+          .getElementById("ordem")
+          .value = "1";
+
+
+        document
+          .getElementById("culto")
+          .value = "";
+
+
+        editor.innerHTML =
+          "";
+
+
+        document
+          .getElementById("preview")
+          .style.display = "none";
+
+
+        document
+          .getElementById("acordePersonalizado")
+          .value = "";
+
+
+        ultimaSelecao = null;
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+
+      } catch (erro) {
+
+        console.error(
+          "ERRO AO CADASTRAR:",
+          erro
+        );
+
+
+        mostrarMensagem(
+          "❌ Erro ao cadastrar:\n\n" +
+          (erro.message ||
+            "Erro desconhecido."),
+          true
+        );
+
+
+      } finally {
+
+        salvando = false;
+
+        botao.disabled = false;
+
+        botao.textContent =
+          "🎵 CADASTRAR MÚSICA";
+
+      }
+
+    }
+
+
+    document
+      .getElementById("botao")
+      .addEventListener(
+        "click",
+        cadastrarMusica
+      );
+
+
+    /* =====================================================
+       MENSAGEM
+       ===================================================== */
+
+    function mostrarMensagem(
+      texto,
       erro
-    );
+    ) {
 
-    mostrarMensagem(
-      "❌ Erro ao cadastrar:\n\n" +
-      (erro.message || erro),
-      true
-    );
-
-  } finally {
-
-    botao.disabled = false;
-
-    botao.textContent =
-      "🎵 CADASTRAR MÚSICA";
-
-  }
-
-}
+      const elemento =
+        document.getElementById(
+          "mensagem"
+        );
 
 
-/* =====================================================
-   MENSAGEM
-   ===================================================== */
-
-function mostrarMensagem(
-  texto,
-  erro
-) {
-
-  const elemento =
-    document.getElementById("mensagem");
-
-  elemento.textContent = texto;
-
-  elemento.className =
-    "mensagem " +
-    (
-      erro
-        ? "erro"
-        : "sucesso"
-    );
-
-}
+      elemento.textContent =
+        texto;
 
 
-/* =====================================================
-   FORMATAR DATA
-   ===================================================== */
+      elemento.className =
+        "mensagem " +
+        (
+          erro
+            ? "erro"
+            : "sucesso"
+        );
 
-function formatarData(data) {
-
-  if (!data) {
-    return "";
-  }
-
-  const partes =
-    String(data)
-      .substring(0, 10)
-      .split("-");
-
-  if (partes.length !== 3) {
-    return data;
-  }
-
-  return (
-    partes[2] +
-    "/" +
-    partes[1] +
-    "/" +
-    partes[0]
-  );
-
-}
+    }
 
 
-/* =====================================================
-   ESCAPAR HTML
-   ===================================================== */
+    /* =====================================================
+       DATA
+       ===================================================== */
 
-function escapar(texto) {
+    function formatarData(
+      data
+    ) {
 
-  return String(texto ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
+      if (!data) {
+        return "";
+      }
 
 
-/* =====================================================
-   INICIAR
-   ===================================================== */
+      const partes =
+        String(data)
+          .substring(0, 10)
+          .split("-");
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
+
+      if (
+        partes.length !== 3
+      ) {
+
+        return data;
+
+      }
+
+
+      return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+      );
+
+    }
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+       ===================================================== */
 
     verificarLogin();
 
     carregarCultos();
 
-  }
-);
-
-</script>
+  </script>
 
 </body>
 </html>
