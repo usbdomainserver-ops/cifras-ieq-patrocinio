@@ -1807,7 +1807,16 @@
       }
 
       #cifra {
-        padding: 17px;
+        /*
+          No celular a cifra ficava muito colada à borda esquerda.
+          Aumentamos somente o recuo horizontal, preservando
+          exatamente os espaços internos dos acordes.
+        */
+        padding:
+          17px
+          17px
+          17px
+          34px;
 
         font-size: 15px;
 
