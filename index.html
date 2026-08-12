@@ -62,6 +62,12 @@
 
     html {
       scroll-behavior: smooth;
+      touch-action: pan-y;
+    }
+
+    body,
+    #cifra {
+      touch-action: pan-y;
     }
 
     body {
@@ -833,6 +839,115 @@
     .mini-editar {
       background: var(--roxo-claro);
       color: var(--roxo);
+    }
+
+    .mini-culto {
+      background: rgba(16,185,129,.11);
+      color: #059669;
+      border: 1px solid rgba(16,185,129,.18);
+    }
+
+    .mini-culto:hover {
+      background: rgba(16,185,129,.18);
+      transform: translateY(-1px);
+    }
+
+    .culto-escolha-lista {
+      display: grid;
+      gap: 9px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 2px;
+    }
+
+    .culto-escolha-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--borda);
+      border-radius: 14px;
+      background: var(--card-2);
+      color: var(--texto);
+      text-align: left;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .culto-escolha-item:hover {
+      border-color: rgba(124,58,237,.35);
+      background: var(--roxo-claro);
+      transform: translateY(-1px);
+    }
+
+    .culto-escolha-info {
+      min-width: 0;
+    }
+
+    .culto-escolha-info strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .culto-escolha-info small {
+      display: block;
+      margin-top: 4px;
+      color: var(--texto-3);
+      font-size: 12px;
+    }
+
+    .culto-escolha-seta {
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--roxo-claro);
+      color: var(--roxo);
+      font-weight: 900;
+    }
+
+    .culto-escolha-vazio {
+      padding: 22px 10px;
+      text-align: center;
+      color: var(--texto-2);
+      font-size: 13px;
+    }
+
+    .musica-selecionada {
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(124,58,237,.16);
+      border-radius: 13px;
+      background: var(--roxo-claro);
+    }
+
+    .musica-selecionada strong {
+      display: block;
+      color: var(--texto);
+      font-size: 14px;
+    }
+
+    .musica-selecionada small {
+      display: block;
+      margin-top: 4px;
+      color: var(--texto-2);
+    }
+
+    @media (max-width: 600px) {
+      .culto-escolha-lista {
+        max-height: 58vh;
+      }
+
+      .culto-escolha-item {
+        padding: 13px;
+      }
     }
 
     .mini-excluir {
@@ -2393,6 +2508,64 @@ Todos os dias"
 
 
   <!-- =====================================================
+       MODAL: ESCOLHER CULTO PARA A MÚSICA
+       ===================================================== -->
+
+  <div
+    id="modalAdicionarMusicaCulto"
+    class="modal"
+    onclick="fecharModalFora(event, 'modalAdicionarMusicaCulto')"
+  >
+    <div class="modal-card">
+
+      <div class="modal-topo">
+        <div>
+          <h2>➕ Adicionar ao culto</h2>
+          <div
+            style="
+              margin-top:4px;
+              color:var(--texto-2);
+              font-size:12px;
+            "
+          >
+            Escolha em qual culto esta música deve entrar.
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="fechar"
+          onclick="fecharModal('modalAdicionarMusicaCulto')"
+        >
+          ×
+        </button>
+      </div>
+
+      <div
+        id="musicaSelecionadaCulto"
+        class="musica-selecionada"
+      ></div>
+
+      <div
+        id="listaCultosAdicionarMusica"
+        class="culto-escolha-lista"
+      ></div>
+
+      <div class="form-acoes">
+        <button
+          type="button"
+          class="btn-secundario"
+          onclick="fecharModal('modalAdicionarMusicaCulto')"
+        >
+          Cancelar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =====================================================
        MODAL MEDLEY
        ===================================================== -->
 
@@ -3342,7 +3515,8 @@ Todos os dias"
             botaoCulto.onclick =
               event => {
                 event.stopPropagation();
-                adicionarMusicaAoCultoAtual(
+
+                abrirSeletorCultoParaMusica(
                   musica
                 );
               };
@@ -3692,6 +3866,264 @@ Todos os dias"
 
       }
 
+    }
+
+
+    /* =====================================================
+       ADICIONAR MÚSICA DO BANCO A QUALQUER CULTO
+       ===================================================== */
+
+    let musicaParaAdicionarAoCulto = null;
+
+
+    function abrirSeletorCultoParaMusica(
+      musica
+    ) {
+      musicaParaAdicionarAoCulto =
+        musica;
+
+      const titulo =
+        document.getElementById(
+          "musicaSelecionadaCulto"
+        );
+
+      const lista =
+        document.getElementById(
+          "listaCultosAdicionarMusica"
+        );
+
+      if (
+        !titulo ||
+        !lista
+      ) {
+        return;
+      }
+
+      titulo.innerHTML = `
+        <strong>
+          🎵 ${escapar(
+            musica.titulo ||
+            "Música sem título"
+          )}
+        </strong>
+
+        <small>
+          ${
+            musica.artista
+              ? escapar(
+                  musica.artista
+                )
+              : "Artista não informado"
+          }
+        </small>
+      `;
+
+      if (
+        !Array.isArray(
+          todosCultos
+        ) ||
+        !todosCultos.length
+      ) {
+        lista.innerHTML = `
+          <div class="culto-escolha-vazio">
+            🎤 Nenhum culto cadastrado.
+            <br><br>
+            Crie um culto primeiro para poder
+            adicionar músicas a ele.
+          </div>
+        `;
+
+        abrirModal(
+          "modalAdicionarMusicaCulto"
+        );
+
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      todosCultos.forEach(
+        culto => {
+          const botao =
+            document.createElement(
+              "button"
+            );
+
+          botao.type =
+            "button";
+
+          botao.className =
+            "culto-escolha-item";
+
+          botao.innerHTML = `
+            <span class="culto-escolha-info">
+              <strong>
+                ${escapar(
+                  culto.nome ||
+                  "Culto sem nome"
+                )}
+              </strong>
+
+              <small>
+                📅 ${escapar(
+                  formatarData(
+                    culto.data_culto
+                  )
+                )}
+              </small>
+            </span>
+
+            <span
+              class="culto-escolha-seta"
+              aria-hidden="true"
+            >
+              ›
+            </span>
+          `;
+
+          botao.onclick =
+            () =>
+              adicionarMusicaAoCulto(
+                culto
+              );
+
+          lista.appendChild(
+            botao
+          );
+        }
+      );
+
+      abrirModal(
+        "modalAdicionarMusicaCulto"
+      );
+    }
+
+
+    async function adicionarMusicaAoCulto(
+      culto
+    ) {
+      const musica =
+        musicaParaAdicionarAoCulto;
+
+      if (
+        !musica ||
+        !culto?.id
+      ) {
+        return;
+      }
+
+      try {
+        const existentes =
+          await buscar(
+            "/rest/v1/culto_musicas" +
+            "?select=*" +
+            "&culto_id=eq." +
+            encodeURIComponent(
+              culto.id
+            ) +
+            "&musica_id=eq." +
+            encodeURIComponent(
+              musica.id
+            )
+          );
+
+        if (
+          Array.isArray(
+            existentes
+          ) &&
+          existentes.length
+        ) {
+          alert(
+            "ℹ️ Esta música já está neste culto."
+          );
+
+          fecharModal(
+            "modalAdicionarMusicaCulto"
+          );
+
+          return;
+        }
+
+        const ultimo =
+          await buscar(
+            "/rest/v1/culto_musicas" +
+            "?select=ordem" +
+            "&culto_id=eq." +
+            encodeURIComponent(
+              culto.id
+            ) +
+            "&order=ordem.desc" +
+            "&limit=1"
+          );
+
+        const maiorOrdem =
+          Array.isArray(
+            ultimo
+          ) &&
+          ultimo.length &&
+          Number.isFinite(
+            Number(
+              ultimo[0].ordem
+            )
+          )
+            ? Number(
+                ultimo[0].ordem
+              )
+            : 0;
+
+        await inserir(
+          "/rest/v1/culto_musicas",
+          {
+            culto_id:
+              culto.id,
+
+            musica_id:
+              musica.id,
+
+            ordem:
+              maiorOrdem + 1
+          }
+        );
+
+        fecharModal(
+          "modalAdicionarMusicaCulto"
+        );
+
+        if (
+          cultoAtual &&
+          String(
+            cultoAtual.id
+          ) ===
+            String(
+              culto.id
+            )
+        ) {
+          await carregarRepertorio(
+            cultoAtual.id
+          );
+        }
+
+        alert(
+          "✅ Música adicionada ao culto:\n\n" +
+          (
+            culto.nome ||
+            "Culto"
+          )
+        );
+
+        musicaParaAdicionarAoCulto =
+          null;
+
+      } catch (erro) {
+        console.error(
+          erro
+        );
+
+        alert(
+          "❌ Não foi possível adicionar a música ao culto.\n\n" +
+          erro.message
+        );
+      }
     }
 
 
@@ -5782,6 +6214,114 @@ Todos os dias"
 
         }
 
+      }
+    );
+
+
+    /* =====================================================
+       CONTROLE DE TOUCH DURANTE A ROLAGEM AUTOMÁTICA
+       ===================================================== */
+
+    let toquePausouRolagem = false;
+    let retomadaRolagemTouch = null;
+
+    document.addEventListener(
+      "touchstart",
+      () => {
+        /*
+          Quando o usuário coloca o dedo na tela,
+          a rolagem automática para imediatamente.
+          Isso deixa o gesto vertical totalmente livre
+          para o navegador: subir, descer e fazer swipe.
+        */
+        if (
+          rolagemAtiva
+        ) {
+          toquePausouRolagem = true;
+
+          clearTimeout(
+            retomadaRolagemTouch
+          );
+
+          clearInterval(
+            intervaloRolagem
+          );
+
+          intervaloRolagem = null;
+        }
+      },
+      {
+        passive: true
+      }
+    );
+
+    document.addEventListener(
+      "touchend",
+      () => {
+        if (
+          !toquePausouRolagem
+        ) {
+          return;
+        }
+
+        /*
+          Pequeno intervalo para o usuário terminar
+          completamente o gesto antes da rolagem voltar.
+        */
+        clearTimeout(
+          retomadaRolagemTouch
+        );
+
+        retomadaRolagemTouch =
+          setTimeout(
+            () => {
+              if (
+                rolagemAtiva
+              ) {
+                iniciarRolagemAutomatica();
+              }
+
+              toquePausouRolagem =
+                false;
+            },
+            1200
+          );
+      },
+      {
+        passive: true
+      }
+    );
+
+    document.addEventListener(
+      "touchcancel",
+      () => {
+        if (
+          !toquePausouRolagem
+        ) {
+          return;
+        }
+
+        clearTimeout(
+          retomadaRolagemTouch
+        );
+
+        retomadaRolagemTouch =
+          setTimeout(
+            () => {
+              if (
+                rolagemAtiva
+              ) {
+                iniciarRolagemAutomatica();
+              }
+
+              toquePausouRolagem =
+                false;
+            },
+            800
+          );
+      },
+      {
+        passive: true
       }
     );
 
