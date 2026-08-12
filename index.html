@@ -1068,56 +1068,71 @@
     */
 
     #cifra {
-      padding: 22px 25px 28px;
-
+      padding: 22px 25px 30px;
       color: var(--cifra-texto);
-
       font-family:
         "Courier New",
         Courier,
         monospace;
-
       font-size: 17px;
-
-      line-height: 1.28;
-
+      line-height: 1;
       min-height: 300px;
-
       overflow-x: auto;
       overflow-y: visible;
     }
 
     .linha-cifra {
       white-space: pre;
-      min-height: 1.28em;
+      min-height: 0;
+      height: auto;
+      margin: 0;
+      padding: 0;
     }
 
     /*
-      Linha que contém os acordes.
-      A distância para a letra abaixo é pequena.
+      Acordes e letra ficam propositalmente muito próximos.
+      Linhas vazias são tratadas como separadores pequenos.
     */
-
     .linha-acorde {
       color: var(--acorde);
-
       font-weight: 900;
-
-      line-height: 1.05;
-
-      min-height: 1.05em;
-
-      margin-top: .15em;
-      margin-bottom: .02em;
+      line-height: .78;
+      height: .78em;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
     }
 
     .linha-letra {
       color: var(--cifra-texto);
+      line-height: 1.04;
+      height: 1.04em;
+      min-height: 0;
+      margin: 0 0 .12em;
+      padding: 0;
+    }
 
-      line-height: 1.18;
+    .linha-vazia {
+      height: .28em;
+      min-height: .28em;
+      line-height: .28em;
+      margin: 0;
+      padding: 0;
+    }
 
-      min-height: 1.18em;
-
-      margin-bottom: .12em;
+    .linha-medley {
+      white-space: normal;
+      height: auto;
+      min-height: 0;
+      margin: 1.15em 0 .55em;
+      padding: .6em .75em;
+      border-radius: 10px;
+      background: rgba(124,58,237,.13);
+      color: var(--acorde);
+      font-family: inherit;
+      font-size: .82em;
+      font-weight: 900;
+      letter-spacing: .04em;
     }
 
     .acorde {
@@ -1479,6 +1494,10 @@
        MEDLEY
        ===================================================== */
 
+    .modal-card:has(.medley-lista) {
+      max-height: min(88vh, 820px);
+    }
+
     .medley-lista {
       display: flex;
       flex-direction: column;
@@ -1681,11 +1700,24 @@
       }
 
       .linha-acorde {
-        line-height: 1;
+        line-height: .76;
+        height: .76em;
       }
 
       .linha-letra {
-        line-height: 1.15;
+        line-height: 1.02;
+        height: 1.02em;
+      }
+
+      .linha-vazia {
+        height: .24em;
+        min-height: .24em;
+        line-height: .24em;
+      }
+
+      .linha-medley {
+        margin-top: .95em;
+        padding: .5em .65em;
       }
 
       body.modo-culto #cifra {
@@ -1846,6 +1878,14 @@
             onclick="abrirEditorCulto()"
           >
             🎤 Adicionar culto
+          </button>
+
+          <button
+            type="button"
+            class="botao botao-medley"
+            onclick="abrirMedley()"
+          >
+            🎶 Criar medley
           </button>
 
           <button
@@ -2390,7 +2430,7 @@ Todos os dias"
         <input
           id="medleyNome"
           type="text"
-          placeholder="Ex.: Medley Adoração"
+          placeholder="Ex.: Medley — Adoração"
         >
 
       </div>
@@ -3238,6 +3278,14 @@ Todos os dias"
 
               <button
                 type="button"
+                class="mini-btn mini-culto"
+                title="Adicionar ao culto atual"
+              >
+                ➕ Culto
+              </button>
+
+              <button
+                type="button"
                 class="mini-btn mini-editar"
               >
                 ✏️ Editar
@@ -3284,6 +3332,21 @@ Todos os dias"
                 abrirEditorMusica(
                   musica
                 );
+
+          const botaoCulto =
+            item.querySelector(
+              ".mini-culto"
+            );
+
+          if (botaoCulto) {
+            botaoCulto.onclick =
+              event => {
+                event.stopPropagation();
+                adicionarMusicaAoCultoAtual(
+                  musica
+                );
+              };
+          }
 
 
           item
@@ -4208,14 +4271,24 @@ Todos os dias"
       const cifra =
         partes
           .map(
-            musica =>
-              `\n\n===== ${musica.titulo} =====\n\n` +
-              String(
-                musica.cifra ||
-                ""
-              )
+            musica => {
+              const cifraMusica =
+                String(
+                  musica.cifra ||
+                  ""
+                )
+                .replace(/\\r\\n/g, "\n")
+                .replace(/[ \\t]+\\n/g, "\n")
+                .replace(/\\n{3,}/g, "\n\n")
+                .trim();
+
+              return (
+                `===== ${musica.titulo} =====\n` +
+                cifraMusica
+              );
+            }
           )
-          .join("\n");
+          .join("\n\n");
 
 
       /*
@@ -4417,21 +4490,44 @@ Todos os dias"
     */
 
 
+    function normalizarTokenAcorde(
+      texto
+    ) {
+      return String(
+        texto || ""
+      )
+        .trim()
+        .replace(
+          /^[()[\]{}.,;:]+|[()[\]{}.,;:]+$/g,
+          ""
+        );
+    }
+
+
     function ehAcorde(
       texto
     ) {
+      const acorde =
+        normalizarTokenAcorde(
+          texto
+        );
 
-      return /^[A-G](?:#|b)?(?:m|min|maj|maj7|maj9|m7|m9|7|9|11|13|sus|sus2|sus4|dim|dim7|aug|add2|add4|add9)?(?:\/[A-G](?:#|b)?)?$/.test(
-        texto
+      /*
+        Também reconhece formas comuns como:
+          B4
+          E4
+          B4/F#
+          ( E B4 C#m A B4 )
+      */
+      return /^[A-G](?:#|b)?(?:m|min|maj|maj7|maj9|m7|m9|7|9|11|13|4|5|sus|sus2|sus4|dim|dim7|aug|add2|add4|add9)?(?:\/[A-G](?:#|b)?)?$/.test(
+        acorde
       );
-
     }
 
 
     function ehLinhaDeAcordes(
       linha
     ) {
-
       const semQuebra =
         String(linha)
           .replace(
@@ -4439,53 +4535,49 @@ Todos os dias"
             "    "
           );
 
-
       if (
         !semQuebra.trim()
       ) {
-
         return false;
-
       }
-
 
       const tokens =
         semQuebra
           .trim()
-          .split(/\s+/);
-
+          .split(/\s+/)
+          .filter(Boolean);
 
       if (
         !tokens.length
       ) {
-
         return false;
-
       }
 
-
       /*
-        Todos os tokens precisam ser acordes.
+        Parênteses isolados são apenas delimitadores.
+        Assim:
 
-        Portanto:
+          ( E B4 C#m A B4 )
 
-        "Te amo Deus"
-
-        não passa.
-
-        "G D"
-
-        passa.
-
-        "Am7   F   C"
-
-        passa.
+        é reconhecido como uma linha inteira de acordes.
       */
+      const tokensAcorde =
+        tokens.filter(
+          token =>
+            !/^[()[\]{}]+$/.test(
+              token
+            )
+        );
 
-      return tokens.every(
+      if (
+        !tokensAcorde.length
+      ) {
+        return false;
+      }
+
+      return tokensAcorde.every(
         ehAcorde
       );
-
     }
 
 
@@ -4493,36 +4585,26 @@ Todos os dias"
       linha,
       diferenca
     ) {
-
       /*
-        Percorremos a linha preservando
-        absolutamente todos os espaços.
-
-        Só substituímos os tokens que são
-        acordes.
+        Mantém os espaços e os parênteses,
+        mas transpõe cada acorde individualmente.
       */
-
       return linha.replace(
-        /\S+/g,
-        token => {
-
-          if (
-            !ehAcorde(token)
-          ) {
-
-            return token;
-
-          }
-
-
-          return transporAcorde(
-            token,
-            diferenca
+        /(^|\s|[([{])([A-G](?:#|b)?(?:m|min|maj|maj7|maj9|m7|m9|7|9|11|13|4|5|sus|sus2|sus4|dim|dim7|aug|add2|add4|add9)?(?:\/[A-G](?:#|b)?)?)(?=\s|$|[)\]}.,;:])/g,
+        (
+          trecho,
+          antes,
+          acorde
+        ) => {
+          return (
+            antes +
+            transporAcorde(
+              acorde,
+              diferenca
+            )
           );
-
         }
       );
-
     }
 
 
@@ -4616,11 +4698,51 @@ Todos os dias"
               }
 
 
+              const linhaLimpa =
+                String(linha)
+                  .replace(/\\u00a0/g, " ")
+                  .trim();
+
+              /*
+                Linhas que possuem apenas espaços não podem
+                virar uma linha de letra. Isso era a causa
+                dos "buracos" grandes na cifra.
+              */
+              if (!linhaLimpa) {
+                return `
+                  <div
+                    class="linha-cifra linha-vazia"
+                    aria-hidden="true"
+                  ></div>
+                `;
+              }
+
+              /*
+                Medleys criados pelo sistema usam um divisor
+                ===== Título =====. Renderizamos isso como
+                cabeçalho, em vez de mostrar os sinais crus.
+              */
+              if (
+                /^={3,}\\s*.*?\\s*={3,}$/.test(
+                  linhaLimpa
+                )
+              ) {
+                const tituloMedley =
+                  linhaLimpa
+                    .replace(/^=+/, "")
+                    .replace(/=+$/, "")
+                    .trim();
+
+                return `
+                  <div class="linha-cifra linha-medley">
+                    🎶 ${escapar(tituloMedley)}
+                  </div>
+                `;
+              }
+
               return `
                 <div class="linha-cifra linha-letra">
-                  ${escapar(
-                    linha
-                  )}
+                  ${escapar(linha)}
                 </div>
               `;
 
@@ -5298,7 +5420,9 @@ Todos os dias"
 
             }
           )
-          .join("\n");
+          .join("\n")
+          .replace(/^[ \\t]+$/gm, "")
+          .replace(/\\n{3,}/g, "\n\n");
 
 
       const texto =
