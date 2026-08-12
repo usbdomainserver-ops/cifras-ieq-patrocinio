@@ -1,2818 +1,5113 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#6d28d9">
-<title>Cifras IEQ Patrocínio</title>
-
-<style>
-*{box-sizing:border-box}
-
-:root{
-  --roxo:#7c3aed;
-  --roxo2:#6d28d9;
-  --roxoesc:#24103f;
-
-  --fundo:#f5f6fa;
-  --card:#fff;
-  --card2:#fafaff;
-
-  --texto:#17151f;
-  --texto2:#5f5b6b;
-  --texto3:#9994a6;
-  --borda:#e8e5ef;
-
-  /* NOVO FUNDO DA CIFRA */
-  --cifra-fundo:#fffdf8;
-  --cifra-texto:#24202b;
-  --acorde:#7c3aed;
-
-  --sombra:0 12px 40px rgba(42,20,80,.08);
-  --raio:22px;
-}
-
-body.dark{
-  --fundo:#0e0b15;
-  --card:#17131f;
-  --card2:#1d1828;
-  --texto:#f7f4ff;
-  --texto2:#b8b2c6;
-  --texto3:#777181;
-  --borda:#2d2737;
-
-  /* cifra também muda no modo noturno */
-  --cifra-fundo:#18151f;
-  --cifra-texto:#f7f4ff;
-  --acorde:#c4b5fd;
-}
-
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at 15% 0%,rgba(124,58,237,.08),transparent 30%),
-    var(--fundo);
-  color:var(--texto);
-  transition:.25s;
-}
-
-button,input{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-input{outline:none}
-.oculto{display:none!important}
-
-/* TOPO */
-
-.site-header{
-  position:relative;
-  overflow:hidden;
-  color:#fff;
-  padding:24px max(18px,calc((100vw - 1100px)/2)) 85px;
-  background:
-    radial-gradient(circle at 15% 20%,rgba(255,255,255,.15),transparent 28%),
-    radial-gradient(circle at 85% 5%,rgba(196,181,253,.25),transparent 28%),
-    linear-gradient(135deg,#7c3aed,#5b21b6 55%,#312e81);
-}
-
-.site-header:after{
-  content:"";
-  position:absolute;
-  left:-5%;
-  right:-5%;
-  bottom:-62px;
-  height:100px;
-  background:var(--fundo);
-  border-radius:50% 50% 0 0;
-}
-
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.marca{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.logo{
-  width:58px;
-  height:58px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:18px;
-  background:rgba(255,255,255,.15);
-  border:1px solid rgba(255,255,255,.25);
-  font-size:29px;
-}
-
-.marca h1{margin:0;font-size:24px}
-.marca p{margin:6px 0 0;color:rgba(255,255,255,.78);font-size:13px}
-
-.header-actions{display:flex;gap:8px}
-
-.header-button{
-  width:43px;
-  height:43px;
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:13px;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-size:18px;
-}
-
-/* CONTAINER */
-
-.container{
-  width:min(1100px,calc(100% - 28px));
-  margin:-30px auto 50px;
-  position:relative;
-  z-index:5;
-}
-
-.hero{
-  padding:28px;
-  background:var(--card);
-  border:1px solid var(--borda);
-  border-radius:var(--raio);
-  box-shadow:var(--sombra);
-}
-
-.hero-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-}
-
-.eyebrow{
-  color:var(--roxo);
-  font-size:12px;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:.7px;
-}
-
-.hero h2{
-  margin:8px 0 0;
-  font-size:29px;
-}
-
-.hero-subtitle{
-  margin:7px 0 0;
-  color:var(--texto2);
-  font-size:14px;
-}
-
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 13px;
-  border-radius:999px;
-  background:rgba(16,185,129,.11);
-  color:#059669;
-  font-size:12px;
-  font-weight:900;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:currentColor;
-}
-
-/* CULTO */
-
-.culto-card{
-  margin-top:25px;
-  overflow:hidden;
-  border:1px solid var(--borda);
-  border-radius:20px;
-  background:var(--card);
-}
-
-.culto-header{
-  padding:23px;
-  background:linear-gradient(135deg,rgba(124,58,237,.09),rgba(59,130,246,.07));
-  border-bottom:1px solid var(--borda);
-}
-
-.culto-info{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-#nomeCulto{
-  margin:0;
-  font-size:22px;
-}
-
-#dataCulto{
-  margin-top:5px;
-  color:var(--texto2);
-  font-size:13px;
-}
-
-.culto-icon{
-  width:53px;
-  height:53px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--roxo),var(--roxo2));
-  color:#fff;
-  font-size:23px;
-}
-
-/* REPERTÓRIO */
-
-#repertorio{padding:9px}
-
-.musica{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:15px;
-  margin:3px 0;
-  border:1px solid transparent;
-  border-radius:16px;
-  background:transparent;
-  transition:.18s;
-}
-
-.musica:hover{
-  transform:translateY(-1px);
-  background:var(--roxo-claro,#f1ebff);
-  border-color:rgba(124,58,237,.14);
-}
-
-.musica-left{
-  min-width:0;
-  display:flex;
-  align-items:center;
-  gap:13px;
-}
-
-.ordem{
-  width:38px;
-  height:38px;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  background:#f1ebff;
-  color:var(--roxo);
-  font-size:12px;
-  font-weight:900;
-}
-
-body.dark .ordem{
-  background:#281c3c;
-}
-
-.musica-texto{min-width:0}
-.musica strong{
-  display:block;
-  overflow:hidden;
-  color:var(--texto);
-  font-size:15px;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.artista{
-  margin-top:4px;
-  color:var(--texto3);
-  font-size:12px;
-}
-
-.musica-meta{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-shrink:0;
-}
-
-.tom{
-  padding:5px 9px;
-  border-radius:999px;
-  background:var(--card2);
-  border:1px solid var(--borda);
-  color:var(--texto2);
-  font-size:11px;
-  font-weight:900;
-}
-
-.seta{
-  width:35px;
-  height:35px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:11px;
-  background:var(--roxo);
-  color:#fff;
-  font-size:22px;
-}
-
-/* AÇÕES */
-
-.acoes{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:20px;
-}
-
-.botao{
-  min-height:49px;
-  border:0;
-  border-radius:14px;
-  padding:13px 18px;
-  font-size:14px;
-  font-weight:900;
-}
-
-.botao-roxo{
-  background:linear-gradient(135deg,#8b5cf6,#6d28d9);
-  color:#fff;
-  box-shadow:0 10px 25px rgba(109,40,217,.22);
-}
-
-.botao-claro{
-  background:var(--card);
-  color:var(--roxo);
-  border:1px solid var(--borda);
-}
-
-/* BANCO */
-
-.banco-card{
-  margin-top:18px;
-  padding:23px;
-  background:var(--card);
-  border:1px solid var(--borda);
-  border-radius:20px;
-}
-
-.secao-titulo{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:15px;
-}
-
-.secao-titulo h3{
-  margin:0;
-  font-size:19px;
-}
-
-.contador{
-  padding:5px 9px;
-  border-radius:999px;
-  background:#f1ebff;
-  color:var(--roxo);
-  font-size:11px;
-  font-weight:900;
-}
-
-body.dark .contador{background:#281c3c}
-
-.busca{
-  position:relative;
-  margin-bottom:13px;
-}
-
-.busca input{
-  width:100%;
-  padding:13px 15px 13px 42px;
-  border:1px solid var(--borda);
-  border-radius:13px;
-  background:var(--card2);
-  color:var(--texto);
-  font-size:14px;
-}
-
-.busca-icon{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-}
-
-#bancoMusicas{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-}
-
-.banco-item{
-  min-width:0;
-  padding:13px;
-  border:1px solid var(--borda);
-  border-radius:14px;
-  background:var(--card2);
-  cursor:pointer;
-}
-
-.banco-item:hover{
-  border-color:rgba(124,58,237,.3);
-  background:#f1ebff;
-}
-
-body.dark .banco-item:hover{background:#281c3c}
-
-.banco-item strong{
-  display:block;
-  overflow:hidden;
-  color:var(--texto);
-  font-size:14px;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.banco-item small{
-  display:block;
-  margin-top:5px;
-  color:var(--texto3);
-}
-
-/* ESTADOS */
-
-.vazio{
-  padding:30px 18px;
-  text-align:center;
-  color:var(--texto2);
-  font-size:14px;
-}
-
-.loading{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-}
-
-.spinner{
-  width:18px;
-  height:18px;
-  border:2px solid rgba(124,58,237,.18);
-  border-top-color:var(--roxo);
-  border-radius:50%;
-  animation:girar .8s linear infinite;
-}
-
-@keyframes girar{to{transform:rotate(360deg)}}
-
-.erro{
-  margin:10px;
-  padding:15px;
-  border-radius:13px;
-  background:rgba(239,68,68,.09);
-  color:#b91c1c;
-  font-size:13px;
-  line-height:1.5;
-}
-
-body.dark .erro{color:#fca5a5}
-
-/* PÁGINA DA MÚSICA */
-
-.pagina-musica{
-  width:min(1000px,calc(100% - 28px));
-  margin:0 auto;
-  padding:24px 0 50px;
-}
-
-.musica-topo{
-  position:sticky;
-  top:10px;
-  z-index:50;
-  padding:23px;
-  border-radius:21px;
-  color:#fff;
-  background:linear-gradient(135deg,#7c3aed,#4c1d95);
-  box-shadow:0 15px 40px rgba(43,19,82,.22);
-}
-
-.musica-topo h2{
-  margin:0;
-  font-size:25px;
-}
-
-.musica-topo p{
-  margin:6px 0 0;
-  color:rgba(255,255,255,.76);
-  font-size:13px;
-}
-
-.controles{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:18px;
-}
-
-.controle{
-  min-height:39px;
-  padding:9px 12px;
-  border:1px solid rgba(255,255,255,.13);
-  border-radius:11px;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-size:12px;
-  font-weight:900;
-}
-
-.tom-atual{
-  min-height:39px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:9px 14px;
-  border-radius:11px;
-  background:#fff;
-  color:var(--roxoesc);
-  font-size:13px;
-  font-weight:900;
-}
-
-/* CIFRA — CORRIGIDA */
-
-.cifra-card{
-  margin-top:14px;
-  overflow:hidden;
-  border-radius:20px;
-
-  /* não é mais fundo preto */
-  background:var(--cifra-fundo);
-
-  border:1px solid var(--borda);
-  box-shadow:0 12px 35px rgba(0,0,0,.10);
-}
-
-.cifra-toolbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:11px 17px;
-  background:rgba(124,58,237,.06);
-  border-bottom:1px solid var(--borda);
-  color:var(--texto2);
-  font-size:11px;
-  font-weight:800;
-}
-
-#cifra{
-  padding:20px 24px 28px;
-
-  /* COR DA LETRA FORÇADA */
-  color:var(--cifra-texto)!important;
-
-  font-family:"Courier New",Courier,monospace;
-
-  /* ESPAÇAMENTO REDUZIDO */
-  font-size:16px;
-  line-height:1.38;
-
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  min-height:300px;
-}
-
-.linha-cifra{
-  min-height:1.38em;
-  margin:0;
-  padding:0;
-}
-
-.acorde{
-  color:var(--acorde)!important;
-  font-weight:900;
-}
-
-.separador-medley{
-  margin:30px -4px;
-  padding:15px;
-  border-radius:13px;
-  background:rgba(124,58,237,.08);
-  border:1px solid rgba(124,58,237,.16);
-  color:var(--roxo);
-  font-family:Inter,system-ui,sans-serif;
-  font-weight:900;
-  text-align:center;
-}
-
-.titulo-medley{
-  margin-bottom:3px;
-  font-size:15px;
-}
-
-.artista-medley{
-  font-size:11px;
-  color:var(--texto2);
-}
-
-/* ROLAGEM */
-
-.controle-rolagem{
-  display:none;
-  margin-top:10px;
-  padding:13px;
-  border-radius:14px;
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.controle-rolagem.aberto{display:block}
-
-.rolagem-linha{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.rolagem-linha label{
-  min-width:65px;
-  color:rgba(255,255,255,.75);
-  font-size:11px;
-  font-weight:800;
-}
-
-#velocidadeRolagem{flex:1}
-#valorVelocidade{color:#fff;font-size:11px}
-
-.rolagem-botoes{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-
-.rolagem-botoes button{
-  flex:1;
-  padding:9px;
-  border:0;
-  border-radius:10px;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-size:11px;
-  font-weight:900;
-}
-
-/* MODAIS */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  background:rgba(17,10,30,.68);
-  backdrop-filter:blur(8px);
-}
-
-.modal.aberto{display:flex}
-
-.modal-card{
-  width:min(520px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:22px;
-  background:var(--card);
-  color:var(--texto);
-  box-shadow:0 30px 90px rgba(0,0,0,.35);
-}
-
-.modal-card h2{
-  margin:0 0 5px;
-}
-
-.modal-sub{
-  margin:0 0 18px;
-  color:var(--texto2);
-  font-size:13px;
-}
-
-.form-label{
-  display:block;
-  margin:12px 0 6px;
-  font-size:12px;
-  font-weight:900;
-  color:var(--texto2);
-}
-
-.form-input{
-  width:100%;
-  padding:12px 13px;
-  border:1px solid var(--borda);
-  border-radius:12px;
-  background:var(--card2);
-  color:var(--texto);
-}
-
-.modal-acoes{
-  display:flex;
-  gap:8px;
-  margin-top:18px;
-}
-
-.modal-acoes button{
-  flex:1;
-  min-height:44px;
-  border:0;
-  border-radius:12px;
-  font-weight:900;
-}
-
-.btn-principal{
-  background:linear-gradient(135deg,#8b5cf6,#6d28d9);
-  color:#fff;
-}
-
-.btn-secundario{
-  background:var(--card2);
-  color:var(--texto2);
-  border:1px solid var(--borda)!important;
-}
-
-/* LISTA DO MEDLEY */
-
-.lista-medley{
-  max-height:330px;
-  overflow:auto;
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.medley-opcao{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:11px;
-  border:1px solid var(--borda);
-  border-radius:12px;
-  background:var(--card2);
-}
-
-.medley-opcao input{
-  width:18px;
-  height:18px;
-  accent-color:var(--roxo);
-}
-
-.medley-opcao-texto{
-  min-width:0;
-}
-
-.medley-opcao strong{
-  display:block;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.medley-opcao small{
-  color:var(--texto3);
-}
-
-/* FOOTER */
-
-footer{
-  padding:25px 18px 35px;
-  color:var(--texto3);
-  font-size:11px;
-  text-align:center;
-}
-
-/* MODO CULTO */
-
-body.modo-culto .site-header,
-body.modo-culto #inicio>footer{
-  display:none;
-}
-
-body.modo-culto .pagina-musica{
-  width:min(1200px,calc(100% - 24px));
-  padding-top:12px;
-}
-
-body.modo-culto .musica-topo{
-  position:relative;
-  top:0;
-}
-
-body.modo-culto #cifra{
-  font-size:20px;
-  line-height:1.5;
-}
-
-/* RESPONSIVO */
-
-@media(max-width:700px){
-
-  .site-header{
-    padding:20px 15px 75px;
-  }
-
-  .marca h1{font-size:19px}
-  .marca p{display:none}
-
-  .logo{
-    width:49px;
-    height:49px;
-    font-size:25px;
-  }
-
-  .container{
-    width:calc(100% - 16px);
-    margin-top:-22px;
-  }
-
-  .hero{
-    padding:18px;
-    border-radius:18px;
-  }
-
-  .hero h2{font-size:23px}
-  .status{display:none}
-
-  .culto-header{padding:18px}
-  #nomeCulto{font-size:19px}
-
-  #bancoMusicas{
-    grid-template-columns:1fr;
-  }
-
-  .acoes{
-    grid-template-columns:1fr;
-  }
-
-  .pagina-musica{
-    width:calc(100% - 16px);
-    padding-top:8px;
-  }
-
-  .musica-topo{
-    position:relative;
-    top:0;
-    padding:19px;
-    border-radius:17px;
-  }
-
-  .musica-topo h2{font-size:21px}
-
-  #cifra{
-    padding:16px;
-    font-size:14px;
-    line-height:1.34;
-  }
-
-  .linha-cifra{
-    min-height:1.34em;
-  }
-
-  body.modo-culto #cifra{
-    font-size:17px;
-    line-height:1.45;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#17112b">
+
+  <title>Cifras IEQ Patrocínio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --roxo: #7c3aed;
+      --roxo-2: #6d28d9;
+      --roxo-escuro: #24103f;
+      --roxo-claro: #f1ebff;
+
+      --fundo: #f5f6fa;
+      --card: #ffffff;
+      --card-2: #fafaff;
+
+      --texto: #17151f;
+      --texto-2: #5f5b6b;
+      --texto-3: #9994a6;
+
+      --borda: #e8e5ef;
+
+      --verde: #10b981;
+      --vermelho: #ef4444;
+      --laranja: #f59e0b;
+
+      /* NOVO FUNDO DA CIFRA */
+      --cifra-fundo: #ffffff;
+      --cifra-texto: #17151f;
+      --acorde: #6d28d9;
+
+      --sombra:
+        0 12px 40px rgba(42, 20, 80, 0.08);
+
+      --raio: 22px;
+
+      /* TAMANHO DA CIFRA */
+      --tamanho-cifra: 17px;
+      --espaco-cifra: 1.30;
+    }
+
+    body.dark {
+      --fundo: #0e0b15;
+      --card: #17131f;
+      --card-2: #1d1828;
+
+      --texto: #f7f4ff;
+      --texto-2: #b8b2c6;
+      --texto-3: #777181;
+
+      --borda: #2d2737;
+
+      --roxo-claro: #281c3c;
+
+      /*
+        A cifra continua com fundo claro no modo noturno.
+        Isso evita o problema anterior das letras ficarem
+        pretas/invisíveis.
+      */
+      --cifra-fundo: #fffdf8;
+      --cifra-texto: #17151f;
+      --acorde: #6d28d9;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 15% 0%,
+          rgba(124, 58, 237, 0.08),
+          transparent 30%
+        ),
+        var(--fundo);
+
+      color: var(--texto);
+
+      transition:
+        background .25s ease,
+        color .25s ease;
+    }
+
+    body,
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+    }
+
+    input,
+    textarea,
+    select {
+      outline: none;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    /* =====================================================
+       TOPO
+       ===================================================== */
+
+    .site-header {
+      position: relative;
+      overflow: hidden;
+
+      color: white;
+
+      padding:
+        24px
+        max(18px, calc((100vw - 1100px) / 2))
+        85px;
+
+      background:
+        radial-gradient(
+          circle at 15% 20%,
+          rgba(255,255,255,.15),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 85% 5%,
+          rgba(196,181,253,.25),
+          transparent 28%
+        ),
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #5b21b6 55%,
+          #312e81
+        );
+    }
+
+    .site-header::after {
+      content: "";
+
+      position: absolute;
+      left: -5%;
+      right: -5%;
+      bottom: -62px;
+
+      height: 100px;
+
+      background: var(--fundo);
+
+      border-radius: 50% 50% 0 0;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .marca {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 18px;
+
+      background: rgba(255,255,255,.15);
+
+      border: 1px solid rgba(255,255,255,.25);
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+
+      font-size: 29px;
+    }
+
+    .marca h1 {
+      margin: 0;
+
+      font-size: 24px;
+      line-height: 1.1;
+
+      letter-spacing: -.6px;
+    }
+
+    .marca p {
+      margin: 6px 0 0;
+
+      color: rgba(255,255,255,.78);
+
+      font-size: 13px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-button {
+      width: 43px;
+      height: 43px;
+
+      border: 1px solid rgba(255,255,255,.2);
+
+      border-radius: 13px;
+
+      background: rgba(255,255,255,.12);
+
+      color: white;
+
+      font-size: 18px;
+
+      backdrop-filter: blur(10px);
+
+      transition: .2s ease;
+    }
+
+    .header-button:hover {
+      background: rgba(255,255,255,.22);
+      transform: translateY(-1px);
+    }
+
+    /* =====================================================
+       CONTAINER
+       ===================================================== */
+
+    .container {
+      width: min(1100px, calc(100% - 28px));
+
+      margin:
+        -30px
+        auto
+        50px;
+
+      position: relative;
+      z-index: 5;
+    }
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+      padding: 28px;
+
+      background: var(--card);
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: var(--raio);
+
+      box-shadow: var(--sombra);
+    }
+
+    .hero-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-bottom: 8px;
+
+      color: var(--roxo);
+
+      font-size: 12px;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .hero h2 {
+      margin: 0;
+
+      font-size: 29px;
+      letter-spacing: -.9px;
+    }
+
+    .hero-subtitle {
+      margin: 7px 0 0;
+
+      color: var(--texto-2);
+
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 13px;
+
+      border-radius: 999px;
+
+      background: rgba(16,185,129,.11);
+
+      color: #059669;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: currentColor;
+    }
+
+    /* =====================================================
+       CULTO
+       ===================================================== */
+
+    .culto-card {
+      margin-top: 25px;
+
+      overflow: hidden;
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 20px;
+
+      background: var(--card);
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,.04);
+    }
+
+    .culto-header {
+      padding: 23px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(124,58,237,.09),
+          rgba(59,130,246,.07)
+        );
+
+      border-bottom:
+        1px solid
+        var(--borda);
+    }
+
+    .culto-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+    .culto-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .culto-icon {
+      width: 53px;
+      height: 53px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--roxo),
+          var(--roxo-2)
+        );
+
+      color: white;
+
+      font-size: 23px;
+
+      box-shadow:
+        0 10px 25px rgba(124,58,237,.22);
+    }
+
+    #nomeCulto {
+      margin: 0;
+
+      color: var(--texto);
+
+      font-size: 22px;
+
+      letter-spacing: -.4px;
+    }
+
+    #dataCulto {
+      margin-top: 5px;
+
+      color: var(--texto-2);
+
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       REPERTÓRIO
+       ===================================================== */
+
+    #repertorio {
+      padding: 9px;
+    }
+
+    .musica {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 15px;
+
+      margin: 3px 0;
+
+      border:
+        1px solid
+        transparent;
+
+      border-radius: 16px;
+
+      background: transparent;
+
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .musica:hover {
+      transform: translateY(-1px);
+
+      background:
+        var(--roxo-claro);
+
+      border-color:
+        rgba(124,58,237,.14);
+
+      box-shadow:
+        0 7px 20px rgba(124,58,237,.06);
+    }
+
+    .musica-left {
+      min-width: 0;
+
+      display: flex;
+      align-items: center;
+
+      gap: 13px;
+    }
+
+    .ordem {
+      width: 38px;
+      height: 38px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background: var(--roxo-claro);
+
+      color: var(--roxo);
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .musica-texto {
+      min-width: 0;
+    }
+
+    .musica strong {
+      display: block;
+
+      overflow: hidden;
+
+      color: var(--texto);
+
+      font-size: 15px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .artista {
+      margin-top: 4px;
+
+      color: var(--texto-3);
+
+      font-size: 12px;
+    }
+
+    .musica-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      flex-shrink: 0;
+    }
+
+    .tom {
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      background: var(--card-2);
+
+      border:
+        1px solid
+        var(--borda);
+
+      color: var(--texto-2);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .seta {
+      width: 35px;
+      height: 35px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 11px;
+
+      background: var(--roxo);
+
+      color: white;
+
+      font-size: 22px;
+
+      box-shadow:
+        0 5px 15px rgba(124,58,237,.18);
+    }
+
+    /* =====================================================
+       AÇÕES
+       ===================================================== */
+
+    .acoes {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 12px;
+
+      margin-top: 20px;
+    }
+
+    .botao {
+      min-height: 49px;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      padding: 13px 18px;
+
+      font-size: 14px;
+      font-weight: 900;
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .botao:hover {
+      transform: translateY(-2px);
+    }
+
+    .botao-roxo {
+      background:
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #6d28d9
+        );
+
+      color: white;
+
+      box-shadow:
+        0 10px 25px rgba(109,40,217,.22);
+    }
+
+    .botao-claro {
+      background: var(--card);
+
+      color: var(--roxo);
+
+      border:
+        1px solid
+        var(--borda);
+    }
+
+    .botao-verde {
+      background:
+        linear-gradient(
+          135deg,
+          #10b981,
+          #059669
+        );
+
+      color: white;
+
+      box-shadow:
+        0 10px 25px rgba(16,185,129,.18);
+    }
+
+    /* =====================================================
+       BANCO DE MÚSICAS
+       ===================================================== */
+
+    .banco-card {
+      margin-top: 18px;
+
+      padding: 23px;
+
+      background: var(--card);
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,.04);
+    }
+
+    .secao-titulo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 15px;
+    }
+
+    .secao-titulo h3 {
+      margin: 0;
+
+      font-size: 19px;
+      letter-spacing: -.3px;
+    }
+
+    .contador {
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      background: var(--roxo-claro);
+
+      color: var(--roxo);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .busca {
+      position: relative;
+
+      margin-bottom: 13px;
+    }
+
+    .busca input {
+      width: 100%;
+
+      padding:
+        13px
+        15px
+        13px
+        42px;
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 13px;
+
+      background: var(--card-2);
+
+      color: var(--texto);
+
+      font-size: 14px;
+    }
+
+    .busca input:focus {
+      border-color: var(--roxo);
+
+      box-shadow:
+        0 0 0 4px rgba(124,58,237,.09);
+    }
+
+    .busca-icon {
+      position: absolute;
+
+      left: 14px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--texto-3);
+
+      pointer-events: none;
+    }
+
+    #bancoMusicas {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 8px;
+    }
+
+    .banco-item {
+      min-width: 0;
+
+      padding: 13px;
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 14px;
+
+      background: var(--card-2);
+
+      cursor: pointer;
+
+      transition: .18s ease;
+    }
+
+    .banco-item:hover {
+      border-color:
+        rgba(124,58,237,.3);
+
+      transform: translateY(-1px);
+
+      background:
+        var(--roxo-claro);
+    }
+
+    .banco-item strong {
+      display: block;
+
+      overflow: hidden;
+
+      color: var(--texto);
+
+      font-size: 14px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .banco-item small {
+      display: block;
+
+      margin-top: 5px;
+
+      color: var(--texto-3);
+
+      overflow: hidden;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* =====================================================
+       ESTADOS
+       ===================================================== */
+
+    .vazio {
+      padding: 30px 18px;
+
+      text-align: center;
+
+      color: var(--texto-2);
+
+      font-size: 14px;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+
+      border:
+        2px solid
+        rgba(124,58,237,.18);
+
+      border-top-color:
+        var(--roxo);
+
+      border-radius: 50%;
+
+      animation:
+        girar .8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .erro {
+      margin: 10px;
+
+      padding: 15px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(239,68,68,.09);
+
+      color:
+        #b91c1c;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+    body.dark .erro {
+      color: #fca5a5;
+    }
+
+    /* =====================================================
+       PÁGINA DA MÚSICA
+       ===================================================== */
+
+    .pagina-musica {
+      width: min(1000px, calc(100% - 28px));
+
+      margin: 0 auto;
+
+      padding: 24px 0 50px;
+    }
+
+    .musica-topo {
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+
+      padding: 23px;
+
+      border-radius: 21px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4c1d95
+        );
+
+      box-shadow:
+        0 15px 40px rgba(43,19,82,.22);
+    }
+
+    .musica-topo h2 {
+      margin: 0;
+
+      font-size: 25px;
+
+      letter-spacing: -.6px;
+    }
+
+    .musica-topo p {
+      margin: 6px 0 0;
+
+      color: rgba(255,255,255,.76);
+
+      font-size: 13px;
+    }
+
+    .controles {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: 18px;
+    }
+
+    .controle {
+      min-height: 39px;
+
+      padding:
+        9px
+        12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.13);
+
+      border-radius: 11px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      color: white;
+
+      font-size: 12px;
+      font-weight: 900;
+
+      transition: .18s ease;
+    }
+
+    .controle:hover {
+      background:
+        rgba(255,255,255,.22);
+    }
+
+    .tom-atual {
+      min-height: 39px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 9px 14px;
+
+      border-radius: 11px;
+
+      background: white;
+
+      color: var(--roxo-escuro);
+
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    /* =====================================================
+       TAMANHO DA LETRA
+       ===================================================== */
+
+    .tamanho-cifra-controle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      padding: 4px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,.10);
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+    }
+
+    .tamanho-cifra-controle button {
+      width: 34px;
+      height: 31px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      color: white;
+
+      font-weight: 1000;
+      font-size: 13px;
+    }
+
+    .tamanho-cifra-controle button:hover {
+      background:
+        rgba(255,255,255,.23);
+    }
+
+    #tamanhoCifraValor {
+      min-width: 38px;
+
+      color: white;
+
+      font-size: 11px;
+      font-weight: 900;
+
+      text-align: center;
+    }
+
+    /* =====================================================
+       CIFRA
+       ===================================================== */
+
+    .cifra-card {
+      margin-top: 14px;
+
+      overflow: hidden;
+
+      border-radius: 20px;
+
+      background: var(--cifra-fundo);
+
+      border:
+        1px solid
+        #e8e1d7;
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.12);
+    }
+
+    .cifra-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 12px 17px;
+
+      background:
+        #f5efe6;
+
+      border-bottom:
+        1px solid
+        #e5ddd1;
+
+      color:
+        #756b5f;
+
+      font-size: 11px;
+
+      font-weight: 800;
+    }
+
+    /*
+      IMPORTANTE:
+      A cifra agora usa cor explícita.
+      Não depende da cor do body.
+    */
+
+    #cifra {
+      padding: 22px 25px;
+
+      color: var(--cifra-texto) !important;
+
+      background: var(--cifra-fundo);
+
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+      font-size: var(--tamanho-cifra);
+
+      line-height: var(--espaco-cifra);
+
+      white-space: pre-wrap;
+
+      overflow-wrap: anywhere;
+
+      min-height: 300px;
+    }
+
+    .linha-cifra {
+      min-height: 0;
+
+      margin: 0;
+
+      padding: 0;
+
+      color: var(--cifra-texto) !important;
+
+      line-height: var(--espaco-cifra);
+    }
+
+    .acorde {
+      color: var(--acorde) !important;
+
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       CONTROLE DE ROLAGEM
+       ===================================================== */
+
+    .controle-rolagem {
+      display: none;
+
+      margin-top: 10px;
+
+      padding: 13px;
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,.09);
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+    }
+
+    .controle-rolagem.aberto {
+      display: block;
+    }
+
+    .rolagem-linha {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .rolagem-linha label {
+      min-width: 65px;
+
+      color:
+        rgba(255,255,255,.75);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    #velocidadeRolagem {
+      flex: 1;
+
+      accent-color: #c4b5fd;
+    }
+
+    #valorVelocidade {
+      min-width: 40px;
+
+      color: white;
+
+      font-size: 11px;
+      font-weight: 900;
+
+      text-align: right;
+    }
+
+    .rolagem-botoes {
+      display: flex;
+      gap: 7px;
+
+      margin-top: 10px;
+    }
+
+    .rolagem-botoes button {
+      flex: 1;
+
+      padding: 9px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      color: white;
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .rolagem-botoes button:hover {
+      background:
+        rgba(255,255,255,.2);
+    }
+
+    /* =====================================================
+       MODAIS
+       ===================================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      z-index: 99999;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background:
+        rgba(17,10,30,.68);
+
+      backdrop-filter: blur(9px);
+    }
+
+    .modal.aberto {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(520px, 100%);
+
+      max-height: 90vh;
+
+      overflow: auto;
+
+      padding: 24px;
+
+      border-radius: 23px;
+
+      background: var(--card);
+
+      color: var(--texto);
+
+      box-shadow:
+        0 30px 90px rgba(0,0,0,.35);
+
+      animation:
+        aparecer .2s ease;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform:
+          translateY(12px)
+          scale(.98);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0)
+          scale(1);
+      }
+    }
+
+    .modal-card h2 {
+      margin: 0 0 7px;
+
+      color: var(--texto);
+    }
+
+    .modal-card > p {
+      margin: 0 0 18px;
+
+      color: var(--texto-2);
+
+      font-size: 13px;
+    }
+
+    .campo {
+      margin-top: 12px;
+    }
+
+    .campo label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: var(--texto-2);
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .campo input,
+    .campo textarea,
+    .campo select {
+      width: 100%;
+
+      padding: 13px;
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 12px;
+
+      background: var(--card-2);
+
+      color: var(--texto);
+
+      font-size: 14px;
+    }
+
+    .campo textarea {
+      min-height: 120px;
+
+      resize: vertical;
+    }
+
+    .modal-acoes {
+      display: flex;
+
+      gap: 8px;
+
+      margin-top: 20px;
+    }
+
+    .modal-acoes button {
+      flex: 1;
+
+      min-height: 44px;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      font-weight: 900;
+    }
+
+    .btn-modal-principal {
+      background: var(--roxo);
+
+      color: white;
+    }
+
+    .btn-modal-cancelar {
+      background: var(--card-2);
+
+      color: var(--texto-2);
+
+      border:
+        1px solid
+        var(--borda) !important;
+    }
+
+    /* =====================================================
+       MEDLEY
+       ===================================================== */
+
+    .medley-lista {
+      display: grid;
+
+      gap: 8px;
+
+      max-height: 330px;
+
+      overflow: auto;
+
+      padding: 2px;
+    }
+
+    .medley-item {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 12px;
+
+      border:
+        1px solid
+        var(--borda);
+
+      border-radius: 13px;
+
+      background: var(--card-2);
+    }
+
+    .medley-check {
+      width: 20px;
+      height: 20px;
+
+      accent-color: var(--roxo);
+
+      flex-shrink: 0;
+    }
+
+    .medley-item-info {
+      min-width: 0;
+
+      flex: 1;
+    }
+
+    .medley-item-info strong {
+      display: block;
+
+      overflow: hidden;
+
+      color: var(--texto);
+
+      font-size: 13px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .medley-item-info small {
+      color: var(--texto-3);
+    }
+
+    .medley-ordem {
+      color: var(--roxo);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .medley-separador {
+      margin: 25px 0;
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background: #f5efe6;
+
+      color: #756b5f;
+
+      text-align: center;
+
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       MODO CULTO
+       ===================================================== */
+
+    body.modo-culto .site-header,
+    body.modo-culto #inicio > footer {
+      display: none;
+    }
+
+    body.modo-culto .pagina-musica {
+      width: min(1200px, calc(100% - 24px));
+      padding-top: 12px;
+    }
+
+    body.modo-culto .musica-topo {
+      position: relative;
+      top: 0;
+    }
+
+    body.modo-culto #cifra {
+      font-size: calc(var(--tamanho-cifra) + 3px);
+      line-height: 1.35;
+    }
+
+    body.modo-culto .cifra-card {
+      border-radius: 15px;
+    }
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+      padding: 25px 18px 35px;
+
+      color: var(--texto-3);
+
+      font-size: 11px;
+
+      text-align: center;
+    }
+
+    /* =====================================================
+       RESPONSIVO
+       ===================================================== */
+
+    @media (max-width: 700px) {
+      .site-header {
+        padding:
+          20px
+          15px
+          75px;
+      }
+
+      .marca h1 {
+        font-size: 19px;
+      }
+
+      .marca p {
+        display: none;
+      }
+
+      .logo {
+        width: 49px;
+        height: 49px;
+
+        font-size: 25px;
+      }
+
+      .header-actions {
+        gap: 5px;
+      }
+
+      .header-button {
+        width: 39px;
+        height: 39px;
+      }
+
+      .container {
+        width: calc(100% - 16px);
+
+        margin-top: -22px;
+      }
+
+      .hero {
+        padding: 18px;
+
+        border-radius: 18px;
+      }
+
+      .hero h2 {
+        font-size: 23px;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .culto-header {
+        padding: 18px;
+      }
+
+      #nomeCulto {
+        font-size: 19px;
+      }
+
+      #bancoMusicas {
+        grid-template-columns: 1fr;
+      }
+
+      .acoes {
+        grid-template-columns: 1fr;
+      }
+
+      .pagina-musica {
+        width: calc(100% - 16px);
+
+        padding-top: 8px;
+      }
+
+      .musica-topo {
+        position: relative;
+        top: 0;
+
+        padding: 19px;
+
+        border-radius: 17px;
+      }
+
+      .musica-topo h2 {
+        font-size: 21px;
+      }
+
+      .controles {
+        gap: 6px;
+      }
+
+      .controle {
+        padding: 9px 10px;
+      }
+
+      #cifra {
+        padding: 17px;
+
+        font-size: var(--tamanho-cifra);
+
+        line-height: 1.28;
+      }
+
+      body.modo-culto #cifra {
+        font-size: calc(var(--tamanho-cifra) + 2px);
+      }
+
+      .cifra-toolbar {
+        padding: 10px 13px;
+      }
+
+      .modal-card {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="inicio">
+  <!-- =====================================================
+       PÁGINA PRINCIPAL
+       ===================================================== -->
 
-<header class="site-header">
-  <div class="header-inner">
+  <div id="inicio">
 
-    <div class="marca">
-      <div class="logo">🎸</div>
-      <div>
-        <h1>Cifras IEQ Patrocínio</h1>
-        <p>Louvor, cifras e repertório em um só lugar.</p>
+    <header class="site-header">
+
+      <div class="header-inner">
+
+        <div class="marca">
+
+          <div class="logo">
+            🎸
+          </div>
+
+          <div>
+            <h1>Cifras IEQ Patrocínio</h1>
+
+            <p>
+              Louvor, cifras e repertório em um só lugar.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="header-actions">
+
+          <button
+            type="button"
+            class="header-button"
+            id="botaoTema"
+            onclick="alternarTema()"
+            title="Alternar modo noturno"
+            aria-label="Alternar modo noturno"
+          >
+            🌙
+          </button>
+
+        </div>
+
       </div>
-    </div>
 
-    <div class="header-actions">
-      <button
-        class="header-button"
-        id="botaoTema"
-        onclick="alternarTema()"
-        title="Modo noturno"
-      >🌙</button>
-    </div>
+    </header>
+
+
+    <main class="container">
+
+      <section class="hero">
+
+        <div class="hero-head">
+
+          <div>
+
+            <div class="eyebrow">
+              ✦ IEQ Patrocínio
+            </div>
+
+            <h2>
+              Repertório do culto
+            </h2>
+
+            <p class="hero-subtitle">
+              Escolha uma música e comece a tocar.
+            </p>
+
+          </div>
+
+          <div class="status">
+            <span class="status-dot"></span>
+            Sistema online
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CULTO
+             ================================================= -->
+
+        <section class="culto-card">
+
+          <div class="culto-header">
+
+            <div class="culto-info">
+
+              <div class="culto-esquerda">
+
+                <div class="culto-icon">
+                  🎤
+                </div>
+
+                <div>
+
+                  <h2 id="nomeCulto">
+                    Carregando culto...
+                  </h2>
+
+                  <div id="dataCulto"></div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div id="repertorio">
+
+            <div class="vazio loading">
+              <span class="spinner"></span>
+              Carregando repertório...
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             AÇÕES
+             ================================================= -->
+
+        <div class="acoes">
+
+          <button
+            type="button"
+            class="botao botao-roxo"
+            onclick="abrirModalCulto()"
+          >
+            ➕ Adicionar culto
+          </button>
+
+          <button
+            type="button"
+            class="botao botao-verde"
+            onclick="abrirMedley()"
+          >
+            🎶 Criar medley
+          </button>
+
+          <button
+            type="button"
+            class="botao botao-claro"
+            onclick="atualizarTudo()"
+          >
+            🔄 Atualizar
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             BANCO DE MÚSICAS
+             ================================================= -->
+
+        <section class="banco-card">
+
+          <div class="secao-titulo">
+
+            <h3>
+              📚 Banco de músicas
+            </h3>
+
+            <span
+              class="contador"
+              id="contadorMusicas"
+            >
+              0 músicas
+            </span>
+
+          </div>
+
+
+          <div class="busca">
+
+            <span class="busca-icon">
+              🔎
+            </span>
+
+            <input
+              id="buscaMusicas"
+              type="search"
+              placeholder="Buscar por título ou artista..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div id="bancoMusicas">
+
+            <div class="vazio loading">
+              <span class="spinner"></span>
+              Carregando músicas...
+            </div>
+
+          </div>
+
+        </section>
+
+      </section>
+
+    </main>
+
+
+    <footer>
+      Cifras IEQ Patrocínio • Feito para servir no louvor ❤️
+    </footer>
 
   </div>
-</header>
 
-<main class="container">
 
-<section class="hero">
+  <!-- =====================================================
+       PÁGINA DA MÚSICA
+       ===================================================== -->
 
-<div class="hero-head">
-  <div>
-    <div class="eyebrow">✦ IEQ Patrocínio</div>
-    <h2>Repertório do culto</h2>
-    <p class="hero-subtitle">
-      Escolha uma música e comece a tocar.
-    </p>
-  </div>
-
-  <div class="status">
-    <span class="status-dot"></span>
-    Sistema online
-  </div>
-</div>
-
-<section class="culto-card">
-
-<div class="culto-header">
-  <div class="culto-info">
-
-    <div>
-      <h2 id="nomeCulto">Carregando culto...</h2>
-      <div id="dataCulto"></div>
-    </div>
-
-    <div class="culto-icon">🎤</div>
-
-  </div>
-</div>
-
-<div id="repertorio">
-  <div class="vazio loading">
-    <span class="spinner"></span>
-    Carregando repertório...
-  </div>
-</div>
-
-</section>
-
-<div class="acoes">
-
-<button
-  class="botao botao-roxo"
-  onclick="abrirModalCulto()"
->
-  ➕ Adicionar culto
-</button>
-
-<button
-  class="botao botao-claro"
-  onclick="atualizarTudo()"
->
-  🔄 Atualizar
-</button>
-
-<button
-  class="botao botao-claro"
-  onclick="abrirModalMusica()"
->
-  🎵 Adicionar música
-</button>
-
-</div>
-
-<section class="banco-card">
-
-<div class="secao-titulo">
-  <h3>📚 Banco de músicas</h3>
-  <span class="contador" id="contadorMusicas">
-    0 músicas
-  </span>
-</div>
-
-<div class="busca">
-  <span class="busca-icon">🔎</span>
-  <input
-    id="buscaMusicas"
-    type="search"
-    placeholder="Buscar por título ou artista..."
-    autocomplete="off"
+  <div
+    id="paginaMusica"
+    class="pagina-musica oculto"
   >
-</div>
 
-<div id="bancoMusicas">
-  <div class="vazio loading">
-    <span class="spinner"></span>
-    Carregando músicas...
+    <div class="musica-topo">
+
+      <h2 id="tituloMusica">
+        🎵 Música
+      </h2>
+
+      <p id="artistaMusica"></p>
+
+
+      <div class="controles">
+
+        <button
+          type="button"
+          class="controle"
+          onclick="voltar()"
+        >
+          ← Voltar
+        </button>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="mudarTom(-1)"
+        >
+          − Tom
+        </button>
+
+        <div
+          id="tomAtual"
+          class="tom-atual"
+        >
+          C
+        </div>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="mudarTom(1)"
+        >
+          + Tom
+        </button>
+
+        <!-- NOVO -->
+        <div class="tamanho-cifra-controle">
+
+          <button
+            type="button"
+            onclick="diminuirFonte()"
+            title="Diminuir letra"
+          >
+            A−
+          </button>
+
+          <span id="tamanhoCifraValor">
+            17px
+          </span>
+
+          <button
+            type="button"
+            onclick="aumentarFonte()"
+            title="Aumentar letra"
+          >
+            A+
+          </button>
+
+        </div>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="abrirControleRolagem()"
+        >
+          📜 Rolagem
+        </button>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="copiarCifra()"
+        >
+          📋 Copiar
+        </button>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="abrirMedleyComMusicaAtual()"
+        >
+          🎶 Medley
+        </button>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="modoCulto()"
+        >
+          🎤 Modo culto
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           CONTROLE DA ROLAGEM
+           ================================================= -->
+
+      <div
+        id="controleRolagem"
+        class="controle-rolagem"
+      >
+
+        <div class="rolagem-linha">
+
+          <label for="velocidadeRolagem">
+            Velocidade
+          </label>
+
+          <input
+            id="velocidadeRolagem"
+            type="range"
+            min="1"
+            max="10"
+            value="4"
+          >
+
+          <span id="valorVelocidade">
+            4x
+          </span>
+
+        </div>
+
+
+        <div class="rolagem-botoes">
+
+          <button
+            type="button"
+            onclick="iniciarRolagem()"
+          >
+            ▶ Iniciar
+          </button>
+
+          <button
+            type="button"
+            onclick="pausarRolagem()"
+          >
+            ⏸ Pausar
+          </button>
+
+          <button
+            type="button"
+            onclick="pararRolagem()"
+          >
+            ⏹ Parar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="cifra-card">
+
+      <div class="cifra-toolbar">
+
+        <span>
+          🎵 CIFRA
+        </span>
+
+        <span id="statusCifra">
+          Tom original
+        </span>
+
+      </div>
+
+      <div id="cifra">
+        Carregando...
+      </div>
+
+    </div>
+
   </div>
-</div>
 
-</section>
 
-</section>
-</main>
+  <!-- =====================================================
+       MODAL ADICIONAR CULTO
+       ===================================================== -->
 
-<footer>
-Cifras IEQ Patrocínio • Feito para servir no louvor ❤️
-</footer>
+  <div
+    id="modalCulto"
+    class="modal"
+    onclick="fecharModalFora(event, 'modalCulto')"
+  >
 
-</div>
+    <div class="modal-card">
 
+      <h2>
+        ➕ Adicionar culto
+      </h2>
 
-<!-- PÁGINA DA MÚSICA -->
+      <p>
+        Crie um culto e escolha as músicas que farão parte do repertório.
+      </p>
 
-<div id="paginaMusica" class="pagina-musica oculto">
+      <div class="campo">
 
-<div class="musica-topo">
+        <label for="novoCultoNome">
+          Nome do culto
+        </label>
 
-<h2 id="tituloMusica">🎵 Música</h2>
-<p id="artistaMusica"></p>
+        <input
+          id="novoCultoNome"
+          type="text"
+          placeholder="Ex.: Culto de Celebração"
+        >
 
-<div class="controles">
+      </div>
 
-<button class="controle" onclick="voltar()">
-← Voltar
-</button>
+      <div class="campo">
 
-<button class="controle" onclick="mudarTom(-1)">
-− Tom
-</button>
+        <label for="novoCultoData">
+          Data do culto
+        </label>
 
-<div id="tomAtual" class="tom-atual">C</div>
+        <input
+          id="novoCultoData"
+          type="date"
+        >
 
-<button class="controle" onclick="mudarTom(1)">
-+ Tom
-</button>
+      </div>
 
-<button class="controle" onclick="abrirControleRolagem()">
-📜 Rolagem
-</button>
+      <div class="campo">
 
-<button class="controle" onclick="abrirModalMedley()">
-🎶 Medley
-</button>
+        <label>
+          Músicas do culto
+        </label>
 
-<button class="controle" onclick="copiarCifra()">
-📋 Copiar
-</button>
+        <div
+          id="listaMusicasNovoCulto"
+          class="medley-lista"
+        >
+          Carregando músicas...
+        </div>
 
-<button class="controle" onclick="modoCulto()">
-🎤 Modo culto
-</button>
+      </div>
 
-</div>
+      <div class="modal-acoes">
 
-<div id="controleRolagem" class="controle-rolagem">
+        <button
+          type="button"
+          class="btn-modal-cancelar"
+          onclick="fecharModal('modalCulto')"
+        >
+          Cancelar
+        </button>
 
-<div class="rolagem-linha">
-<label>Velocidade</label>
+        <button
+          type="button"
+          class="btn-modal-principal"
+          onclick="salvarNovoCulto()"
+        >
+          💾 Criar culto
+        </button>
 
-<input
-  id="velocidadeRolagem"
-  type="range"
-  min="1"
-  max="10"
-  value="4"
->
+      </div>
 
-<span id="valorVelocidade">4x</span>
-</div>
+    </div>
 
-<div class="rolagem-botoes">
+  </div>
 
-<button onclick="iniciarRolagem()">▶ Iniciar</button>
-<button onclick="pausarRolagem()">⏸ Pausar</button>
-<button onclick="pararRolagem()">⏹ Parar</button>
 
-</div>
+  <!-- =====================================================
+       MODAL MEDLEY
+       ===================================================== -->
 
-</div>
+  <div
+    id="modalMedley"
+    class="modal"
+    onclick="fecharModalFora(event, 'modalMedley')"
+  >
 
-</div>
+    <div class="modal-card">
 
-<div class="cifra-card">
+      <h2>
+        🎶 Criar medley
+      </h2>
 
-<div class="cifra-toolbar">
-<span>🎵 CIFRA</span>
-<span id="statusCifra">Tom original</span>
-</div>
+      <p>
+        Selecione as músicas na ordem em que deseja tocá-las.
+      </p>
 
-<div id="cifra">
-Carregando...
-</div>
+      <div
+        id="listaMedley"
+        class="medley-lista"
+      >
+        Carregando músicas...
+      </div>
 
-</div>
+      <div class="modal-acoes">
 
-</div>
+        <button
+          type="button"
+          class="btn-modal-cancelar"
+          onclick="fecharModal('modalMedley')"
+        >
+          Cancelar
+        </button>
 
+        <button
+          type="button"
+          class="btn-modal-principal"
+          onclick="abrirMedleySelecionado()"
+        >
+          ▶ Abrir medley
+        </button>
 
-<!-- MODAL NOVO CULTO -->
+      </div>
 
-<div id="modalCulto" class="modal" onclick="fecharModalFora(event,'modalCulto')">
+    </div>
 
-<div class="modal-card">
+  </div>
 
-<h2>➕ Adicionar culto</h2>
 
-<p class="modal-sub">
-Crie o culto e escolha imediatamente as músicas do repertório.
-</p>
+  <script>
+    "use strict";
 
-<label class="form-label">Nome do culto</label>
+    /* =====================================================
+       CONFIGURAÇÃO
+       ===================================================== */
 
-<input
-  id="novoCultoNome"
-  class="form-input"
-  type="text"
-  placeholder="Ex.: Culto de Celebração"
->
+    const SUPABASE_URL =
+      "https://jbkeshenygonmgogkodd.supabase.co";
 
-<label class="form-label">Data do culto</label>
+    const SUPABASE_KEY =
+      "sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
 
-<input
-  id="novoCultoData"
-  class="form-input"
-  type="date"
->
 
-<label class="form-label">
-Músicas do culto
-</label>
+    /* =====================================================
+       ESTADO
+       ===================================================== */
 
-<div id="listaMusicasCulto" class="lista-medley">
-  Carregando músicas...
-</div>
+    let musicaAtual = null;
 
-<div class="modal-acoes">
+    let todasMusicas = [];
 
-<button
-  class="btn-secundario"
-  onclick="fecharModal('modalCulto')"
->
-Cancelar
-</button>
+    let tomOriginal = 0;
 
-<button
-  class="btn-principal"
-  onclick="salvarCulto()"
->
-💾 Criar culto
-</button>
+    let tomAtual = 0;
 
-</div>
+    let rolagemAtiva = false;
 
-</div>
-</div>
+    let intervaloRolagem = null;
 
+    let tamanhoCifra = 17;
 
-<!-- MODAL ADICIONAR MÚSICA -->
+    let medleySelecionado = [];
 
-<div id="modalMusica" class="modal" onclick="fecharModalFora(event,'modalMusica')">
+    let musicaInicialMedley = null;
 
-<div class="modal-card">
 
-<h2>🎵 Adicionar música</h2>
+    const tons = [
+      "C",
+      "C#",
+      "D",
+      "D#",
+      "E",
+      "F",
+      "F#",
+      "G",
+      "G#",
+      "A",
+      "A#",
+      "B"
+    ];
 
-<p class="modal-sub">
-Cadastre uma música diretamente no banco.
-</p>
 
-<label class="form-label">Título</label>
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
 
-<input
-  id="novaMusicaTitulo"
-  class="form-input"
-  placeholder="Nome da música"
->
+    async function buscar(url, opcoes = {}) {
 
-<label class="form-label">Artista</label>
+      const controlador =
+        new AbortController();
 
-<input
-  id="novaMusicaArtista"
-  class="form-input"
-  placeholder="Artista ou ministério"
->
+      const timeout =
+        setTimeout(
+          function() {
+            controlador.abort();
+          },
+          12000
+        );
 
-<label class="form-label">Tom</label>
+      try {
 
-<input
-  id="novaMusicaTom"
-  class="form-input"
-  placeholder="Ex.: G"
->
+        const resposta =
+          await fetch(
+            SUPABASE_URL + url,
+            {
+              method:
+                opcoes.method || "GET",
 
-<label class="form-label">Cifra / letra</label>
+              headers: {
+                "apikey":
+                  SUPABASE_KEY,
 
-<textarea
-  id="novaMusicaCifra"
-  class="form-input"
-  rows="12"
-  placeholder="[G]Aqui entra a letra...
-[C]Com os acordes entre colchetes."
-></textarea>
+                "Content-Type":
+                  "application/json",
 
-<div class="modal-acoes">
+                "Accept":
+                  "application/json",
 
-<button
-  class="btn-secundario"
-  onclick="fecharModal('modalMusica')"
->
-Cancelar
-</button>
+                ...(opcoes.headers || {})
+              },
 
-<button
-  class="btn-principal"
-  onclick="salvarMusica()"
->
-💾 Salvar música
-</button>
+              body:
+                opcoes.body
+                  ? JSON.stringify(
+                      opcoes.body
+                    )
+                  : undefined,
 
-</div>
+              signal:
+                controlador.signal
+            }
+          );
 
-</div>
-</div>
 
+        const texto =
+          await resposta.text();
 
-<!-- MODAL MEDLEY -->
 
-<div id="modalMedley" class="modal" onclick="fecharModalFora(event,'modalMedley')">
+        if (!resposta.ok) {
 
-<div class="modal-card">
+          let mensagem =
+            texto ||
+            "Erro ao consultar o Supabase.";
 
-<h2>🎶 Montar Medley</h2>
 
-<p class="modal-sub">
-Selecione as músicas e elas serão exibidas uma após a outra.
-</p>
+          try {
 
-<div class="busca">
-<input
-  id="buscaMedley"
-  class="form-input"
-  type="search"
-  placeholder="Buscar música..."
-  oninput="filtrarListaMedley()"
->
-</div>
+            const json =
+              JSON.parse(texto);
 
-<div id="listaMedley" class="lista-medley"></div>
+            if (
+              json &&
+              json.message
+            ) {
+              mensagem =
+                json.message;
+            }
 
-<div class="modal-acoes">
+          } catch (_) {}
 
-<button
-  class="btn-secundario"
-  onclick="fecharModal('modalMedley')"
->
-Cancelar
-</button>
 
-<button
-  class="btn-principal"
-  onclick="montarMedley()"
->
-🎶 Criar medley
-</button>
+          throw new Error(
+            mensagem
+          );
+        }
 
-</div>
 
-</div>
-</div>
+        if (!texto) {
+          return [];
+        }
 
 
-<script>
-"use strict";
+        return JSON.parse(texto);
 
-/* =====================================================
-   CONFIGURAÇÃO
-===================================================== */
+      } catch (erro) {
 
-const SUPABASE_URL =
-"https://jbkeshenygonmgogkodd.supabase.co";
+        if (
+          erro.name ===
+          "AbortError"
+        ) {
 
-const SUPABASE_KEY =
-"sb_publishable_v-e7y7OMuY2j3yJxCP8Nmg_PtdYevK7";
+          throw new Error(
+            "O servidor demorou demais para responder."
+          );
+        }
 
 
-/* =====================================================
-   ESTADO
-===================================================== */
+        throw erro;
 
-let musicaAtual = null;
-let medleyAtual = [];
-let todasMusicas = [];
+      } finally {
 
-let tomOriginal = 0;
-let tomAtual = 0;
+        clearTimeout(timeout);
 
-let rolagemAtiva = false;
-let intervaloRolagem = null;
+      }
+    }
 
-const tons=[
-"C","C#","D","D#","E","F",
-"F#","G","G#","A","A#","B"
-];
 
+    /* =====================================================
+       CARREGAR TUDO
+       ===================================================== */
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+    async function atualizarTudo() {
 
-async function buscar(url,opcoes={}){
+      const repertorio =
+        document.getElementById(
+          "repertorio"
+        );
 
-const controlador=new AbortController();
+      const banco =
+        document.getElementById(
+          "bancoMusicas"
+        );
 
-const timeout=setTimeout(
-()=>controlador.abort(),
-12000
-);
 
-try{
+      repertorio.innerHTML = `
+        <div class="vazio loading">
+          <span class="spinner"></span>
+          Carregando repertório...
+        </div>
+      `;
 
-const resposta=await fetch(
-SUPABASE_URL+url,
-{
-...opcoes,
-headers:{
-"apikey":SUPABASE_KEY,
-"Content-Type":"application/json",
-"Accept":"application/json",
-...(opcoes.headers||{})
-},
-signal:controlador.signal
-}
-);
 
-const texto=await resposta.text();
+      banco.innerHTML = `
+        <div class="vazio loading">
+          <span class="spinner"></span>
+          Carregando músicas...
+        </div>
+      `;
 
-if(!resposta.ok){
 
-let mensagem=
-texto||"Erro ao consultar o Supabase.";
+      await Promise.allSettled([
+        carregarCulto(),
+        carregarBancoMusicas()
+      ]);
 
-try{
+    }
 
-const json=JSON.parse(texto);
 
-if(json?.message)
-mensagem=json.message;
+    /* =====================================================
+       CULTO
+       ===================================================== */
 
-}catch(e){}
+    async function carregarCulto() {
 
-throw new Error(mensagem);
-}
+      const nomeCulto =
+        document.getElementById(
+          "nomeCulto"
+        );
 
-if(!texto)return[];
+      const dataCulto =
+        document.getElementById(
+          "dataCulto"
+        );
 
-return JSON.parse(texto);
+      const repertorio =
+        document.getElementById(
+          "repertorio"
+        );
 
-}catch(erro){
 
-if(erro.name==="AbortError"){
-throw new Error(
-"O servidor demorou demais para responder."
-);
-}
+      nomeCulto.textContent =
+        "Carregando culto...";
 
-throw erro;
+      dataCulto.textContent =
+        "";
 
-}finally{
 
-clearTimeout(timeout);
+      try {
 
-}
+        const cultos =
+          await buscar(
+            "/rest/v1/cultos" +
+            "?select=id,nome,data_culto" +
+            "&order=data_culto.desc" +
+            "&limit=1"
+          );
 
-}
 
+        if (
+          !Array.isArray(cultos) ||
+          cultos.length === 0
+        ) {
 
-/* =====================================================
-   ATUALIZAR
-===================================================== */
+          nomeCulto.textContent =
+            "Nenhum culto cadastrado";
 
-async function atualizarTudo(){
+          repertorio.innerHTML = `
+            <div class="vazio">
+              🎤 Nenhum culto cadastrado ainda.
+            </div>
+          `;
 
-document.getElementById("repertorio").innerHTML=`
-<div class="vazio loading">
-<span class="spinner"></span>
-Carregando repertório...
-</div>`;
+          return;
+        }
 
-document.getElementById("bancoMusicas").innerHTML=`
-<div class="vazio loading">
-<span class="spinner"></span>
-Carregando músicas...
-</div>`;
 
-await carregarBancoMusicas();
-await carregarCulto();
+        const culto =
+          cultos[0];
 
-}
 
+        nomeCulto.textContent =
+          culto.nome ||
+          "Culto";
 
-/* =====================================================
-   BANCO DE MÚSICAS
-===================================================== */
 
-async function carregarBancoMusicas(){
+        dataCulto.textContent =
+          formatarData(
+            culto.data_culto
+          );
 
-const banco=document.getElementById("bancoMusicas");
-const contador=document.getElementById("contadorMusicas");
 
-try{
+        const vinculos =
+          await buscar(
+            "/rest/v1/culto_musicas" +
+            "?select=musica_id,ordem" +
+            "&culto_id=eq." +
+            encodeURIComponent(
+              culto.id
+            ) +
+            "&order=ordem.asc"
+          );
 
-const musicas=await buscar(
-"/rest/v1/musicas"+
-"?select=*"+
-"&order=titulo.asc"
-);
 
-todasMusicas=
-Array.isArray(musicas)?musicas:[];
+        if (
+          !Array.isArray(vinculos) ||
+          vinculos.length === 0
+        ) {
 
-contador.textContent=
-todasMusicas.length+
-(todasMusicas.length===1
-?" música"
-:" músicas");
+          repertorio.innerHTML = `
+            <div class="vazio">
+              🎵 Nenhuma música foi adicionada a este culto.
+            </div>
+          `;
 
-renderizarBanco(todasMusicas);
+          return;
+        }
 
-}catch(erro){
 
-console.error(erro);
+        let musicas =
+          todasMusicas;
 
-contador.textContent="Erro";
 
-banco.innerHTML=`
-<div class="erro">
-<strong>❌ Não foi possível carregar as músicas.</strong>
-<br><br>
-${escapar(erro.message)}
-</div>`;
+        if (
+          !Array.isArray(musicas) ||
+          !musicas.length
+        ) {
 
-}
+          musicas =
+            await buscar(
+              "/rest/v1/musicas" +
+              "?select=*"
+            );
 
-}
+        }
 
 
-function renderizarBanco(musicas){
+        const mapa =
+          new Map();
 
-const banco=document.getElementById("bancoMusicas");
 
-banco.innerHTML="";
+        musicas.forEach(
+          function(musica) {
 
-if(!musicas.length){
+            mapa.set(
+              String(musica.id),
+              musica
+            );
 
-banco.innerHTML=`
-<div class="vazio">
-📚 Nenhuma música cadastrada.
-</div>`;
+          }
+        );
 
-return;
-}
 
-musicas.forEach(musica=>{
+        repertorio.innerHTML = "";
 
-const item=document.createElement("div");
 
-item.className="banco-item";
+        let quantidade =
+          0;
 
-item.innerHTML=`
-<strong>${escapar(
-musica.titulo||"Música sem título"
-)}</strong>
 
-<small>
-${escapar(
-musica.artista||"Artista não informado"
-)}
- • Tom: ${escapar(musica.tom||"-")}
-</small>
-`;
+        vinculos.forEach(
+          function(item) {
 
-item.onclick=()=>abrirMusica(musica);
+            const musica =
+              mapa.get(
+                String(
+                  item.musica_id
+                )
+              );
 
-banco.appendChild(item);
 
-});
+            if (!musica) {
+              return;
+            }
 
-}
 
+            quantidade++;
 
-/* =====================================================
-   BUSCA
-===================================================== */
 
-function filtrarMusicas(){
+            const div =
+              document.createElement(
+                "div"
+              );
 
-const termo=
-document.getElementById("buscaMusicas")
-.value
-.trim()
-.toLowerCase();
 
-if(!termo){
+            div.className =
+              "musica";
 
-renderizarBanco(todasMusicas);
-return;
+            div.setAttribute(
+              "role",
+              "button"
+            );
 
-}
+            div.setAttribute(
+              "tabindex",
+              "0"
+            );
 
-renderizarBanco(
-todasMusicas.filter(m=>
-String(m.titulo||"")
-.toLowerCase()
-.includes(termo)
-||
-String(m.artista||"")
-.toLowerCase()
-.includes(termo)
-)
-);
 
-}
+            const ordem =
+              item.ordem != null
+                ? String(
+                    item.ordem
+                  ).padStart(
+                    2,
+                    "0"
+                  )
+                : "--";
 
 
-/* =====================================================
-   CULTO ATUAL
-===================================================== */
+            div.innerHTML = `
 
-async function carregarCulto(){
+              <div class="musica-left">
 
-const nome=document.getElementById("nomeCulto");
-const data=document.getElementById("dataCulto");
-const repertorio=document.getElementById("repertorio");
+                <div class="ordem">
+                  ${escapar(ordem)}
+                </div>
 
-nome.textContent="Carregando culto...";
-data.textContent="";
+                <div class="musica-texto">
 
-try{
+                  <strong>
+                    ${escapar(
+                      musica.titulo ||
+                      "Música sem título"
+                    )}
+                  </strong>
 
-const cultos=await buscar(
-"/rest/v1/cultos"+
-"?select=id,nome,data_culto"+
-"&order=data_culto.desc"+
-"&limit=1"
-);
+                  ${
+                    musica.artista
+                      ? `
+                        <div class="artista">
+                          ${escapar(
+                            musica.artista
+                          )}
+                        </div>
+                      `
+                      : ""
+                  }
 
-if(!cultos.length){
+                </div>
 
-nome.textContent="Nenhum culto cadastrado";
+              </div>
 
-repertorio.innerHTML=`
-<div class="vazio">
-🎤 Nenhum culto cadastrado ainda.
-<br><br>
-Use o botão <strong>Adicionar culto</strong>.
-</div>`;
+              <div class="musica-meta">
 
-return;
+                <span class="tom">
+                  ${escapar(
+                    musica.tom ||
+                    "-"
+                  )}
+                </span>
 
-}
+                <div class="seta">
+                  ›
+                </div>
 
-const culto=cultos[0];
+              </div>
 
-nome.textContent=culto.nome||"Culto";
+            `;
 
-data.textContent=
-formatarData(culto.data_culto);
 
-const vinculos=await buscar(
-"/rest/v1/culto_musicas"+
-"?select=musica_id,ordem"+
-"&culto_id=eq."+encodeURIComponent(culto.id)+
-"&order=ordem.asc"
-);
+            div.onclick =
+              function() {
+                abrirMusica(musica);
+              };
 
-if(!vinculos.length){
 
-repertorio.innerHTML=`
-<div class="vazio">
-🎵 Nenhuma música foi adicionada a este culto.
-</div>`;
+            div.onkeydown =
+              function(event) {
 
-return;
+                if (
+                  event.key === "Enter" ||
+                  event.key === " "
+                ) {
 
-}
+                  event.preventDefault();
 
-const mapa=new Map(
-todasMusicas.map(m=>[String(m.id),m])
-);
+                  abrirMusica(musica);
 
-repertorio.innerHTML="";
+                }
 
-let quantidade=0;
+              };
 
-vinculos.forEach(v=>{
 
-const musica=mapa.get(
-String(v.musica_id)
-);
+            repertorio.appendChild(
+              div
+            );
 
-if(!musica)return;
+          }
+        );
 
-quantidade++;
 
-const div=document.createElement("div");
+        if (
+          quantidade === 0
+        ) {
 
-div.className="musica";
-div.tabIndex=0;
+          repertorio.innerHTML = `
+            <div class="vazio">
+              🎵 As músicas deste culto não foram encontradas no banco.
+            </div>
+          `;
 
-div.innerHTML=`
+        }
 
-<div class="musica-left">
+      } catch (erro) {
 
-<div class="ordem">
-${String(v.ordem||quantidade).padStart(2,"0")}
-</div>
+        console.error(
+          "Erro ao carregar culto:",
+          erro
+        );
 
-<div class="musica-texto">
 
-<strong>
-${escapar(musica.titulo||"Música")}
-</strong>
+        nomeCulto.textContent =
+          "Não foi possível carregar o culto";
 
-<div class="artista">
-${escapar(musica.artista||"")}
-</div>
 
-</div>
+        repertorio.innerHTML = `
+          <div class="erro">
 
-</div>
+            <strong>
+              ❌ Não foi possível carregar o repertório.
+            </strong>
 
-<div class="musica-meta">
+            <br><br>
 
-<span class="tom">
-${escapar(musica.tom||"-")}
-</span>
+            ${escapar(
+              erro.message
+            )}
 
-<div class="seta">›</div>
+          </div>
+        `;
 
-</div>
-`;
+      }
 
-div.onclick=()=>abrirMusica(musica);
+    }
 
-div.onkeydown=e=>{
-if(e.key==="Enter"||e.key===" "){
-e.preventDefault();
-abrirMusica(musica);
-}
-};
 
-repertorio.appendChild(div);
+    /* =====================================================
+       BANCO DE MÚSICAS
+       ===================================================== */
 
-});
+    async function carregarBancoMusicas() {
 
-if(!quantidade){
+      const banco =
+        document.getElementById(
+          "bancoMusicas"
+        );
 
-repertorio.innerHTML=`
-<div class="vazio">
-🎵 As músicas deste culto não foram encontradas.
-</div>`;
+      const contador =
+        document.getElementById(
+          "contadorMusicas"
+        );
 
-}
 
-}catch(erro){
+      try {
 
-console.error(erro);
+        const musicas =
+          await buscar(
+            "/rest/v1/musicas" +
+            "?select=*" +
+            "&order=titulo.asc"
+          );
 
-nome.textContent="Não foi possível carregar o culto";
 
-repertorio.innerHTML=`
-<div class="erro">
-<strong>❌ Não foi possível carregar o repertório.</strong>
-<br><br>
-${escapar(erro.message)}
-</div>`;
+        todasMusicas =
+          Array.isArray(musicas)
+            ? musicas
+            : [];
 
-}
 
-}
+        contador.textContent =
+          todasMusicas.length +
+          (
+            todasMusicas.length === 1
+              ? " música"
+              : " músicas"
+          );
 
 
-/* =====================================================
-   ABRIR MÚSICA
-===================================================== */
+        renderizarBanco(
+          todasMusicas
+        );
 
-function abrirMusica(musica){
+      } catch (erro) {
 
-if(!musica)return;
+        console.error(
+          "Erro ao carregar banco de músicas:",
+          erro
+        );
 
-musicaAtual=musica;
-medleyAtual=[];
 
-tomOriginal=indiceTom(
-musica.tom||
-detectarTomInicial(musica.cifra)||
-"C"
-);
+        contador.textContent =
+          "Erro";
 
-if(tomOriginal===-1)
-tomOriginal=0;
 
-tomAtual=tomOriginal;
+        banco.innerHTML = `
+          <div class="erro">
 
-pararRolagem();
+            <strong>
+              ❌ Não foi possível carregar o banco de músicas.
+            </strong>
 
-document.body.classList.remove("modo-culto");
+            <br><br>
 
-document.getElementById("inicio")
-.classList.add("oculto");
+            ${escapar(
+              erro.message
+            )}
 
-document.getElementById("paginaMusica")
-.classList.remove("oculto");
+          </div>
+        `;
 
-document.getElementById("tituloMusica")
-.textContent="🎵 "+(musica.titulo||"Música");
+      }
 
-document.getElementById("artistaMusica")
-.textContent=musica.artista||"";
+    }
 
-document.getElementById("tomAtual")
-.textContent=obterNomeTom(tomAtual);
 
-mostrarCifra();
+    function renderizarBanco(
+      musicas
+    ) {
 
-window.scrollTo(0,0);
+      const banco =
+        document.getElementById(
+          "bancoMusicas"
+        );
 
-}
 
+      banco.innerHTML = "";
 
-/* =====================================================
-   CIFRA
-===================================================== */
 
-function mostrarCifra(){
+      if (
+        !Array.isArray(musicas) ||
+        !musicas.length
+      ) {
 
-const elemento=document.getElementById("cifra");
-const status=document.getElementById("statusCifra");
+        banco.innerHTML = `
+          <div class="vazio">
+            📚 Nenhuma música cadastrada.
+          </div>
+        `;
 
-if(!musicaAtual)return;
+        return;
+      }
 
-if(medleyAtual.length){
 
-mostrarMedley();
-return;
+      musicas.forEach(
+        function(musica) {
 
-}
+          const item =
+            document.createElement(
+              "div"
+            );
 
-const texto=String(musicaAtual.cifra||"");
 
-if(!texto.trim()){
+          item.className =
+            "banco-item";
 
-elemento.innerHTML=`
-<div class="vazio">
-Esta música ainda não possui cifra.
-</div>`;
 
-status.textContent="Sem cifra";
-return;
+          item.innerHTML = `
 
-}
+            <strong>
+              ${escapar(
+                musica.titulo ||
+                "Música sem título"
+              )}
+            </strong>
 
-const diferenca=
-normalizarIndice(tomAtual-tomOriginal);
+            <small>
+              ${
+                musica.artista
+                  ? escapar(
+                      musica.artista
+                    )
+                  : "Artista não informado"
+              }
 
-elemento.innerHTML=
-texto
-.split(/\r?\n/)
-.map(linha=>`
-<div class="linha-cifra">
-${processarLinha(linha,diferenca)}
-</div>
-`)
-.join("");
+              • Tom:
+              ${escapar(
+                musica.tom ||
+                "-"
+              )}
+            </small>
 
-status.textContent=
-"Tom "+obterNomeTom(tomAtual);
+          `;
 
-}
 
+          item.onclick =
+            function() {
 
-/* =====================================================
-   MEDLEY
-===================================================== */
+              abrirMusica(
+                musica
+              );
 
-function mostrarMedley(){
+            };
 
-const elemento=document.getElementById("cifra");
-const status=document.getElementById("statusCifra");
 
-elemento.innerHTML="";
+          banco.appendChild(
+            item
+          );
 
-medleyAtual.forEach((musica,index)=>{
+        }
+      );
 
-if(index>0){
+    }
 
-const separador=document.createElement("div");
 
-separador.className="separador-medley";
+    /* =====================================================
+       BUSCA
+       ===================================================== */
 
-separador.innerHTML=`
-<div class="titulo-medley">
-🎶 ${escapar(musica.titulo||"Música")}
-</div>
-<div class="artista-medley">
-${escapar(musica.artista||"")}
-</div>
-`;
+    function filtrarMusicas() {
 
-elemento.appendChild(separador);
+      const campo =
+        document.getElementById(
+          "buscaMusicas"
+        );
 
-}
 
-const texto=String(musica.cifra||"");
+      const termo =
+        campo.value
+          .trim()
+          .toLowerCase();
 
-const original=indiceTom(
-musica.tom||
-detectarTomInicial(musica.cifra)||
-"C"
-);
 
-const diferenca=
-normalizarIndice(tomAtual-original);
+      if (!termo) {
 
-const bloco=document.createElement("div");
+        renderizarBanco(
+          todasMusicas
+        );
 
-bloco.innerHTML=
-texto
-.split(/\r?\n/)
-.map(linha=>`
-<div class="linha-cifra">
-${processarLinha(linha,diferenca)}
-</div>
-`)
-.join("");
+        return;
+      }
 
-elemento.appendChild(bloco);
 
-});
+      const filtradas =
+        todasMusicas.filter(
+          function(musica) {
 
-status.textContent=
-"Medley • "+medleyAtual.length+" músicas";
+            const titulo =
+              String(
+                musica.titulo ||
+                ""
+              ).toLowerCase();
 
-}
 
+            const artista =
+              String(
+                musica.artista ||
+                ""
+              ).toLowerCase();
 
-/* =====================================================
-   PROCESSAR ACORDES
-===================================================== */
 
-function processarLinha(linha,diferenca){
+            return (
+              titulo.includes(termo) ||
+              artista.includes(termo)
+            );
 
-const regex=
-/\[([A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?)\]/g;
+          }
+        );
 
-let resultado="";
-let ultima=0;
-let encontrado;
 
-while((encontrado=regex.exec(linha))!==null){
+      renderizarBanco(
+        filtradas
+      );
 
-resultado+=escapar(
-linha.substring(ultima,encontrado.index)
-);
+    }
 
-resultado+=
-'<span class="acorde">'+
-escapar(
-transporAcorde(
-encontrado[1],
-diferenca
-)
-)+
-"</span>";
 
-ultima=regex.lastIndex;
+    /* =====================================================
+       ABRIR MÚSICA
+       ===================================================== */
 
-}
+    function abrirMusica(
+      musica
+    ) {
 
-resultado+=escapar(
-linha.substring(ultima)
-);
+      if (!musica) {
+        return;
+      }
 
-const limpa=linha.trim();
 
-const regexSozinho=
-/^[A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?$/;
+      musicaAtual =
+        musica;
 
-if(limpa&&regexSozinho.test(limpa)){
 
-const inicio=linha.indexOf(limpa);
+      tomOriginal =
+        indiceTom(
+          musica.tom ||
+          detectarTomInicial(
+            musica.cifra ||
+            ""
+          ) ||
+          "C"
+        );
 
-return(
-escapar(linha.substring(0,inicio))+
-'<span class="acorde">'+
-escapar(
-transporAcorde(limpa,diferenca)
-)+
-"</span>"+
-escapar(
-linha.substring(
-inicio+limpa.length
-)
-)
-);
 
-}
+      if (
+        tomOriginal === -1
+      ) {
+        tomOriginal = 0;
+      }
 
-return resultado;
 
-}
+      tomAtual =
+        tomOriginal;
 
 
-/* =====================================================
-   TOM
-===================================================== */
+      pararRolagem();
 
-function mudarTom(direcao){
 
-if(!musicaAtual)return;
+      document.body
+        .classList
+        .remove(
+          "modo-culto"
+        );
 
-tomAtual=
-normalizarIndice(tomAtual+direcao);
 
-document.getElementById("tomAtual")
-.textContent=obterNomeTom(tomAtual);
+      document
+        .getElementById(
+          "inicio"
+        )
+        .classList
+        .add(
+          "oculto"
+        );
 
-mostrarCifra();
 
-}
+      document
+        .getElementById(
+          "paginaMusica"
+        )
+        .classList
+        .remove(
+          "oculto"
+        );
 
-function transporAcorde(acorde,diferenca){
 
-const resultado=
-acorde.match(/^([A-G](?:#|b)?)(.*)$/);
+      document
+        .getElementById(
+          "tituloMusica"
+        )
+        .textContent =
+          "🎵 " +
+          (
+            musica.titulo ||
+            "Música"
+          );
 
-if(!resultado)return acorde;
 
-const nota=resultado[1];
-const complemento=resultado[2];
+      document
+        .getElementById(
+          "artistaMusica"
+        )
+        .textContent =
+          musica.artista ||
+          "";
 
-let indice=indiceTom(nota);
 
-if(indice===-1)return acorde;
+      document
+        .getElementById(
+          "tomAtual"
+        )
+        .textContent =
+          obterNomeTom(
+            tomAtual
+          );
 
-indice=normalizarIndice(indice+diferenca);
 
-return tons[indice]+complemento;
+      aplicarTamanhoCifra();
 
-}
+      mostrarCifra();
 
-function indiceTom(nota){
 
-const equivalentes={
-Db:"C#",
-Eb:"D#",
-Gb:"F#",
-Ab:"G#",
-Bb:"A#"
-};
+      window.scrollTo(
+        0,
+        0
+      );
 
-const normalizada=
-equivalentes[String(nota).trim()]||
-String(nota).trim();
+    }
 
-return tons.indexOf(normalizada);
 
-}
+    /* =====================================================
+       MOSTRAR CIFRA
+       ===================================================== */
 
-function obterNomeTom(indice){
-return tons[normalizarIndice(indice)];
-}
+    function mostrarCifra() {
 
-function normalizarIndice(numero){
+      if (!musicaAtual) {
+        return;
+      }
 
-return(
-(Number(numero)%12)+12
-)%12;
 
-}
+      const elemento =
+        document.getElementById(
+          "cifra"
+        );
 
 
-/* =====================================================
-   DETECTAR TOM
-===================================================== */
+      const status =
+        document.getElementById(
+          "statusCifra"
+        );
 
-function detectarTomInicial(cifra){
 
-const texto=String(cifra||"");
+      const texto =
+        String(
+          musicaAtual.cifra ||
+          ""
+        );
 
-const match=
-texto.match(/\[([A-G](?:#|b)?)/i);
 
-if(match)return match[1];
+      if (!texto.trim()) {
 
-for(const linha of texto.split(/\r?\n/)){
+        elemento.innerHTML = `
+          <div class="vazio">
+            Esta música ainda não possui cifra.
+          </div>
+        `;
 
-const limpa=linha.trim();
+        status.textContent =
+          "Sem cifra";
 
-if(
-/^[A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?$/.test(limpa)
-){
+        return;
+      }
 
-return limpa.split("/")[0];
 
-}
+      const diferenca =
+        normalizarIndice(
+          tomAtual -
+          tomOriginal
+        );
 
-}
 
-return"C";
+      const linhas =
+        texto.split(/\r?\n/);
 
-}
 
+      elemento.innerHTML =
+        linhas
+          .map(
+            function(linha) {
 
-/* =====================================================
-   MEDLEY - MODAL
-===================================================== */
+              return `
+                <div class="linha-cifra">
+                  ${
+                    processarLinha(
+                      linha,
+                      diferenca
+                    )
+                  }
+                </div>
+              `;
 
-function abrirModalMedley(){
+            }
+          )
+          .join("");
 
-if(!todasMusicas.length){
 
-alert("Nenhuma música foi carregada.");
-return;
+      status.textContent =
+        "Tom " +
+        obterNomeTom(
+          tomAtual
+        );
 
-}
+    }
 
-renderizarListaMedley();
 
-abrirModal("modalMedley");
+    /* =====================================================
+       PROCESSAR ACORDES
+       ===================================================== */
 
-}
+    function processarLinha(
+      linha,
+      diferenca
+    ) {
 
-function renderizarListaMedley(){
+      /*
+       * Acordes entre colchetes:
+       * [C]
+       * [G]
+       * [Am]
+       * [D7]
+       * [G/B]
+       * [C#m7]
+       */
 
-const lista=document.getElementById("listaMedley");
+      const regex =
+        /\[([A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?)\]/g;
 
-lista.innerHTML="";
 
-todasMusicas.forEach(musica=>{
+      let resultado = "";
 
-const linha=document.createElement("label");
+      let ultimaPosicao = 0;
 
-linha.className="medley-opcao";
+      let encontrado;
 
-linha.dataset.busca=
-(
-musica.titulo+" "+(musica.artista||"")
-).toLowerCase();
 
-const marcada=
-musicaAtual &&
-String(musicaAtual.id)===String(musica.id);
+      while (
+        (
+          encontrado =
+            regex.exec(
+              linha
+            )
+        ) !== null
+      ) {
 
-linha.innerHTML=`
+        resultado +=
+          escapar(
+            linha.substring(
+              ultimaPosicao,
+              encontrado.index
+            )
+          );
 
-<input
-type="checkbox"
-value="${escapar(musica.id)}"
-${marcada?"checked":""}
->
 
-<div class="medley-opcao-texto">
+        const acorde =
+          transporAcorde(
+            encontrado[1],
+            diferenca
+          );
 
-<strong>
-${escapar(musica.titulo||"Música")}
-</strong>
 
-<small>
-${escapar(musica.artista||"")}
-</small>
+        resultado +=
+          '<span class="acorde">' +
+          escapar(
+            acorde
+          ) +
+          "</span>";
 
-</div>
-`;
 
-lista.appendChild(linha);
+        ultimaPosicao =
+          regex.lastIndex;
 
-});
+      }
 
-}
 
-function filtrarListaMedley(){
+      resultado +=
+        escapar(
+          linha.substring(
+            ultimaPosicao
+          )
+        );
 
-const termo=
-document.getElementById("buscaMedley")
-.value
-.toLowerCase()
-.trim();
 
-document
-.querySelectorAll("#listaMedley .medley-opcao")
-.forEach(item=>{
+      const linhaLimpa =
+        linha.trim();
 
-item.style.display=
-!termo||
-item.dataset.busca.includes(termo)
-?"flex"
-:"none";
 
-});
+      const regexAcordeSozinho =
+        /^[A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?$/;
 
-}
 
-function montarMedley(){
+      if (
+        linhaLimpa &&
+        regexAcordeSozinho.test(
+          linhaLimpa
+        )
+      ) {
 
-const ids=[
-...document.querySelectorAll(
-"#listaMedley input:checked"
-)
-].map(i=>String(i.value));
+        const inicio =
+          linha.indexOf(
+            linhaLimpa
+          );
 
-if(ids.length<2){
 
-alert(
-"Selecione pelo menos duas músicas para criar um medley."
-);
+        const acorde =
+          transporAcorde(
+            linhaLimpa,
+            diferenca
+          );
 
-return;
 
-}
+        return (
+          escapar(
+            linha.substring(
+              0,
+              inicio
+            )
+          ) +
+          '<span class="acorde">' +
+          escapar(
+            acorde
+          ) +
+          "</span>" +
+          escapar(
+            linha.substring(
+              inicio +
+              linhaLimpa.length
+            )
+          )
+        );
 
-medleyAtual=
-ids
-.map(id=>
-todasMusicas.find(
-m=>String(m.id)===id
-)
-)
-.filter(Boolean);
+      }
 
-if(!medleyAtual.length)return;
 
-musicaAtual=medleyAtual[0];
+      return resultado;
 
-tomOriginal=indiceTom(
-musicaAtual.tom||
-detectarTomInicial(musicaAtual.cifra)||
-"C"
-);
+    }
 
-if(tomOriginal===-1)
-tomOriginal=0;
 
-tomAtual=tomOriginal;
+    /* =====================================================
+       TOM
+       ===================================================== */
 
-document.getElementById("tituloMusica")
-.textContent=
-"🎶 Medley • "+
-medleyAtual.length+
-" músicas";
+    function mudarTom(
+      direcao
+    ) {
 
-document.getElementById("artistaMusica")
-.textContent=
-medleyAtual
-.map(m=>m.titulo)
-.join(" • ");
+      if (!musicaAtual) {
+        return;
+      }
 
-document.getElementById("tomAtual")
-.textContent=
-obterNomeTom(tomAtual);
 
-fecharModal("modalMedley");
+      tomAtual =
+        normalizarIndice(
+          tomAtual +
+          direcao
+        );
 
-mostrarCifra();
 
-window.scrollTo(0,0);
+      document
+        .getElementById(
+          "tomAtual"
+        )
+        .textContent =
+          obterNomeTom(
+            tomAtual
+          );
 
-}
 
+      mostrarCifra();
 
-/* =====================================================
-   ADICIONAR CULTO
-===================================================== */
+    }
 
-function abrirModalCulto(){
 
-document.getElementById("novoCultoNome").value="";
-document.getElementById("novoCultoData").value=
-new Date().toISOString().substring(0,10);
+    function transporAcorde(
+      acorde,
+      diferenca
+    ) {
 
-renderizarMusicasCulto();
+      const resultado =
+        acorde.match(
+          /^([A-G](?:#|b)?)(.*)$/
+        );
 
-abrirModal("modalCulto");
 
-}
+      if (!resultado) {
+        return acorde;
+      }
 
-function renderizarMusicasCulto(){
 
-const lista=
-document.getElementById("listaMusicasCulto");
+      const nota =
+        resultado[1];
 
-lista.innerHTML="";
 
-if(!todasMusicas.length){
+      const complemento =
+        resultado[2];
 
-lista.innerHTML=`
-<div class="vazio">
-Nenhuma música cadastrada ainda.
-</div>`;
 
-return;
+      let indice =
+        indiceTom(
+          nota
+        );
 
-}
 
-todasMusicas.forEach((musica,index)=>{
+      if (
+        indice === -1
+      ) {
 
-const item=document.createElement("label");
+        return acorde;
 
-item.className="medley-opcao";
+      }
 
-item.innerHTML=`
 
-<input
-type="checkbox"
-class="musica-culto"
-value="${escapar(musica.id)}"
->
+      indice =
+        normalizarIndice(
+          indice +
+          diferenca
+        );
 
-<div class="medley-opcao-texto">
 
-<strong>
-${escapar(musica.titulo||"Música")}
-</strong>
+      return (
+        tons[indice] +
+        complemento
+      );
 
-<small>
-${escapar(musica.artista||"")}
-</small>
+    }
 
-</div>
-`;
 
-lista.appendChild(item);
+    function indiceTom(
+      nota
+    ) {
 
-});
+      const equivalentes = {
 
-}
+        "Db": "C#",
+        "Eb": "D#",
+        "Gb": "F#",
+        "Ab": "G#",
+        "Bb": "A#"
 
-async function salvarCulto(){
+      };
 
-const nome=
-document.getElementById("novoCultoNome")
-.value.trim();
 
-const data=
-document.getElementById("novoCultoData")
-.value;
+      const notaNormalizada =
+        equivalentes[
+          String(
+            nota
+          ).trim()
+        ] ||
+        String(
+          nota
+        ).trim();
 
-const ids=[
-...document.querySelectorAll(".musica-culto:checked")
-].map(i=>i.value);
 
-if(!nome){
+      return tons.indexOf(
+        notaNormalizada
+      );
 
-alert("Digite o nome do culto.");
-return;
+    }
 
-}
 
-if(!data){
+    function obterNomeTom(
+      indice
+    ) {
 
-alert("Escolha a data do culto.");
-return;
+      return tons[
+        normalizarIndice(
+          indice
+        )
+      ];
 
-}
+    }
 
-try{
 
-/* cria o culto */
+    function normalizarIndice(
+      numero
+    ) {
 
-const cultos=await buscar(
-"/rest/v1/cultos",
-{
-method:"POST",
-headers:{
-"Prefer":"return=representation"
-},
-body:JSON.stringify({
-nome:nome,
-data_culto:data
-})
-}
-);
+      return (
+        (
+          Number(numero) %
+          12
+        ) +
+        12
+      ) % 12;
 
-const culto=cultos[0];
+    }
 
-if(!culto){
 
-throw new Error(
-"O culto foi enviado, mas não retornou o ID."
-);
+    /* =====================================================
+       DETECTAR TOM
+       ===================================================== */
 
-}
+    function detectarTomInicial(
+      cifra
+    ) {
 
-/* adiciona as músicas */
+      const texto =
+        String(
+          cifra ||
+          ""
+        );
 
-if(ids.length){
 
-const vinculos=ids.map(
-(id,index)=>({
-culto_id:culto.id,
-musica_id:id,
-ordem:index+1
-})
-);
+      const match =
+        texto.match(
+          /\[([A-G](?:#|b)?)/i
+        );
 
-await buscar(
-"/rest/v1/culto_musicas",
-{
-method:"POST",
-headers:{
-"Prefer":"return=minimal"
-},
-body:JSON.stringify(vinculos)
-}
-);
 
-}
+      if (
+        match &&
+        match[1]
+      ) {
 
-fecharModal("modalCulto");
+        return match[1];
 
-alert("✅ Culto criado com sucesso!");
+      }
 
-await carregarCulto();
 
-}catch(erro){
+      const linhas =
+        texto.split(
+          /\r?\n/
+        );
 
-console.error(erro);
 
-alert(
-"❌ Não foi possível criar o culto.\n\n"+
-erro.message
-);
+      for (
+        const linha of linhas
+      ) {
 
-}
+        const limpa =
+          linha.trim();
 
-}
 
+        if (
+          /^[A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?$/.test(
+            limpa
+          )
+        ) {
 
-/* =====================================================
-   ADICIONAR MÚSICA
-===================================================== */
+          return limpa
+            .split("/")[0];
 
-function abrirModalMusica(){
+        }
 
-document.getElementById("novaMusicaTitulo").value="";
-document.getElementById("novaMusicaArtista").value="";
-document.getElementById("novaMusicaTom").value="";
-document.getElementById("novaMusicaCifra").value="";
+      }
 
-abrirModal("modalMusica");
 
-}
+      return "C";
 
-async function salvarMusica(){
+    }
 
-const titulo=
-document.getElementById("novaMusicaTitulo")
-.value.trim();
 
-const artista=
-document.getElementById("novaMusicaArtista")
-.value.trim();
+    /* =====================================================
+       TAMANHO DA CIFRA
+       ===================================================== */
 
-const tom=
-document.getElementById("novaMusicaTom")
-.value.trim();
+    function aplicarTamanhoCifra() {
 
-const cifra=
-document.getElementById("novaMusicaCifra")
-.value;
+      document.documentElement.style
+        .setProperty(
+          "--tamanho-cifra",
+          tamanhoCifra + "px"
+        );
 
-if(!titulo){
 
-alert("Digite o título da música.");
-return;
+      const valor =
+        document.getElementById(
+          "tamanhoCifraValor"
+        );
 
-}
 
-try{
+      if (valor) {
 
-await buscar(
-"/rest/v1/musicas",
-{
-method:"POST",
-headers:{
-"Prefer":"return=minimal"
-},
-body:JSON.stringify({
-titulo,
-artista,
-tom,
-cifra
-})
-}
-);
+        valor.textContent =
+          tamanhoCifra + "px";
 
-fecharModal("modalMusica");
+      }
 
-alert("✅ Música adicionada ao banco!");
 
-await carregarBancoMusicas();
+      localStorage.setItem(
+        "tamanho_cifra",
+        String(tamanhoCifra)
+      );
 
-}catch(erro){
+    }
 
-console.error(erro);
 
-alert(
-"❌ Não foi possível salvar a música.\n\n"+
-erro.message
-);
+    function aumentarFonte() {
 
-}
+      if (
+        tamanhoCifra >= 30
+      ) {
+        return;
+      }
 
-}
 
+      tamanhoCifra += 1;
 
-/* =====================================================
-   MODAIS
-===================================================== */
+      aplicarTamanhoCifra();
 
-function abrirModal(id){
+    }
 
-document.getElementById(id)
-.classList.add("aberto");
 
-}
+    function diminuirFonte() {
 
-function fecharModal(id){
+      if (
+        tamanhoCifra <= 11
+      ) {
+        return;
+      }
 
-document.getElementById(id)
-.classList.remove("aberto");
 
-}
+      tamanhoCifra -= 1;
 
-function fecharModalFora(event,id){
+      aplicarTamanhoCifra();
 
-if(event.target.id===id)
-fecharModal(id);
+    }
 
-}
 
+    function carregarTamanhoCifra() {
 
-/* =====================================================
-   TEMA
-===================================================== */
+      const salvo =
+        Number(
+          localStorage.getItem(
+            "tamanho_cifra"
+          )
+        );
 
-function alternarTema(){
 
-document.body.classList.toggle("dark");
+      if (
+        Number.isFinite(salvo) &&
+        salvo >= 11 &&
+        salvo <= 30
+      ) {
 
-const escuro=
-document.body.classList.contains("dark");
+        tamanhoCifra =
+          salvo;
 
-localStorage.setItem(
-"tema_cifras",
-escuro?"dark":"light"
-);
+      }
 
-atualizarIconeTema();
 
-}
+      aplicarTamanhoCifra();
 
-function carregarTema(){
+    }
 
-if(
-localStorage.getItem("tema_cifras")==="dark"
-){
 
-document.body.classList.add("dark");
+    /* =====================================================
+       ROLAGEM
+       ===================================================== */
 
-}
+    function abrirControleRolagem() {
 
-atualizarIconeTema();
+      const controle =
+        document.getElementById(
+          "controleRolagem"
+        );
 
-}
 
-function atualizarIconeTema(){
+      controle.classList.toggle(
+        "aberto"
+      );
 
-const botao=document.getElementById("botaoTema");
+    }
 
-if(!botao)return;
 
-const escuro=
-document.body.classList.contains("dark");
+    function iniciarRolagem() {
 
-botao.textContent=
-escuro?"☀️":"🌙";
+      pararRolagem(false);
 
-botao.title=
-escuro
-?"Ativar modo claro"
-:"Ativar modo noturno";
 
-}
+      rolagemAtiva =
+        true;
 
 
-/* =====================================================
-   MODO CULTO
-===================================================== */
+      iniciarRolagemAutomatica();
 
-function modoCulto(){
+    }
 
-document.body.classList.toggle("modo-culto");
 
-window.scrollTo(0,0);
+    function iniciarRolagemAutomatica() {
 
-}
+      clearInterval(
+        intervaloRolagem
+      );
 
 
-/* =====================================================
-   ROLAGEM
-===================================================== */
+      const velocidade =
+        Number(
+          document
+            .getElementById(
+              "velocidadeRolagem"
+            )
+            .value
+        );
 
-function abrirControleRolagem(){
 
-document
-.getElementById("controleRolagem")
-.classList.toggle("aberto");
+      intervaloRolagem =
+        setInterval(
+          function() {
 
-}
+            if (
+              !rolagemAtiva
+            ) {
+              return;
+            }
 
-function iniciarRolagem(){
 
-pararRolagem(false);
+            const limite =
+              document.documentElement
+                .scrollHeight -
+              window.innerHeight;
 
-rolagemAtiva=true;
 
-iniciarRolagemAutomatica();
+            if (
+              window.scrollY >=
+              limite - 2
+            ) {
 
-}
+              pararRolagem();
 
-function iniciarRolagemAutomatica(){
+              return;
 
-clearInterval(intervaloRolagem);
+            }
 
-const velocidade=
-Number(
-document.getElementById("velocidadeRolagem").value
-);
 
-intervaloRolagem=setInterval(()=>{
+            window.scrollBy(
+              0,
+              velocidade
+            );
 
-if(!rolagemAtiva)return;
+          },
+          45
+        );
 
-const limite=
-document.documentElement.scrollHeight-
-window.innerHeight;
+    }
 
-if(window.scrollY>=limite-2){
 
-pararRolagem();
-return;
+    function pausarRolagem() {
 
-}
+      rolagemAtiva =
+        false;
 
-window.scrollBy(0,velocidade);
 
-},45);
+      clearInterval(
+        intervaloRolagem
+      );
 
-}
 
-function pausarRolagem(){
+      intervaloRolagem =
+        null;
 
-rolagemAtiva=false;
+    }
 
-clearInterval(intervaloRolagem);
 
-intervaloRolagem=null;
+    function pararRolagem(
+      esconderControle = false
+    ) {
 
-}
+      rolagemAtiva =
+        false;
 
-function pararRolagem(esconder=false){
 
-rolagemAtiva=false;
+      clearInterval(
+        intervaloRolagem
+      );
 
-clearInterval(intervaloRolagem);
 
-intervaloRolagem=null;
+      intervaloRolagem =
+        null;
 
-if(esconder){
 
-document
-.getElementById("controleRolagem")
-.classList.remove("aberto");
+      if (
+        esconderControle
+      ) {
 
-}
+        document
+          .getElementById(
+            "controleRolagem"
+          )
+          .classList
+          .remove(
+            "aberto"
+          );
 
-}
+      }
 
-function atualizarVelocidadeRolagem(){
+    }
 
-const valor=
-document.getElementById("velocidadeRolagem").value;
 
-document.getElementById("valorVelocidade")
-.textContent=valor+"x";
+    function atualizarVelocidadeRolagem() {
 
-if(rolagemAtiva)
-iniciarRolagemAutomatica();
+      const valor =
+        document
+          .getElementById(
+            "velocidadeRolagem"
+          )
+          .value;
 
-}
 
+      document
+        .getElementById(
+          "valorVelocidade"
+        )
+        .textContent =
+          valor +
+          "x";
 
-/* =====================================================
-   COPIAR
-===================================================== */
 
-async function copiarCifra(){
+      if (
+        rolagemAtiva
+      ) {
 
-if(!musicaAtual)return;
+        iniciarRolagemAutomatica();
 
-let texto="";
+      }
 
-if(medleyAtual.length){
+    }
 
-texto=medleyAtual.map(m=>{
 
-return(
-(m.titulo||"Música")+
-"\n\n"+
-String(m.cifra||"")
-);
+    /* =====================================================
+       MODO NOTURNO
+       ===================================================== */
 
-}).join("\n\n--- MEDLEY ---\n\n");
+    function alternarTema() {
 
-}else{
+      document.body
+        .classList
+        .toggle(
+          "dark"
+        );
 
-texto=
-(musicaAtual.titulo||"Música")+
-"\n\n"+
-String(musicaAtual.cifra||"");
 
-}
+      const escuro =
+        document.body
+          .classList
+          .contains(
+            "dark"
+          );
 
-try{
 
-await navigator.clipboard.writeText(texto);
+      localStorage.setItem(
+        "tema_cifras",
+        escuro
+          ? "dark"
+          : "light"
+      );
 
-alert("✅ Cifra copiada!");
 
-}catch(e){
+      atualizarIconeTema();
 
-const area=document.createElement("textarea");
+    }
 
-area.value=texto;
 
-document.body.appendChild(area);
+    function carregarTema() {
 
-area.select();
+      const tema =
+        localStorage.getItem(
+          "tema_cifras"
+        );
 
-document.execCommand("copy");
 
-area.remove();
+      if (
+        tema === "dark"
+      ) {
 
-alert("✅ Cifra copiada!");
+        document.body
+          .classList
+          .add(
+            "dark"
+          );
 
-}
+      }
 
-}
 
+      atualizarIconeTema();
 
-/* =====================================================
-   DATA
-===================================================== */
+    }
 
-function formatarData(data){
 
-if(!data)return"";
+    function atualizarIconeTema() {
 
-const valor=String(data).substring(0,10);
+      const botao =
+        document.getElementById(
+          "botaoTema"
+        );
 
-const partes=valor.split("-");
 
-if(partes.length!==3)
-return String(data);
+      if (!botao) {
+        return;
+      }
 
-return(
-partes[2]+"/"+
-partes[1]+"/"+
-partes[0]
-);
 
-}
+      const escuro =
+        document.body
+          .classList
+          .contains(
+            "dark"
+          );
 
 
-/* =====================================================
-   SEGURANÇA
-===================================================== */
+      botao.textContent =
+        escuro
+          ? "☀️"
+          : "🌙";
 
-function escapar(texto){
 
-return String(texto??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+      botao.title =
+        escuro
+          ? "Ativar modo claro"
+          : "Ativar modo noturno";
 
-}
+    }
 
 
-/* =====================================================
-   VOLTAR
-===================================================== */
+    /* =====================================================
+       MODO CULTO
+       ===================================================== */
 
-function voltar(){
+    function modoCulto() {
 
-pararRolagem(true);
+      document.body
+        .classList
+        .toggle(
+          "modo-culto"
+        );
 
-medleyAtual=[];
 
-document.body.classList.remove("modo-culto");
+      window.scrollTo(
+        0,
+        0
+      );
 
-document
-.getElementById("paginaMusica")
-.classList.add("oculto");
+    }
 
-document
-.getElementById("inicio")
-.classList.remove("oculto");
 
-window.scrollTo(0,0);
+    /* =====================================================
+       COPIAR CIFRA
+       ===================================================== */
 
-}
+    async function copiarCifra() {
 
+      if (!musicaAtual) {
+        return;
+      }
 
-/* =====================================================
-   EVENTOS
-===================================================== */
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+      const titulo =
+        musicaAtual.titulo ||
+        "Música";
 
-carregarTema();
 
-document
-.getElementById("buscaMusicas")
-.addEventListener(
-"input",
-filtrarMusicas
-);
+      const artista =
+        musicaAtual.artista ||
+        "";
 
-document
-.getElementById("velocidadeRolagem")
-.addEventListener(
-"input",
-atualizarVelocidadeRolagem
-);
 
-atualizarTudo();
+      const diferenca =
+        normalizarIndice(
+          tomAtual -
+          tomOriginal
+        );
 
-}
-);
 
-document.addEventListener(
-"keydown",
-event=>{
+      const linhas =
+        String(
+          musicaAtual.cifra ||
+          ""
+        )
+        .split(/\r?\n/);
 
-if(event.key==="Escape"){
 
-document
-.querySelectorAll(".modal.aberto")
-.forEach(modal=>{
-modal.classList.remove("aberto");
-});
+      const cifraTransposta =
+        linhas
+          .map(
+            function(linha) {
 
-const pagina=
-document.getElementById("paginaMusica");
+              return linha.replace(
+                /\[([A-G](?:#|b)?(?:m|maj|maj7|maj9|min|min7|sus|sus2|sus4|dim|dim7|aug|add\d+)?(?:\d+)?(?:\/[A-G](?:#|b)?)?)\]/g,
+                function(
+                  completo,
+                  acorde
+                ) {
 
-if(
-pagina &&
-!pagina.classList.contains("oculto")
-){
+                  return (
+                    "[" +
+                    transporAcorde(
+                      acorde,
+                      diferenca
+                    ) +
+                    "]"
+                  );
 
-voltar();
+                }
+              );
 
-}
+            }
+          )
+          .join("\n");
 
-}
 
-}
-);
+      const texto =
+        titulo +
+        (
+          artista
+            ? "\n" +
+              artista
+            : ""
+        ) +
+        "\n\n" +
+        cifraTransposta;
 
-</script>
+
+      try {
+
+        await navigator.clipboard.writeText(
+          texto
+        );
+
+
+        mostrarAvisoCopia(
+          "✅ Música copiada!"
+        );
+
+      } catch (erro) {
+
+        const area =
+          document.createElement(
+            "textarea"
+          );
+
+
+        area.value =
+          texto;
+
+
+        area.style.position =
+          "fixed";
+
+        area.style.left =
+          "-9999px";
+
+
+        document.body.appendChild(
+          area
+        );
+
+
+        area.focus();
+
+        area.select();
+
+
+        try {
+
+          document.execCommand(
+            "copy"
+          );
+
+
+          mostrarAvisoCopia(
+            "✅ Música copiada!"
+          );
+
+        } catch (_) {
+
+          mostrarAvisoCopia(
+            "❌ Não foi possível copiar."
+          );
+
+        }
+
+
+        document.body.removeChild(
+          area
+        );
+
+      }
+
+    }
+
+
+    function mostrarAvisoCopia(
+      mensagem
+    ) {
+
+      const botao =
+        document.querySelector(
+          '[onclick="copiarCifra()"]'
+        );
+
+
+      if (!botao) {
+        return;
+      }
+
+
+      const original =
+        botao.textContent;
+
+
+      botao.textContent =
+        mensagem;
+
+
+      setTimeout(
+        function() {
+
+          botao.textContent =
+            original;
+
+        },
+        1800
+      );
+
+    }
+
+
+    /* =====================================================
+       MODAIS
+       ===================================================== */
+
+    function abrirModal(
+      id
+    ) {
+
+      const modal =
+        document.getElementById(
+          id
+        );
+
+
+      if (modal) {
+        modal.classList.add(
+          "aberto"
+        );
+      }
+
+    }
+
+
+    function fecharModal(
+      id
+    ) {
+
+      const modal =
+        document.getElementById(
+          id
+        );
+
+
+      if (modal) {
+        modal.classList.remove(
+          "aberto"
+        );
+      }
+
+    }
+
+
+    function fecharModalFora(
+      event,
+      id
+    ) {
+
+      if (
+        event.target.id === id
+      ) {
+
+        fecharModal(id);
+
+      }
+
+    }
+
+
+    /* =====================================================
+       ADICIONAR CULTO
+       ===================================================== */
+
+    async function abrirModalCulto() {
+
+      const nome =
+        document.getElementById(
+          "novoCultoNome"
+        );
+
+      const data =
+        document.getElementById(
+          "novoCultoData"
+        );
+
+
+      nome.value = "";
+
+      data.value =
+        new Date()
+          .toISOString()
+          .substring(0, 10);
+
+
+      abrirModal(
+        "modalCulto"
+      );
+
+
+      const lista =
+        document.getElementById(
+          "listaMusicasNovoCulto"
+        );
+
+
+      lista.innerHTML = `
+        <div class="vazio loading">
+          <span class="spinner"></span>
+          Carregando músicas...
+        </div>
+      `;
+
+
+      if (
+        !todasMusicas.length
+      ) {
+
+        try {
+
+          await carregarBancoMusicas();
+
+        } catch (_) {}
+
+      }
+
+
+      renderizarMusicasParaCulto();
+
+    }
+
+
+    function renderizarMusicasParaCulto() {
+
+      const lista =
+        document.getElementById(
+          "listaMusicasNovoCulto"
+        );
+
+
+      if (
+        !todasMusicas.length
+      ) {
+
+        lista.innerHTML = `
+          <div class="vazio">
+            Nenhuma música cadastrada.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      lista.innerHTML = "";
+
+
+      todasMusicas.forEach(
+        function(musica, index) {
+
+          const item =
+            document.createElement(
+              "label"
+            );
+
+
+          item.className =
+            "medley-item";
+
+
+          item.innerHTML = `
+
+            <input
+              type="checkbox"
+              class="medley-check"
+              value="${escapar(musica.id)}"
+              data-musica-id="${escapar(musica.id)}"
+            >
+
+            <div class="medley-item-info">
+
+              <strong>
+                ${escapar(
+                  musica.titulo ||
+                  "Música sem título"
+                )}
+              </strong>
+
+              <small>
+                ${
+                  musica.artista
+                    ? escapar(
+                        musica.artista
+                      )
+                    : "Artista não informado"
+                }
+              </small>
+
+            </div>
+
+            <span class="medley-ordem">
+              ${String(index + 1).padStart(2, "0")}
+            </span>
+
+          `;
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    async function salvarNovoCulto() {
+
+      const nome =
+        document.getElementById(
+          "novoCultoNome"
+        )
+        .value
+        .trim();
+
+
+      const data =
+        document.getElementById(
+          "novoCultoData"
+        )
+        .value;
+
+
+      if (!nome) {
+
+        alert(
+          "Digite o nome do culto."
+        );
+
+        return;
+
+      }
+
+
+      if (!data) {
+
+        alert(
+          "Escolha a data do culto."
+        );
+
+        return;
+
+      }
+
+
+      const selecionadas =
+        Array.from(
+          document.querySelectorAll(
+            "#listaMusicasNovoCulto input[type='checkbox']:checked"
+          )
+        );
+
+
+      try {
+
+        const cultosCriados =
+          await buscar(
+            "/rest/v1/cultos",
+            {
+              method: "POST",
+
+              headers: {
+                "Prefer":
+                  "return=representation"
+              },
+
+              body: {
+                nome:
+                  nome,
+
+                data_culto:
+                  data
+              }
+            }
+          );
+
+
+        if (
+          !Array.isArray(
+            cultosCriados
+          ) ||
+          !cultosCriados[0]
+        ) {
+
+          throw new Error(
+            "O culto não foi criado."
+          );
+
+        }
+
+
+        const novoCulto =
+          cultosCriados[0];
+
+
+        /*
+         * Adiciona automaticamente
+         * as músicas selecionadas.
+         */
+
+        if (
+          selecionadas.length
+        ) {
+
+          const vinculos =
+            selecionadas.map(
+              function(
+                checkbox,
+                index
+              ) {
+
+                return {
+                  culto_id:
+                    novoCulto.id,
+
+                  musica_id:
+                    checkbox.dataset.musicaId,
+
+                  ordem:
+                    index + 1
+                };
+
+              }
+            );
+
+
+          await buscar(
+            "/rest/v1/culto_musicas",
+            {
+              method: "POST",
+
+              headers: {
+                "Prefer":
+                  "return=minimal"
+              },
+
+              body:
+                vinculos
+            }
+          );
+
+        }
+
+
+        fecharModal(
+          "modalCulto"
+        );
+
+
+        alert(
+          selecionadas.length
+            ? "✅ Culto criado com as músicas selecionadas!"
+            : "✅ Culto criado!"
+        );
+
+
+        await atualizarTudo();
+
+      } catch (erro) {
+
+        console.error(
+          "Erro ao criar culto:",
+          erro
+        );
+
+
+        alert(
+          "❌ Não foi possível criar o culto.\n\n" +
+          erro.message
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       MEDLEY
+       ===================================================== */
+
+    function abrirMedley() {
+
+      musicaInicialMedley =
+        null;
+
+      medleySelecionado =
+        [];
+
+
+      abrirModal(
+        "modalMedley"
+      );
+
+
+      renderizarListaMedley();
+
+    }
+
+
+    function abrirMedleyComMusicaAtual() {
+
+      musicaInicialMedley =
+        musicaAtual;
+
+
+      medleySelecionado =
+        musicaAtual
+          ? [musicaAtual.id]
+          : [];
+
+
+      abrirModal(
+        "modalMedley"
+      );
+
+
+      renderizarListaMedley();
+
+    }
+
+
+    function renderizarListaMedley() {
+
+      const lista =
+        document.getElementById(
+          "listaMedley"
+        );
+
+
+      if (
+        !todasMusicas.length
+      ) {
+
+        lista.innerHTML = `
+          <div class="vazio">
+            Nenhuma música cadastrada.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      lista.innerHTML = "";
+
+
+      todasMusicas.forEach(
+        function(musica) {
+
+          const marcado =
+            medleySelecionado
+              .map(String)
+              .includes(
+                String(musica.id)
+              );
+
+
+          const item =
+            document.createElement(
+              "label"
+            );
+
+
+          item.className =
+            "medley-item";
+
+
+          item.innerHTML = `
+
+            <input
+              type="checkbox"
+              class="medley-check"
+              value="${escapar(musica.id)}"
+              ${marcado ? "checked" : ""}
+            >
+
+            <div class="medley-item-info">
+
+              <strong>
+                ${escapar(
+                  musica.titulo ||
+                  "Música sem título"
+                )}
+              </strong>
+
+              <small>
+                ${
+                  musica.artista
+                    ? escapar(
+                        musica.artista
+                      )
+                    : "Artista não informado"
+                }
+              </small>
+
+            </div>
+
+          `;
+
+
+          const checkbox =
+            item.querySelector(
+              "input"
+            );
+
+
+          checkbox.addEventListener(
+            "change",
+            function() {
+
+              atualizarSelecaoMedley();
+
+            }
+          );
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    function atualizarSelecaoMedley() {
+
+      medleySelecionado =
+        Array.from(
+          document.querySelectorAll(
+            "#listaMedley input[type='checkbox']:checked"
+          )
+        )
+        .map(
+          function(input) {
+            return input.value;
+          }
+        );
+
+    }
+
+
+    function abrirMedleySelecionado() {
+
+      atualizarSelecaoMedley();
+
+
+      if (
+        medleySelecionado.length <
+        2
+      ) {
+
+        alert(
+          "Selecione pelo menos 2 músicas para criar um medley."
+        );
+
+        return;
+
+      }
+
+
+      const musicas =
+        medleySelecionado
+          .map(
+            function(id) {
+
+              return todasMusicas.find(
+                function(musica) {
+
+                  return (
+                    String(musica.id) ===
+                    String(id)
+                  );
+
+                }
+              );
+
+            }
+          )
+          .filter(Boolean);
+
+
+      if (
+        musicas.length < 2
+      ) {
+
+        alert(
+          "Não foi possível encontrar as músicas selecionadas."
+        );
+
+        return;
+
+      }
+
+
+      musicaAtual =
+        criarObjetoMedley(
+          musicas
+        );
+
+
+      tomOriginal = 0;
+
+      tomAtual = 0;
+
+
+      pararRolagem();
+
+
+      fecharModal(
+        "modalMedley"
+      );
+
+
+      document.body
+        .classList
+        .remove(
+          "modo-culto"
+        );
+
+
+      document
+        .getElementById(
+          "inicio"
+        )
+        .classList
+        .add(
+          "oculto"
+        );
+
+
+      document
+        .getElementById(
+          "paginaMusica"
+        )
+        .classList
+        .remove(
+          "oculto"
+        );
+
+
+      document
+        .getElementById(
+          "tituloMusica"
+        )
+        .textContent =
+          "🎶 " +
+          (
+            musicas
+              .map(
+                function(m) {
+                  return m.titulo || "Música";
+                }
+              )
+              .join(" + ")
+          );
+
+
+      document
+        .getElementById(
+          "artistaMusica"
+        )
+        .textContent =
+          "Medley • " +
+          musicas.length +
+          " músicas";
+
+
+      document
+        .getElementById(
+          "tomAtual"
+        )
+        .textContent =
+          "Original";
+
+
+      aplicarTamanhoCifra();
+
+      mostrarCifra();
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
+    function criarObjetoMedley(
+      musicas
+    ) {
+
+      const partes = [];
+
+
+      musicas.forEach(
+        function(musica, index) {
+
+          partes.push(
+            "========================================"
+          );
+
+
+          partes.push(
+            "🎵 " +
+            (
+              musica.titulo ||
+              "Música"
+            )
+          );
+
+
+          if (
+            musica.artista
+          ) {
+
+            partes.push(
+              musica.artista
+            );
+
+          }
+
+
+          partes.push(
+            "========================================"
+          );
+
+
+          partes.push(
+            String(
+              musica.cifra ||
+              "Sem cifra cadastrada."
+            )
+          );
+
+
+          if (
+            index <
+            musicas.length - 1
+          ) {
+
+            partes.push("");
+            partes.push("");
+            partes.push(
+              "-------------- MEDLEY --------------"
+            );
+            partes.push("");
+            partes.push("");
+
+          }
+
+        }
+      );
+
+
+      return {
+
+        id:
+          "medley-" +
+          Date.now(),
+
+        titulo:
+          musicas
+            .map(
+              function(m) {
+                return (
+                  m.titulo ||
+                  "Música"
+                );
+              }
+            )
+            .join(" + "),
+
+        artista:
+          "Medley",
+
+        tom:
+          "",
+
+        cifra:
+          partes.join("\n")
+
+      };
+
+    }
+
+
+    /* =====================================================
+       DATA
+       ===================================================== */
+
+    function formatarData(
+      data
+    ) {
+
+      if (!data) {
+        return "";
+      }
+
+
+      const valor =
+        String(data)
+          .substring(
+            0,
+            10
+          );
+
+
+      const partes =
+        valor.split("-");
+
+
+      if (
+        partes.length !== 3
+      ) {
+
+        return String(data);
+
+      }
+
+
+      return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+      );
+
+    }
+
+
+    /* =====================================================
+       SEGURANÇA HTML
+       ===================================================== */
+
+    function escapar(
+      texto
+    ) {
+
+      return String(
+        texto ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       EVENTOS
+       ===================================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        carregarTema();
+
+        carregarTamanhoCifra();
+
+
+        const campoBusca =
+          document.getElementById(
+            "buscaMusicas"
+          );
+
+
+        if (campoBusca) {
+
+          campoBusca.addEventListener(
+            "input",
+            filtrarMusicas
+          );
+
+        }
+
+
+        const velocidade =
+          document.getElementById(
+            "velocidadeRolagem"
+          );
+
+
+        if (velocidade) {
+
+          velocidade.addEventListener(
+            "input",
+            atualizarVelocidadeRolagem
+          );
+
+        }
+
+
+        atualizarTudo();
+
+      }
+    );
+
+
+    /* =====================================================
+       TECLADO
+       ===================================================== */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          const modais =
+            document.querySelectorAll(
+              ".modal.aberto"
+            );
+
+
+          if (
+            modais.length
+          ) {
+
+            modais.forEach(
+              function(modal) {
+
+                modal.classList.remove(
+                  "aberto"
+                );
+
+              }
+            );
+
+            return;
+
+          }
+
+
+          const pagina =
+            document.getElementById(
+              "paginaMusica"
+            );
+
+
+          if (
+            pagina &&
+            !pagina.classList.contains(
+              "oculto"
+            )
+          ) {
+
+            voltar();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       VOLTAR
+       ===================================================== */
+
+    function voltar() {
+
+      pararRolagem(
+        true
+      );
+
+
+      document.body
+        .classList
+        .remove(
+          "modo-culto"
+        );
+
+
+      document
+        .getElementById(
+          "paginaMusica"
+        )
+        .classList
+        .add(
+          "oculto"
+        );
+
+
+      document
+        .getElementById(
+          "inicio"
+        )
+        .classList
+        .remove(
+          "oculto"
+        );
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+  </script>
 
 </body>
 </html>
