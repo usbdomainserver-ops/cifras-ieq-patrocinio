@@ -522,23 +522,22 @@
 
     .musica strong {
       display: block;
-
-      overflow: hidden;
-
+      min-width: 0;
+      overflow: visible;
       color: var(--texto);
-
       font-size: 15px;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      line-height: 1.25;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .artista {
       margin-top: 4px;
-
       color: var(--texto-3);
-
       font-size: 12px;
+      line-height: 1.25;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .musica-meta {
@@ -798,28 +797,21 @@
 
     .banco-item strong {
       display: block;
-
-      overflow: hidden;
-
+      overflow: visible;
       color: var(--texto);
-
       font-size: 14px;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      line-height: 1.25;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .banco-item small {
       display: block;
-
       margin-top: 5px;
-
       color: var(--texto-3);
-
-      overflow: hidden;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      line-height: 1.25;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .banco-acoes {
@@ -888,9 +880,10 @@
 
     .culto-escolha-info strong {
       display: block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: visible;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.25;
       font-size: 14px;
     }
 
@@ -1175,6 +1168,7 @@
       gap: 4px;
       margin-left: auto;
       margin-right: 8px;
+      flex-shrink: 0;
     }
 
     .controle-cifra-posicao {
@@ -1245,6 +1239,7 @@
       height: auto;
       width: max-content;
       max-width: none;
+      overflow: visible;
       margin: 0;
       padding: 0;
     }
@@ -1864,7 +1859,8 @@
 
         width: 100%;
         max-width: 100%;
-        overflow-x: visible;
+        overflow-x: auto;
+        overflow-y: visible;
 
         font-size: 15px;
         line-height: 1.22;
@@ -2235,6 +2231,26 @@
           🎤 Modo culto
         </button>
 
+        <button
+          type="button"
+          class="controle"
+          onclick="moverColunaCifra(-1)"
+          title="Mover a letra para a esquerda"
+          aria-label="Mover a letra para a esquerda"
+        >
+          ← Letra
+        </button>
+
+        <button
+          type="button"
+          class="controle"
+          onclick="moverColunaCifra(1)"
+          title="Mover a letra para a direita"
+          aria-label="Mover a letra para a direita"
+        >
+          Letra →
+        </button>
+
       </div>
 
 
@@ -2310,8 +2326,8 @@
             type="button"
             class="controle-cifra-posicao"
             id="btnCifraEsquerda"
-            title="Mover a coluna para a esquerda"
-            aria-label="Mover a coluna para a esquerda"
+            title="Mover a letra para a esquerda"
+            aria-label="Mover a letra para a esquerda"
           >
             ←
           </button>
@@ -2320,8 +2336,8 @@
             type="button"
             class="controle-cifra-posicao"
             id="btnCifraDireita"
-            title="Mover a coluna para a direita"
-            aria-label="Mover a coluna para a direita"
+            title="Mover a letra para a direita"
+            aria-label="Mover a letra para a direita"
           >
             →
           </button>
@@ -6416,7 +6432,7 @@ Todos os dias"
     function moverColunaCifra(
       direcao
     ) {
-      const passo = 12;
+      const passo = 16;
 
       deslocamentoColunaCifra +=
         Number(direcao) * passo;
