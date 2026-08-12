@@ -13,28 +13,32 @@
 
     :root {
       --roxo: #7c3aed;
-      --roxo-2: #a855f7;
+      --roxo-2: #8b5cf6;
       --roxo-escuro: #4c1d95;
-      --roxo-claro: #f3e8ff;
+      --roxo-claro: #ede9fe;
 
-      --fundo: #f5f3fa;
+      --fundo: #f5f3ff;
+      --fundo-2: #fafafa;
       --card: #ffffff;
+
       --texto: #18181b;
       --texto-2: #52525b;
       --texto-3: #a1a1aa;
+
       --borda: #e4e4e7;
 
-      --acorde: #fb923c;
-      --acorde-fundo: rgba(251, 146, 60, .12);
+      --verde: #10b981;
+      --vermelho: #ef4444;
+      --laranja: #f59e0b;
 
-      --sucesso: #10b981;
-      --erro: #ef4444;
+      --cifra-fundo: #101114;
+      --cifra-texto: #f4f4f5;
+      --acorde: #fb923c;
 
       --sombra:
-        0 15px 45px rgba(45, 20, 90, .09);
+        0 20px 60px rgba(76, 29, 149, .10);
 
-      --sombra-forte:
-        0 25px 70px rgba(45, 20, 90, .16);
+      --raio: 22px;
     }
 
     html {
@@ -47,37 +51,85 @@
 
       font-family:
         Inter,
+        ui-sans-serif,
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        Arial,
         sans-serif;
 
       color: var(--texto);
 
       background:
         radial-gradient(
-          circle at 10% 0%,
-          rgba(168, 85, 247, .10),
+          circle at top left,
+          rgba(124, 58, 237, .08),
           transparent 30%
         ),
-        radial-gradient(
-          circle at 90% 10%,
-          rgba(124, 58, 237, .08),
-          transparent 28%
-        ),
-        var(--fundo);
+        linear-gradient(
+          180deg,
+          #faf8ff 0%,
+          #f7f7fb 50%,
+          #f3f4f6 100%
+        );
 
       transition:
         background .3s ease,
         color .3s ease;
     }
 
-    body,
+    body.modo-escuro {
+      --fundo: #09090b;
+      --fundo-2: #111113;
+      --card: #18181b;
+
+      --texto: #fafafa;
+      --texto-2: #a1a1aa;
+      --texto-3: #71717a;
+
+      --borda: #27272a;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(124, 58, 237, .18),
+          transparent 30%
+        ),
+        #09090b;
+    }
+
+    body.modo-culto {
+      background: #050505;
+      color: #fff;
+    }
+
+    body.modo-culto .site-header,
+    body.modo-culto .hero,
+    body.modo-culto footer {
+      display: none;
+    }
+
+    body.modo-culto .container {
+      width: min(100%, 1050px);
+      margin: 0 auto;
+    }
+
+    body.modo-culto .musica-topo {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-radius: 0 0 22px 22px;
+    }
+
+    body.modo-culto .cifra-card {
+      min-height: calc(100vh - 170px);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
     button,
     input {
-      font-family: inherit;
+      font: inherit;
     }
 
     button {
@@ -92,76 +144,73 @@
        HEADER
        ===================================================== */
 
-    header {
+    .site-header {
       position: relative;
       overflow: hidden;
 
-      padding: 28px 20px 100px;
-
       color: white;
+
+      padding:
+        26px 18px
+        90px;
 
       background:
         radial-gradient(
-          circle at 10% 20%,
-          rgba(255,255,255,.18),
-          transparent 28%
+          circle at 10% 10%,
+          rgba(255,255,255,.20),
+          transparent 25%
         ),
         radial-gradient(
-          circle at 85% 10%,
-          rgba(192,132,252,.28),
+          circle at 90% 20%,
+          rgba(167,139,250,.35),
           transparent 28%
         ),
         linear-gradient(
           135deg,
-          #8b5cf6 0%,
-          #6d28d9 48%,
-          #312e81 100%
+          #7c3aed,
+          #5b21b6 55%,
+          #312e81
         );
     }
 
-    header::before {
+    .site-header::after {
       content: "";
 
       position: absolute;
-      width: 280px;
-      height: 280px;
 
-      right: -120px;
-      bottom: -140px;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,.08);
-    }
-
-    header::after {
-      content: "";
-
-      position: absolute;
       left: -5%;
       right: -5%;
-      bottom: -55px;
+      bottom: -65px;
 
-      height: 100px;
+      height: 120px;
 
       background: var(--fundo);
 
-      border-radius:
-        50% 50% 0 0;
+      border-radius: 50% 50% 0 0;
     }
 
     .topo {
-      max-width: 1120px;
-      margin: auto;
-
       position: relative;
       z-index: 2;
+
+      width: min(
+        1150px,
+        calc(100% - 10px)
+      );
+
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
     }
 
     .marca {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
     }
 
     .logo {
@@ -172,29 +221,30 @@
       align-items: center;
       justify-content: center;
 
+      flex-shrink: 0;
+
       border-radius: 19px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.22),
-          rgba(255,255,255,.08)
-        );
-
-      border: 1px solid rgba(255,255,255,.25);
 
       font-size: 30px;
 
-      box-shadow:
-        0 15px 35px rgba(0,0,0,.18);
+      background:
+        rgba(255,255,255,.14);
 
-      backdrop-filter: blur(10px);
+      border:
+        1px solid rgba(255,255,255,.25);
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
     }
 
     .marca h1 {
       margin: 0;
 
-      font-size: clamp(21px, 4vw, 28px);
+      font-size: clamp(
+        21px,
+        4vw,
+        29px
+      );
 
       letter-spacing: -.8px;
     }
@@ -202,9 +252,39 @@
     .marca p {
       margin: 5px 0 0;
 
-      font-size: 13px;
+      color: rgba(255,255,255,.75);
 
-      opacity: .78;
+      font-size: 13px;
+    }
+
+    .topo-acoes {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icone-btn {
+      width: 44px;
+      height: 44px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 13px;
+
+      background: rgba(255,255,255,.12);
+
+      color: white;
+
+      font-size: 18px;
+
+      transition: .2s ease;
+    }
+
+    .icone-btn:hover {
+      background: rgba(255,255,255,.22);
+      transform: translateY(-2px);
     }
 
     /* =====================================================
@@ -212,13 +292,17 @@
        ===================================================== */
 
     .container {
-      width: min(1120px, calc(100% - 24px));
+      position: relative;
+      z-index: 5;
+
+      width: min(
+        1150px,
+        calc(100% - 26px)
+      );
 
       margin:
-        -35px auto 60px;
-
-      position: relative;
-      z-index: 10;
+        -38px auto
+        55px;
     }
 
     /* =====================================================
@@ -226,37 +310,61 @@
        ===================================================== */
 
     .hero {
-      padding: 26px;
+      padding: 28px;
+
+      background: var(--card);
+
+      border:
+        1px solid var(--borda);
 
       border-radius: 28px;
 
-      background:
-        rgba(255,255,255,.92);
-
-      border: 1px solid rgba(255,255,255,.9);
-
       box-shadow: var(--sombra);
 
-      backdrop-filter: blur(15px);
+      transition:
+        background .3s ease,
+        border .3s ease;
     }
 
     .hero-topo {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
 
       gap: 20px;
+
+      margin-bottom: 24px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-bottom: 7px;
+
+      color: var(--roxo);
+
+      font-size: 12px;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: .08em;
     }
 
     .hero h2 {
       margin: 0;
 
-      font-size: clamp(24px, 4vw, 30px);
+      font-size: clamp(
+        24px,
+        5vw,
+        34px
+      );
 
-      letter-spacing: -.9px;
+      letter-spacing: -1px;
     }
 
-    .hero p {
+    .hero-subtitulo {
       margin: 7px 0 0;
 
       color: var(--texto-2);
@@ -265,17 +373,19 @@
     }
 
     .culto-badge {
-      padding: 9px 14px;
+      flex-shrink: 0;
+
+      padding: 10px 14px;
 
       border-radius: 999px;
 
-      background: #ecfdf5;
-      color: #047857;
+      background:
+        rgba(16,185,129,.10);
+
+      color: #059669;
 
       font-size: 12px;
-      font-weight: 800;
-
-      white-space: nowrap;
+      font-weight: 900;
     }
 
     /* =====================================================
@@ -283,54 +393,64 @@
        ===================================================== */
 
     .culto-card {
-      margin-top: 25px;
-
       overflow: hidden;
-
-      border-radius: 24px;
 
       background: var(--card);
 
-      border: 1px solid var(--borda);
+      border:
+        1px solid var(--borda);
+
+      border-radius: 23px;
 
       box-shadow:
-        0 8px 30px rgba(0,0,0,.045);
+        0 10px 35px rgba(0,0,0,.05);
     }
 
     .culto-cabecalho {
+      position: relative;
+      overflow: hidden;
+
       padding: 23px;
 
       background:
+        radial-gradient(
+          circle at 100% 0%,
+          rgba(124,58,237,.16),
+          transparent 30%
+        ),
         linear-gradient(
           135deg,
-          #faf5ff,
-          #eef2ff
+          rgba(124,58,237,.08),
+          rgba(99,102,241,.05)
         );
 
-      border-bottom: 1px solid #ede9fe;
+      border-bottom:
+        1px solid var(--borda);
     }
 
     .culto-titulo {
       display: flex;
-
       align-items: center;
       justify-content: space-between;
 
       gap: 15px;
     }
 
+    .culto-info {
+      min-width: 0;
+    }
+
     #nomeCulto {
       margin: 0;
 
-      color: var(--roxo-escuro);
+      color: var(--texto);
 
       font-size: 22px;
-
       letter-spacing: -.4px;
     }
 
     #dataCulto {
-      margin-top: 6px;
+      margin-top: 7px;
 
       color: var(--texto-2);
 
@@ -347,16 +467,16 @@
 
       flex-shrink: 0;
 
-      border-radius: 16px;
-
-      color: white;
+      border-radius: 17px;
 
       background:
         linear-gradient(
           135deg,
           var(--roxo-2),
-          var(--roxo)
+          var(--roxo-escuro)
         );
+
+      color: white;
 
       font-size: 23px;
 
@@ -373,106 +493,51 @@
     }
 
     .musica {
-      display: flex;
+      width: 100%;
 
+      display: flex;
       align-items: center;
-      justify-content: space-between;
 
       gap: 14px;
 
-      padding: 16px;
+      padding: 15px;
 
-      margin: 5px 0;
-
-      border-radius: 17px;
-
-      background: var(--card);
+      margin: 4px 0;
 
       border: 1px solid transparent;
+      border-radius: 17px;
+
+      background: transparent;
+
+      color: inherit;
+
+      text-align: left;
 
       transition:
         transform .18s ease,
-        border-color .18s ease,
         background .18s ease,
+        border .18s ease,
         box-shadow .18s ease;
     }
 
     .musica:hover {
       transform: translateY(-2px);
 
-      background: #faf7ff;
+      background:
+        rgba(124,58,237,.06);
 
-      border-color: #ddd6fe;
+      border-color:
+        rgba(124,58,237,.14);
 
       box-shadow:
-        0 10px 25px rgba(124,58,237,.08);
-    }
-
-    .musica:active {
-      transform: scale(.99);
-    }
-
-    .musica strong {
-      display: block;
-
-      font-size: 16px;
-
-      color: var(--texto);
+        0 8px 25px rgba(124,58,237,.07);
     }
 
     .numero-musica {
-      display: inline-flex;
-
-      width: 32px;
-      height: 32px;
-
-      margin-right: 8px;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 10px;
-
-      color: var(--roxo);
-
-      background: var(--roxo-claro);
-
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .tom {
-      display: inline-block;
-
-      margin-top: 7px;
-
-      padding: 4px 9px;
-
-      border-radius: 999px;
-
-      color: var(--roxo);
-
-      background: var(--roxo-claro);
-
-      font-size: 11px;
-
-      font-weight: 800;
-    }
-
-    .artista {
-      margin-top: 5px;
-
-      color: var(--texto-3);
-
-      font-size: 12px;
-    }
-
-    .seta {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
@@ -480,12 +545,135 @@
 
       border-radius: 13px;
 
+      background:
+        var(--roxo-claro);
+
       color: var(--roxo);
 
-      background: var(--roxo-claro);
+      font-size: 12px;
+      font-weight: 900;
+    }
 
-      font-size: 24px;
-      font-weight: 700;
+    .musica-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .musica-titulo {
+      display: block;
+
+      color: var(--texto);
+
+      font-size: 16px;
+      font-weight: 850;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .musica-artista {
+      margin-top: 4px;
+
+      color: var(--texto-3);
+
+      font-size: 12px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .musica-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-top: 7px;
+    }
+
+    .tom {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 4px 9px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(124,58,237,.08);
+
+      color: var(--roxo);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .seta {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 12px;
+
+      background:
+        rgba(124,58,237,.08);
+
+      color: var(--roxo);
+
+      font-size: 23px;
+
+      transition: .2s ease;
+    }
+
+    .musica:hover .seta {
+      background: var(--roxo);
+      color: white;
+      transform: translateX(2px);
+    }
+
+    /* =====================================================
+       VAZIO / ERRO
+       ===================================================== */
+
+    .vazio {
+      padding: 38px 20px;
+
+      text-align: center;
+
+      color: var(--texto-2);
+
+      font-size: 14px;
+    }
+
+    .vazio-icone {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 30px;
+    }
+
+    .erro {
+      margin: 10px;
+      padding: 17px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(239,68,68,.08);
+
+      color:
+        #dc2626;
+
+      font-size: 14px;
+
+      line-height: 1.55;
     }
 
     /* =====================================================
@@ -495,28 +683,29 @@
     .acoes {
       display: grid;
 
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns:
+        1fr 1fr;
 
       gap: 12px;
 
-      margin-top: 20px;
+      margin-top: 18px;
     }
 
     .botao {
       min-height: 52px;
 
       border: none;
+      border-radius: 15px;
 
-      border-radius: 16px;
-
-      padding: 14px 18px;
+      padding: 13px 18px;
 
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 900;
 
       transition:
-        transform .15s ease,
-        box-shadow .15s ease;
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
     }
 
     .botao:hover {
@@ -534,104 +723,118 @@
         );
 
       box-shadow:
-        0 10px 25px rgba(109,40,217,.24);
+        0 10px 25px
+        rgba(109,40,217,.22);
     }
 
     .botao-claro {
       color: var(--roxo);
 
-      background: white;
+      background: var(--card);
 
-      border: 1px solid #ddd6fe;
+      border:
+        1px solid var(--borda);
     }
 
     /* =====================================================
        BANCO DE MÚSICAS
        ===================================================== */
 
-    .banco-card {
-      margin-top: 22px;
+    .banco {
+      margin-top: 24px;
 
-      padding: 22px;
-
-      border-radius: 24px;
+      padding: 24px;
 
       background: var(--card);
 
-      border: 1px solid var(--borda);
+      border:
+        1px solid var(--borda);
+
+      border-radius: 24px;
 
       box-shadow:
-        0 8px 30px rgba(0,0,0,.045);
+        0 10px 35px rgba(0,0,0,.04);
     }
 
-    .secao-titulo {
+    .secao-topo {
       display: flex;
-
+      align-items: flex-start;
       justify-content: space-between;
-      align-items: center;
 
       gap: 15px;
+
+      margin-bottom: 16px;
     }
 
-    .secao-titulo h2 {
+    .secao-topo h3 {
       margin: 0;
 
       font-size: 21px;
 
-      letter-spacing: -.4px;
+      letter-spacing: -.5px;
+    }
+
+    .secao-topo p {
+      margin: 5px 0 0;
+
+      color: var(--texto-2);
+
+      font-size: 13px;
     }
 
     .contador {
-      padding: 6px 10px;
+      padding: 7px 10px;
 
       border-radius: 999px;
 
+      background:
+        rgba(124,58,237,.08);
+
       color: var(--roxo);
 
-      background: var(--roxo-claro);
-
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
+
+      white-space: nowrap;
     }
 
     .busca {
       position: relative;
 
-      margin-top: 15px;
+      margin-bottom: 13px;
     }
 
     .busca input {
       width: 100%;
 
-      padding: 15px 17px 15px 45px;
+      height: 50px;
 
-      border: 1px solid var(--borda);
+      padding:
+        0 16px 0 45px;
+
+      color: var(--texto);
+
+      background: var(--fundo-2);
+
+      border:
+        1px solid var(--borda);
 
       border-radius: 15px;
 
       outline: none;
 
-      color: var(--texto);
-
-      background: #fafafa;
-
-      font-size: 15px;
-
-      transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
+      transition: .2s ease;
     }
 
     .busca input:focus {
       border-color: var(--roxo);
 
       box-shadow:
-        0 0 0 4px rgba(124,58,237,.09);
+        0 0 0 4px
+        rgba(124,58,237,.10);
     }
 
-    .busca::before {
-      content: "⌕";
-
+    .busca-icone {
       position: absolute;
 
       left: 16px;
@@ -641,112 +844,123 @@
 
       color: var(--texto-3);
 
-      font-size: 23px;
-
       pointer-events: none;
     }
 
     #listaBanco {
-      margin-top: 12px;
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 8px;
     }
 
-    .musica-banco {
+    .banco-item {
       display: flex;
-
       align-items: center;
-      justify-content: space-between;
 
-      gap: 12px;
+      gap: 11px;
 
-      padding: 14px 12px;
+      width: 100%;
 
-      border-bottom: 1px solid #f0f0f2;
+      padding: 12px;
 
-      cursor: pointer;
+      border:
+        1px solid var(--borda);
 
-      transition:
-        background .15s ease;
+      border-radius: 15px;
+
+      background: var(--card);
+
+      color: var(--texto);
+
+      text-align: left;
+
+      transition: .18s ease;
     }
 
-    .musica-banco:last-child {
-      border-bottom: none;
+    .banco-item:hover {
+      transform: translateY(-2px);
+
+      border-color:
+        rgba(124,58,237,.30);
+
+      box-shadow:
+        0 8px 20px rgba(124,58,237,.07);
     }
 
-    .musica-banco:hover {
-      background: #faf7ff;
+    .banco-icon {
+      width: 36px;
+      height: 36px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 11px;
+
+      background:
+        var(--roxo-claro);
+
+      color: var(--roxo);
     }
 
-    .musica-banco strong {
+    .banco-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .banco-titulo {
       display: block;
 
+      font-weight: 800;
       font-size: 14px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .musica-banco span {
+    .banco-artista {
       display: block;
 
       margin-top: 3px;
 
       color: var(--texto-3);
 
-      font-size: 12px;
-    }
-
-    .banco-tom {
-      flex-shrink: 0;
-
-      padding: 5px 9px;
-
-      border-radius: 8px;
-
-      color: var(--roxo);
-
-      background: var(--roxo-claro);
-
       font-size: 11px;
-      font-weight: 900;
-    }
 
-    /* =====================================================
-       ESTADOS
-       ===================================================== */
-
-    .vazio {
-      padding: 35px 20px;
-
-      text-align: center;
-
-      color: var(--texto-2);
-
-      font-size: 14px;
-    }
-
-    .erro {
-      margin: 10px;
-
-      padding: 17px;
-
-      border-radius: 15px;
-
-      color: #991b1b;
-
-      background: #fef2f2;
-
-      line-height: 1.5;
-
-      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* =====================================================
        PÁGINA DA MÚSICA
        ===================================================== */
 
+    #paginaMusica {
+      min-height: 100vh;
+    }
+
     .pagina-musica {
-      width: min(100%, 1000px);
+      width: 100%;
+    }
 
-      margin: auto;
+    .musica-wrapper {
+      width: min(
+        950px,
+        calc(100% - 26px)
+      );
 
-      padding: 18px 18px 50px;
+      margin: 0 auto;
+
+      padding:
+        24px 0
+        50px;
     }
 
     .musica-topo {
@@ -756,47 +970,51 @@
 
       padding: 25px;
 
-      border-radius: 25px;
-
       color: white;
+
+      border-radius: 24px;
 
       background:
         radial-gradient(
-          circle at 90% 10%,
-          rgba(255,255,255,.16),
-          transparent 28%
+          circle at 100% 0%,
+          rgba(167,139,250,.35),
+          transparent 30%
         ),
         linear-gradient(
           135deg,
-          #8b5cf6,
+          #7c3aed,
           #4c1d95
         );
 
       box-shadow:
-        0 15px 40px rgba(76,29,149,.22);
+        0 18px 45px
+        rgba(76,29,149,.22);
     }
 
     .musica-topo h2 {
       margin: 0;
 
-      font-size: clamp(23px, 5vw, 31px);
+      font-size: clamp(
+        22px,
+        5vw,
+        30px
+      );
 
       letter-spacing: -.7px;
     }
 
-    .musica-topo p {
-      margin: 7px 0 0;
+    #artistaMusica {
+      margin: 6px 0 0;
 
-      color: rgba(255,255,255,.78);
+      color:
+        rgba(255,255,255,.75);
 
       font-size: 14px;
     }
 
     .controles {
       display: flex;
-
       flex-wrap: wrap;
-
       align-items: center;
 
       gap: 8px;
@@ -805,104 +1023,55 @@
     }
 
     .controle {
-      min-height: 40px;
+      min-height: 42px;
 
       padding: 9px 13px;
 
-      border: 1px solid rgba(255,255,255,.14);
+      border:
+        1px solid
+        rgba(255,255,255,.18);
 
-      border-radius: 11px;
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,.12);
 
       color: white;
-
-      background: rgba(255,255,255,.12);
 
       font-size: 13px;
       font-weight: 800;
 
-      backdrop-filter: blur(8px);
-
-      transition:
-        background .15s ease,
-        transform .15s ease;
+      transition: .18s ease;
     }
 
     .controle:hover {
-      background: rgba(255,255,255,.21);
+      background:
+        rgba(255,255,255,.22);
 
       transform: translateY(-1px);
     }
 
-    .controle.destaque {
-      background: rgba(255,255,255,.22);
-    }
-
     .tom-atual {
-      min-width: 58px;
-      min-height: 40px;
+      min-height: 42px;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
-      padding: 8px 13px;
+      padding: 8px 15px;
 
-      border-radius: 11px;
-
-      color: var(--roxo-escuro);
+      border-radius: 12px;
 
       background: white;
 
-      font-size: 15px;
-      font-weight: 900;
+      color: var(--roxo-escuro);
+
+      font-size: 14px;
+      font-weight: 950;
     }
 
-    /* =====================================================
-       CONTROLE DE ROLAGEM
-       ===================================================== */
-
-    .controle-rolagem {
-      margin-top: 14px;
-
-      padding: 14px;
-
-      border-radius: 15px;
-
-      background: rgba(0,0,0,.15);
-
-      border: 1px solid rgba(255,255,255,.1);
-    }
-
-    .rolagem-linha {
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-    }
-
-    .rolagem-linha span {
-      font-size: 12px;
-
-      white-space: nowrap;
-
-      color: rgba(255,255,255,.85);
-    }
-
-    #velocidadeRolagem {
-      width: 100%;
-
-      accent-color: #c084fc;
-    }
-
-    #valorVelocidade {
-      min-width: 38px;
-
-      text-align: right;
-
-      font-size: 12px;
-      font-weight: 800;
+    .controle-ativo {
+      background: rgba(255,255,255,.28);
     }
 
     /* =====================================================
@@ -910,126 +1079,175 @@
        ===================================================== */
 
     .cifra-card {
-      margin-top: 16px;
+      margin-top: 14px;
 
-      padding: 25px;
-
-      border-radius: 22px;
-
-      color: #f4f4f5;
-
-      background:
-        linear-gradient(
-          145deg,
-          #18181b,
-          #09090b
-        );
-
-      border: 1px solid #27272a;
-
-      box-shadow:
-        0 15px 40px rgba(0,0,0,.16);
+      padding: 28px;
 
       overflow-x: auto;
 
-      transition:
-        background .3s ease;
+      color: var(--cifra-texto);
+
+      background:
+        linear-gradient(
+          180deg,
+          #15161a,
+          #0c0d0f
+        );
+
+      border:
+        1px solid #25262b;
+
+      border-radius: 22px;
+
+      box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.18);
     }
 
     #cifra {
+      min-width: 0;
+
       font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
         "Courier New",
+        Courier,
         monospace;
 
       font-size: 17px;
 
-      line-height: 1.85;
+      line-height: 1.9;
 
-      white-space: normal;
+      white-space: pre-wrap;
 
       overflow-wrap: anywhere;
+
+      color: #e4e4e7;
     }
 
     .linha-cifra {
-      min-height: 1.85em;
+      min-height: 1.8em;
     }
 
     .acorde {
-      display: inline;
-
-      padding: 1px 4px;
-
-      margin: 0 1px;
-
-      border-radius: 5px;
-
       color: var(--acorde);
 
-      background: var(--acorde-fundo);
+      font-weight: 900;
+
+      text-shadow:
+        0 0 14px
+        rgba(251,146,60,.12);
+    }
+
+    .texto-normal {
+      color: #e4e4e7;
+    }
+
+    .linha-acordes {
+      color: var(--acorde);
 
       font-weight: 900;
     }
 
-    .acorde-detectado {
-      color: #fbbf24;
+    .cifra-vazia {
+      padding: 45px 15px;
+
+      text-align: center;
+
+      color: #a1a1aa;
+
+      font-family:
+        Inter,
+        sans-serif;
     }
 
     /* =====================================================
-       MODO CULTO
+       CONTROLE DE ROLAGEM
        ===================================================== */
 
-    body.modo-culto {
-      color: #f4f4f5;
+    .painel-rolagem {
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 18px;
+
+      z-index: 100;
+
+      width: min(
+        420px,
+        calc(100% - 28px)
+      );
+
+      transform:
+        translateX(-50%)
+        translateY(120px);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      padding: 14px;
 
       background:
-        radial-gradient(
-          circle at 50% 0%,
-          rgba(124,58,237,.20),
-          transparent 38%
-        ),
-        #09090b;
-    }
+        rgba(24,24,27,.96);
 
-    body.modo-culto .pagina-musica {
-      width: min(1200px, 100%);
+      border:
+        1px solid #3f3f46;
 
-      padding-top: 10px;
-    }
-
-    body.modo-culto .musica-topo {
-      position: sticky;
-
-      top: 8px;
-
-      z-index: 50;
-
-      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
 
       box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+        0 20px 50px
+        rgba(0,0,0,.35);
+
+      backdrop-filter:
+        blur(15px);
+
+      transition: .25s ease;
     }
 
-    body.modo-culto .cifra-card {
-      background:
-        linear-gradient(
-          145deg,
-          #111113,
-          #050505
-        );
+    .painel-rolagem.visivel {
+      transform:
+        translateX(-50%)
+        translateY(0);
 
-      border-color: #292929;
+      opacity: 1;
 
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.45);
+      pointer-events: auto;
     }
 
-    body.modo-culto #cifra {
-      font-size: clamp(18px, 2.3vw, 24px);
+    .rolagem-linha {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-      line-height: 2;
+    .rolagem-linha + .rolagem-linha {
+      margin-top: 10px;
+    }
+
+    .rolagem-label {
+      color: #d4d4d8;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    #velocidadeRolagem {
+      flex: 1;
+
+      accent-color:
+        var(--roxo-2);
+    }
+
+    #velocidadeValor {
+      min-width: 42px;
+
+      text-align: right;
+
+      color: #a78bfa;
+
+      font-size: 12px;
+      font-weight: 900;
     }
 
     /* =====================================================
@@ -1037,38 +1255,45 @@
        ===================================================== */
 
     #loginCadastro {
-      display: none;
-
       position: fixed;
-
       inset: 0;
 
       z-index: 99999;
 
+      display: none;
+
       align-items: center;
       justify-content: center;
 
-      padding: 20px;
+      padding: 18px;
 
       background:
-        rgba(17,10,35,.68);
+        rgba(15,10,30,.68);
 
-      backdrop-filter: blur(8px);
+      backdrop-filter:
+        blur(10px);
     }
 
     .login-card {
-      width: min(100%, 390px);
+      width: min(
+        390px,
+        100%
+      );
 
       padding: 30px;
 
-      border-radius: 25px;
-
       text-align: center;
 
-      background: white;
+      background: var(--card);
+
+      border:
+        1px solid var(--borda);
+
+      border-radius: 25px;
 
       box-shadow:
-        0 30px 90px rgba(0,0,0,.35);
+        0 30px 90px
+        rgba(0,0,0,.35);
 
       animation:
         aparecer .2s ease;
@@ -1077,12 +1302,16 @@
     @keyframes aparecer {
       from {
         opacity: 0;
-        transform: translateY(12px) scale(.98);
+        transform:
+          translateY(15px)
+          scale(.97);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform:
+          translateY(0)
+          scale(1);
       }
     }
 
@@ -1090,28 +1319,30 @@
       width: 68px;
       height: 68px;
 
-      margin: auto;
-
       display: flex;
-
       align-items: center;
       justify-content: center;
 
-      border-radius: 20px;
+      margin: 0 auto;
 
-      background: var(--roxo-claro);
+      border-radius: 21px;
+
+      background:
+        var(--roxo-claro);
 
       font-size: 32px;
     }
 
     .login-card h2 {
-      margin: 16px 0 6px;
+      margin:
+        17px 0 7px;
 
-      color: var(--roxo-escuro);
+      color: var(--texto);
     }
 
     .login-card p {
-      margin-top: 0;
+      margin:
+        0 0 18px;
 
       color: var(--texto-2);
 
@@ -1121,60 +1352,66 @@
     .login-card input {
       width: 100%;
 
-      padding: 14px;
+      height: 50px;
 
-      border: 1px solid #d4d4d8;
+      padding:
+        0 15px;
+
+      color: var(--texto);
+
+      background:
+        var(--fundo-2);
+
+      border:
+        1px solid var(--borda);
 
       border-radius: 13px;
 
       outline: none;
 
       text-align: center;
-
-      font-size: 16px;
     }
 
     .login-card input:focus {
       border-color: var(--roxo);
 
       box-shadow:
-        0 0 0 4px rgba(124,58,237,.10);
+        0 0 0 4px
+        rgba(124,58,237,.10);
     }
 
     .login-entrar,
     .login-cancelar {
       width: 100%;
 
+      min-height: 48px;
+
+      margin-top: 10px;
+
       border: none;
 
       border-radius: 13px;
 
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .login-entrar {
-      margin-top: 12px;
-
-      padding: 14px;
-
-      color: white;
-
       background:
         linear-gradient(
           135deg,
           #8b5cf6,
           #6d28d9
         );
+
+      color: white;
     }
 
     .login-cancelar {
-      margin-top: 8px;
+      background:
+        var(--fundo-2);
 
-      padding: 11px;
-
-      color: #52525b;
-
-      background: #f4f4f5;
+      color:
+        var(--texto-2);
     }
 
     #erroSenha {
@@ -1186,9 +1423,11 @@
 
       border-radius: 10px;
 
-      color: #991b1b;
+      background:
+        rgba(239,68,68,.10);
 
-      background: #fee2e2;
+      color:
+        #ef4444;
 
       font-size: 13px;
       font-weight: 800;
@@ -1201,30 +1440,86 @@
     footer {
       padding: 25px;
 
+      color: var(--texto-3);
+
       text-align: center;
 
-      color: #a1a1aa;
+      font-size: 12px;
+    }
 
-      font-size: 11px;
+    /* =====================================================
+       TOAST
+       ===================================================== */
+
+    #toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 20px;
+
+      z-index: 200000;
+
+      transform:
+        translate(-50%, 100px);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      max-width:
+        calc(100% - 30px);
+
+      padding:
+        12px 17px;
+
+      border-radius: 13px;
+
+      background:
+        #18181b;
+
+      color: white;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.25);
+
+      transition: .25s ease;
+    }
+
+    #toast.mostrar {
+      transform:
+        translate(-50%, 0);
+
+      opacity: 1;
     }
 
     /* =====================================================
        RESPONSIVO
        ===================================================== */
 
-    @media (max-width: 650px) {
+    @media (max-width: 700px) {
 
-      header {
+      .site-header {
         padding:
-          21px 14px 82px;
+          20px 14px
+          75px;
+      }
+
+      .topo {
+        width: 100%;
+      }
+
+      .topo-acoes {
+        display: none;
       }
 
       .logo {
         width: 50px;
         height: 50px;
-
         border-radius: 16px;
-
         font-size: 25px;
       }
 
@@ -1237,15 +1532,16 @@
       }
 
       .container {
-        width: calc(100% - 14px);
+        width:
+          calc(100% - 16px);
 
-        margin-top: -30px;
+        margin-top: -28px;
       }
 
       .hero {
         padding: 18px;
 
-        border-radius: 22px;
+        border-radius: 21px;
       }
 
       .hero-topo {
@@ -1261,40 +1557,57 @@
       }
 
       #nomeCulto {
-        font-size: 19px;
+        font-size: 18px;
+      }
+
+      .culto-icone {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        font-size: 20px;
       }
 
       .acoes {
         grid-template-columns: 1fr;
       }
 
-      .banco-card {
+      .banco {
         padding: 18px;
-
-        border-radius: 22px;
+        border-radius: 21px;
       }
 
-      .pagina-musica {
-        padding:
-          10px 10px 40px;
+      #listaBanco {
+        grid-template-columns: 1fr;
+      }
+
+      .musica-wrapper {
+        width:
+          calc(100% - 16px);
+
+        padding-top: 8px;
       }
 
       .musica-topo {
-        padding: 20px;
+        padding: 19px;
 
-        border-radius: 20px;
+        border-radius: 19px;
       }
 
       .controles {
-        gap: 7px;
+        gap: 6px;
       }
 
       .controle {
-        flex: 1 1 auto;
+        min-height: 40px;
+
+        padding:
+          8px 10px;
+
+        font-size: 12px;
       }
 
       .tom-atual {
-        flex: 0 0 auto;
+        min-height: 40px;
       }
 
       .cifra-card {
@@ -1305,10 +1618,7 @@
 
       #cifra {
         font-size: 15px;
-      }
-
-      body.modo-culto #cifra {
-        font-size: 18px;
+        line-height: 1.8;
       }
     }
   </style>
@@ -1322,7 +1632,7 @@
 
   <div id="inicio">
 
-    <header>
+    <header class="site-header">
 
       <div class="topo">
 
@@ -1333,12 +1643,28 @@
           </div>
 
           <div>
-            <h1>Cifras IEQ Patrocínio</h1>
+            <h1>
+              Cifras IEQ Patrocínio
+            </h1>
 
             <p>
-              Louvor, cifras e repertório em um só lugar.
+              Louvor, repertório e cifras em um só lugar.
             </p>
           </div>
+
+        </div>
+
+        <div class="topo-acoes">
+
+          <button
+            type="button"
+            class="icone-btn"
+            onclick="alternarTema()"
+            id="botaoTemaTopo"
+            title="Alternar tema"
+          >
+            🌙
+          </button>
 
         </div>
 
@@ -1355,24 +1681,30 @@
 
           <div>
 
+            <div class="hero-kicker">
+              ✦ Música para o culto
+            </div>
+
             <h2>
-              🎶 Repertório
+              Seu repertório
             </h2>
 
-            <p>
-              Escolha uma música e comece a tocar.
+            <p class="hero-subtitulo">
+              Escolha uma música e tenha a cifra pronta para tocar.
             </p>
 
           </div>
 
           <div class="culto-badge">
-            ✨ Repertório do culto
+            ● Repertório atual
           </div>
 
         </div>
 
 
-        <!-- CULTO -->
+        <!-- =================================================
+             CULTO ATUAL
+             ================================================= -->
 
         <section class="culto-card">
 
@@ -1380,7 +1712,7 @@
 
             <div class="culto-titulo">
 
-              <div>
+              <div class="culto-info">
 
                 <h2 id="nomeCulto">
                   Carregando culto...
@@ -1402,6 +1734,7 @@
           <div id="repertorio">
 
             <div class="vazio">
+              <span class="vazio-icone">🎵</span>
               Carregando repertório...
             </div>
 
@@ -1410,7 +1743,9 @@
         </section>
 
 
-        <!-- AÇÕES -->
+        <!-- =================================================
+             AÇÕES
+             ================================================= -->
 
         <div class="acoes">
 
@@ -1425,27 +1760,37 @@
           <button
             type="button"
             class="botao botao-claro"
-            onclick="carregarCulto()"
+            onclick="atualizarTudo()"
           >
-            🔄 Atualizar repertório
+            🔄 Atualizar
           </button>
 
         </div>
 
 
-        <!-- BANCO DE MÚSICAS -->
+        <!-- =================================================
+             BANCO DE MÚSICAS
+             ================================================= -->
 
-        <section class="banco-card">
+        <section class="banco">
 
-          <div class="secao-titulo">
+          <div class="secao-topo">
 
-            <h2>
-              📚 Banco de músicas
-            </h2>
+            <div>
+
+              <h3>
+                📚 Banco de músicas
+              </h3>
+
+              <p>
+                Todas as músicas cadastradas no sistema.
+              </p>
+
+            </div>
 
             <div
-              id="contadorBanco"
               class="contador"
+              id="contadorBanco"
             >
               0 músicas
             </div>
@@ -1454,6 +1799,10 @@
 
 
           <div class="busca">
+
+            <span class="busca-icone">
+              🔎
+            </span>
 
             <input
               id="buscaMusicas"
@@ -1496,119 +1845,157 @@
     class="pagina-musica oculto"
   >
 
-    <div class="musica-topo">
+    <div class="musica-wrapper">
 
-      <h2 id="tituloMusica">
-        🎵 Música
-      </h2>
+      <div class="musica-topo">
 
-      <p id="artistaMusica"></p>
+        <h2 id="tituloMusica">
+          🎵 Música
+        </h2>
 
-
-      <div class="controles">
-
-        <button
-          type="button"
-          class="controle"
-          onclick="voltar()"
-        >
-          ← Voltar
-        </button>
+        <p id="artistaMusica"></p>
 
 
-        <button
-          type="button"
-          class="controle"
-          onclick="mudarTom(-1)"
-        >
-          − Tom
-        </button>
+        <div class="controles">
+
+          <button
+            type="button"
+            class="controle"
+            onclick="voltar()"
+          >
+            ← Voltar
+          </button>
 
 
-        <div
-          id="tomAtual"
-          class="tom-atual"
-        >
-          C
+          <button
+            type="button"
+            class="controle"
+            onclick="mudarTom(-1)"
+          >
+            − Tom
+          </button>
+
+
+          <div
+            id="tomAtual"
+            class="tom-atual"
+          >
+            C
+          </div>
+
+
+          <button
+            type="button"
+            class="controle"
+            onclick="mudarTom(1)"
+          >
+            + Tom
+          </button>
+
+
+          <button
+            type="button"
+            class="controle"
+            id="botaoRolagem"
+            onclick="alternarPainelRolagem()"
+          >
+            ▶ Rolagem
+          </button>
+
+
+          <button
+            type="button"
+            class="controle"
+            onclick="modoCulto()"
+          >
+            🎤 Modo culto
+          </button>
+
+
+          <button
+            type="button"
+            class="controle"
+            onclick="copiarCifra()"
+          >
+            📋 Copiar cifra
+          </button>
+
+
+          <button
+            type="button"
+            class="controle"
+            onclick="alternarTema()"
+            id="botaoTemaMusica"
+          >
+            🌙 Tema
+          </button>
+
         </div>
-
-
-        <button
-          type="button"
-          class="controle"
-          onclick="mudarTom(1)"
-        >
-          + Tom
-        </button>
-
-
-        <button
-          type="button"
-          class="controle"
-          id="botaoRolagem"
-          onclick="rolar()"
-        >
-          ▶ Rolagem
-        </button>
-
-
-        <button
-          type="button"
-          class="controle"
-          id="botaoCopiar"
-          onclick="copiarCifra()"
-        >
-          📋 Copiar cifra
-        </button>
-
-
-        <button
-          type="button"
-          class="controle"
-          id="botaoModoCulto"
-          onclick="modoCulto()"
-        >
-          🎤 Modo culto
-        </button>
 
       </div>
 
 
-      <!-- CONTROLE DA ROLAGEM -->
+      <div class="cifra-card">
 
-      <div class="controle-rolagem">
-
-        <div class="rolagem-linha">
-
-          <span>
-            Velocidade
-          </span>
-
-          <input
-            id="velocidadeRolagem"
-            type="range"
-            min="1"
-            max="10"
-            value="4"
-            step="1"
-          >
-
-          <span id="valorVelocidade">
-            4
-          </span>
-
+        <div id="cifra">
+          Carregando...
         </div>
 
       </div>
 
     </div>
 
+  </div>
 
-    <div class="cifra-card">
 
-      <div id="cifra">
-        Carregando...
-      </div>
+  <!-- =====================================================
+       PAINEL DE ROLAGEM
+       ===================================================== -->
+
+  <div
+    id="painelRolagem"
+    class="painel-rolagem"
+  >
+
+    <div class="rolagem-linha">
+
+      <button
+        type="button"
+        class="controle"
+        id="botaoPlayRolagem"
+        onclick="alternarRolagem()"
+      >
+        ▶ Iniciar
+      </button>
+
+      <button
+        type="button"
+        class="controle"
+        onclick="pararRolagem()"
+      >
+        ⏹ Parar
+      </button>
+
+    </div>
+
+
+    <div class="rolagem-linha">
+
+      <span class="rolagem-label">
+        Velocidade
+      </span>
+
+      <input
+        id="velocidadeRolagem"
+        type="range"
+        min="1"
+        max="10"
+        value="4"
+      >
+
+      <span id="velocidadeValor">
+        4
+      </span>
 
     </div>
 
@@ -1638,14 +2025,12 @@
         Digite a senha para adicionar uma música.
       </p>
 
-
       <input
         id="senhaCadastro"
         type="password"
         placeholder="Digite a senha"
         autocomplete="off"
       >
-
 
       <button
         type="button"
@@ -1655,7 +2040,6 @@
         🔐 Entrar
       </button>
 
-
       <button
         type="button"
         class="login-cancelar"
@@ -1664,7 +2048,6 @@
         Cancelar
       </button>
 
-
       <div id="erroSenha">
         ❌ Senha incorreta.
       </div>
@@ -1672,6 +2055,13 @@
     </div>
 
   </div>
+
+
+  <!-- =====================================================
+       TOAST
+       ===================================================== -->
+
+  <div id="toast"></div>
 
 
   <script>
@@ -1690,24 +2080,24 @@
       "leonardo";
 
 
+    /* =====================================================
+       ESTADO
+       ===================================================== */
+
     let musicaAtual = null;
 
     let tomOriginal = 0;
 
     let tomAtual = 0;
 
+    let musicasBanco = [];
+
     let rolagemAtiva = false;
 
     let intervaloRolagem = null;
 
-    let velocidadeRolagem = 4;
+    let toastTimeout = null;
 
-    let bancoMusicas = [];
-
-
-    /*
-      Ordem cromática usada para a transposição.
-    */
 
     const tons = [
       "C",
@@ -1726,149 +2116,152 @@
 
 
     /* =====================================================
-       LOGIN
-       ===================================================== */
-
-    function abrirLoginCadastro() {
-
-      const janela =
-        document.getElementById("loginCadastro");
-
-      const campo =
-        document.getElementById("senhaCadastro");
-
-      const erro =
-        document.getElementById("erroSenha");
-
-
-      if (!janela || !campo || !erro) {
-        return;
-      }
-
-
-      erro.style.display = "none";
-
-      campo.value = "";
-
-      janela.style.display = "flex";
-
-
-      setTimeout(function() {
-        campo.focus();
-      }, 100);
-    }
-
-
-    function fecharLoginCadastro() {
-
-      const janela =
-        document.getElementById("loginCadastro");
-
-      if (janela) {
-        janela.style.display = "none";
-      }
-    }
-
-
-    function clicouForaDaSenha(event) {
-
-      if (
-        event.target &&
-        event.target.id === "loginCadastro"
-      ) {
-        fecharLoginCadastro();
-      }
-    }
-
-
-    function verificarSenhaCadastro() {
-
-      const campo =
-        document.getElementById("senhaCadastro");
-
-      const erro =
-        document.getElementById("erroSenha");
-
-
-      if (!campo || !erro) {
-        return;
-      }
-
-
-      if (campo.value === SENHA_CADASTRO) {
-
-        localStorage.setItem(
-          "cadastro_autorizado",
-          "sim"
-        );
-
-
-        window.location.href =
-          "/cadastrar.html";
-
-
-        return;
-      }
-
-
-      erro.style.display = "block";
-
-      campo.value = "";
-
-      campo.focus();
-    }
-
-
-    /* =====================================================
        SUPABASE
        ===================================================== */
 
-    async function buscar(url) {
+    async function buscar(
+      caminho,
+      opcoes = {}
+    ) {
 
-      const resposta =
-        await fetch(
-          SUPABASE_URL + url,
-          {
-            method: "GET",
+      const controller =
+        new AbortController();
 
-            headers: {
-              "apikey": SUPABASE_KEY,
-
-              "Authorization":
-                "Bearer " + SUPABASE_KEY
-            }
-          }
+      const timeout =
+        setTimeout(
+          function() {
+            controller.abort();
+          },
+          15000
         );
-
-
-      const texto =
-        await resposta.text();
-
-
-      if (!resposta.ok) {
-
-        throw new Error(
-          texto ||
-          "Não foi possível consultar o banco de dados."
-        );
-      }
-
-
-      if (!texto) {
-        return null;
-      }
 
 
       try {
 
-        return JSON.parse(texto);
+        const resposta =
+          await fetch(
+            SUPABASE_URL +
+            "/rest/v1" +
+            caminho,
+            {
+              method:
+                opcoes.method ||
+                "GET",
+
+              headers: {
+                "apikey":
+                  SUPABASE_KEY,
+
+                "Authorization":
+                  "Bearer " +
+                  SUPABASE_KEY,
+
+                "Accept":
+                  "application/json",
+
+                ...(opcoes.headers || {})
+              },
+
+              signal:
+                controller.signal
+            }
+          );
+
+
+        const texto =
+          await resposta.text();
+
+
+        let dados = null;
+
+
+        if (texto) {
+
+          try {
+
+            dados =
+              JSON.parse(texto);
+
+          } catch {
+
+            dados = texto;
+
+          }
+
+        }
+
+
+        if (!resposta.ok) {
+
+          let mensagem =
+            "Não foi possível acessar o banco de dados.";
+
+          if (
+            dados &&
+            typeof dados === "object"
+          ) {
+
+            mensagem =
+              dados.message ||
+              dados.details ||
+              dados.hint ||
+              mensagem;
+
+          } else if (
+            typeof dados === "string" &&
+            dados.trim()
+          ) {
+
+            mensagem =
+              dados;
+
+          }
+
+
+          throw new Error(
+            mensagem
+          );
+        }
+
+
+        return dados;
 
       } catch (erro) {
 
-        throw new Error(
-          "O banco retornou uma resposta inválida."
+        if (
+          erro.name ===
+          "AbortError"
+        ) {
+
+          throw new Error(
+            "O Supabase demorou demais para responder."
+          );
+
+        }
+
+        throw erro;
+
+      } finally {
+
+        clearTimeout(
+          timeout
         );
+
       }
+    }
+
+
+    /* =====================================================
+       CARREGAR TUDO
+       ===================================================== */
+
+    async function atualizarTudo() {
+
+      await Promise.allSettled([
+        carregarCulto(),
+        carregarBancoMusicas()
+      ]);
+
     }
 
 
@@ -1879,32 +2272,30 @@
     async function carregarCulto() {
 
       const nomeCulto =
-        document.getElementById("nomeCulto");
+        document.getElementById(
+          "nomeCulto"
+        );
 
       const dataCulto =
-        document.getElementById("dataCulto");
+        document.getElementById(
+          "dataCulto"
+        );
 
       const repertorio =
-        document.getElementById("repertorio");
-
-
-      if (
-        !nomeCulto ||
-        !dataCulto ||
-        !repertorio
-      ) {
-        return;
-      }
+        document.getElementById(
+          "repertorio"
+        );
 
 
       nomeCulto.textContent =
         "Carregando culto...";
 
-      dataCulto.textContent = "";
-
+      dataCulto.textContent =
+        "";
 
       repertorio.innerHTML = `
         <div class="vazio">
+          <span class="vazio-icone">🎵</span>
           Carregando repertório...
         </div>
       `;
@@ -1912,10 +2303,16 @@
 
       try {
 
+        /*
+         * Não usamos select=* aqui.
+         * Isso reduz a chance de uma coluna adicional
+         * quebrar a consulta.
+         */
+
         const cultos =
           await buscar(
-            "/rest/v1/cultos" +
-            "?select=*" +
+            "/cultos" +
+            "?select=id,nome,data_culto" +
             "&order=data_culto.desc" +
             "&limit=1"
           );
@@ -1931,7 +2328,8 @@
 
           repertorio.innerHTML = `
             <div class="vazio">
-              🎤 Nenhum culto cadastrado ainda.
+              <span class="vazio-icone">🎤</span>
+              Nenhum culto cadastrado ainda.
             </div>
           `;
 
@@ -1944,11 +2342,8 @@
 
 
         nomeCulto.textContent =
-          "📅 " +
-          (
-            culto.nome ||
-            "Culto"
-          );
+          culto.nome ||
+          "Culto";
 
 
         dataCulto.textContent =
@@ -1957,17 +2352,20 @@
           );
 
 
+        /*
+         * Busca os vínculos.
+         */
+
         const vinculos =
           await buscar(
-            "/rest/v1/culto_musicas" +
-            "?select=musica_id,ordem" +
+            "/culto_musicas" +
+            "?select=culto_id,musica_id,ordem" +
             "&culto_id=eq." +
-            encodeURIComponent(culto.id) +
+            encodeURIComponent(
+              culto.id
+            ) +
             "&order=ordem.asc"
           );
-
-
-        repertorio.innerHTML = "";
 
 
         if (
@@ -1977,7 +2375,8 @@
 
           repertorio.innerHTML = `
             <div class="vazio">
-              🎵 Nenhuma música foi adicionada a este culto.
+              <span class="vazio-icone">🎵</span>
+              Nenhuma música foi adicionada a este culto.
             </div>
           `;
 
@@ -1987,8 +2386,15 @@
 
         const ids =
           vinculos
-            .map(item => item.musica_id)
-            .filter(id => id != null);
+            .map(
+              item =>
+                item.musica_id
+            )
+            .filter(
+              id =>
+                id !== null &&
+                id !== undefined
+            );
 
 
         if (!ids.length) {
@@ -2003,12 +2409,32 @@
         }
 
 
+        /*
+         * Monta o filtro IN.
+         * IDs numéricos são os esperados para a estrutura
+         * existente. Também protegemos contra caracteres
+         * inesperados caso o banco use outro tipo.
+         */
+
+        const idsFiltro =
+          ids
+            .map(
+              id =>
+                String(id)
+                  .replace(
+                    /[^a-zA-Z0-9_-]/g,
+                    ""
+                  )
+            )
+            .join(",");
+
+
         const musicas =
           await buscar(
-            "/rest/v1/musicas" +
-            "?select=*" +
+            "/musicas" +
+            "?select=id,titulo,artista,tom,capo,cifra" +
             "&id=in.(" +
-            ids.join(",") +
+            idsFiltro +
             ")"
           );
 
@@ -2017,120 +2443,67 @@
           new Map();
 
 
-        if (Array.isArray(musicas)) {
+        if (
+          Array.isArray(musicas)
+        ) {
 
-          musicas.forEach(musica => {
+          musicas.forEach(
+            musica => {
 
-            mapa.set(
-              String(musica.id),
-              musica
-            );
+              mapa.set(
+                String(musica.id),
+                musica
+              );
 
-          });
-        }
-
-
-        vinculos.forEach(item => {
-
-          const musica =
-            mapa.get(
-              String(item.musica_id)
-            );
-
-
-          if (!musica) {
-            return;
-          }
-
-
-          const div =
-            document.createElement("div");
-
-
-          div.className =
-            "musica";
-
-
-          const ordem =
-            item.ordem != null
-              ? String(item.ordem).padStart(2, "0")
-              : "--";
-
-
-          const titulo =
-            musica.titulo ||
-            "Música sem título";
-
-
-          const artista =
-            musica.artista ||
-            "";
-
-
-          const tom =
-            musica.tom ||
-            "-";
-
-
-          div.innerHTML = `
-
-            <div>
-
-              <strong>
-
-                <span class="numero-musica">
-                  ${escapar(ordem)}
-                </span>
-
-                ${escapar(titulo)}
-
-              </strong>
-
-              ${
-                artista
-                  ? `
-                    <div class="artista">
-                      ${escapar(artista)}
-                    </div>
-                  `
-                  : ""
-              }
-
-              <div class="tom">
-                Tom: ${escapar(tom)}
-              </div>
-
-            </div>
-
-
-            <div class="seta">
-              ›
-            </div>
-          `;
-
-
-          div.addEventListener(
-            "click",
-            function() {
-              abrirMusica(musica);
             }
           );
 
-
-          repertorio.appendChild(div);
-
-        });
+        }
 
 
-        if (!repertorio.children.length) {
+        repertorio.innerHTML =
+          "";
+
+
+        vinculos.forEach(
+          item => {
+
+            const musica =
+              mapa.get(
+                String(
+                  item.musica_id
+                )
+              );
+
+
+            if (!musica) {
+              return;
+            }
+
+
+            repertorio.appendChild(
+              criarCardMusica(
+                musica,
+                item.ordem
+              )
+            );
+
+          }
+        );
+
+
+        if (
+          !repertorio.children.length
+        ) {
 
           repertorio.innerHTML = `
             <div class="vazio">
-              🎵 Nenhuma música encontrada neste culto.
+              <span class="vazio-icone">🎵</span>
+              Nenhuma música encontrada neste culto.
             </div>
           `;
-        }
 
+        }
 
       } catch (erro) {
 
@@ -2141,28 +2514,141 @@
 
 
         nomeCulto.textContent =
-          "Culto indisponível";
+          "Não foi possível carregar o culto";
 
 
-        dataCulto.textContent = "";
+        dataCulto.textContent =
+          "";
 
 
         repertorio.innerHTML = `
-
           <div class="erro">
-
             <strong>
-              ⚠️ Não foi possível carregar o repertório.
+              ❌ Não foi possível carregar o repertório.
             </strong>
-
             <br><br>
-
-            Verifique sua conexão e tente novamente.
-
+            ${escapar(
+              mensagemAmigavel(
+                erro
+              )
+            )}
+            <br><br>
+            <button
+              type="button"
+              class="botao botao-claro"
+              onclick="carregarCulto()"
+            >
+              🔄 Tentar novamente
+            </button>
           </div>
-
         `;
+
       }
+
+    }
+
+
+    /* =====================================================
+       CARD DE MÚSICA
+       ===================================================== */
+
+    function criarCardMusica(
+      musica,
+      ordem = null
+    ) {
+
+      const botao =
+        document.createElement(
+          "button"
+        );
+
+
+      botao.type =
+        "button";
+
+      botao.className =
+        "musica";
+
+
+      const numero =
+        ordem !== null &&
+        ordem !== undefined &&
+        ordem !== ""
+          ? String(ordem)
+              .padStart(
+                2,
+                "0"
+              )
+          : "♪";
+
+
+      const titulo =
+        musica.titulo ||
+        "Música sem título";
+
+
+      const artista =
+        musica.artista ||
+        "";
+
+
+      const tom =
+        musica.tom ||
+        "C";
+
+
+      botao.innerHTML = `
+
+        <span class="numero-musica">
+          ${escapar(numero)}
+        </span>
+
+        <span class="musica-info">
+
+          <span class="musica-titulo">
+            ${escapar(titulo)}
+          </span>
+
+          ${
+            artista
+              ? `
+                <span class="musica-artista">
+                  ${escapar(artista)}
+                </span>
+              `
+              : ""
+          }
+
+          <span class="musica-meta">
+
+            <span class="tom">
+              Tom ${escapar(tom)}
+            </span>
+
+          </span>
+
+        </span>
+
+        <span class="seta">
+          ›
+        </span>
+
+      `;
+
+
+      botao.addEventListener(
+        "click",
+        function() {
+
+          abrirMusica(
+            musica
+          );
+
+        }
+      );
+
+
+      return botao;
     }
 
 
@@ -2173,19 +2659,19 @@
     async function carregarBancoMusicas() {
 
       const lista =
-        document.getElementById("listaBanco");
+        document.getElementById(
+          "listaBanco"
+        );
 
       const contador =
-        document.getElementById("contadorBanco");
-
-
-      if (!lista) {
-        return;
-      }
+        document.getElementById(
+          "contadorBanco"
+        );
 
 
       lista.innerHTML = `
         <div class="vazio">
+          <span class="vazio-icone">📚</span>
           Carregando músicas...
         </div>
       `;
@@ -2195,32 +2681,30 @@
 
         const musicas =
           await buscar(
-            "/rest/v1/musicas" +
-            "?select=*" +
-            "&order=titulo.asc"
+            "/musicas" +
+            "?select=id,titulo,artista,tom,capo,cifra" +
+            "&order=titulo.asc" +
+            "&limit=1000"
           );
 
 
-        bancoMusicas =
+        musicasBanco =
           Array.isArray(musicas)
             ? musicas
             : [];
 
 
-        if (contador) {
-
-          contador.textContent =
-            bancoMusicas.length +
-            (
-              bancoMusicas.length === 1
-                ? " música"
-                : " músicas"
-            );
-        }
+        contador.textContent =
+          musicasBanco.length +
+          (
+            musicasBanco.length === 1
+              ? " música"
+              : " músicas"
+          );
 
 
-        renderizarBancoMusicas(
-          bancoMusicas
+        renderizarBanco(
+          musicasBanco
         );
 
 
@@ -2232,47 +2716,64 @@
         );
 
 
-        if (contador) {
-          contador.textContent =
-            "indisponível";
-        }
+        musicasBanco =
+          [];
+
+
+        contador.textContent =
+          "Indisponível";
 
 
         lista.innerHTML = `
           <div class="erro">
-            ⚠️ Não foi possível carregar o banco de músicas.
+            <strong>
+              ❌ Não foi possível carregar o banco de músicas.
+            </strong>
             <br><br>
-            O restante do site continua funcionando normalmente.
+            ${escapar(
+              mensagemAmigavel(
+                erro
+              )
+            )}
+            <br><br>
+            <button
+              type="button"
+              class="botao botao-claro"
+              onclick="carregarBancoMusicas()"
+            >
+              🔄 Tentar novamente
+            </button>
           </div>
         `;
+
       }
+
     }
 
 
-    function renderizarBancoMusicas(
+    function renderizarBanco(
       musicas
     ) {
 
       const lista =
-        document.getElementById("listaBanco");
+        document.getElementById(
+          "listaBanco"
+        );
 
 
-      if (!lista) {
-        return;
-      }
-
-
-      lista.innerHTML = "";
+      lista.innerHTML =
+        "";
 
 
       if (
         !Array.isArray(musicas) ||
-        musicas.length === 0
+        !musicas.length
       ) {
 
         lista.innerHTML = `
           <div class="vazio">
-            🎵 Nenhuma música cadastrada ainda.
+            <span class="vazio-icone">🎼</span>
+            Nenhuma música cadastrada ainda.
           </div>
         `;
 
@@ -2280,62 +2781,85 @@
       }
 
 
-      musicas.forEach(musica => {
+      musicas.forEach(
+        musica => {
 
-        const item =
-          document.createElement("div");
+          const botao =
+            document.createElement(
+              "button"
+            );
 
 
-        item.className =
-          "musica-banco";
+          botao.type =
+            "button";
+
+          botao.className =
+            "banco-item";
 
 
-        item.innerHTML = `
+          botao.innerHTML = `
 
-          <div>
-
-            <strong>
-              ${escapar(
-                musica.titulo ||
-                "Música sem título"
-              )}
-            </strong>
-
-            <span>
-              ${escapar(
-                musica.artista ||
-                "Artista não informado"
-              )}
+            <span class="banco-icon">
+              ♪
             </span>
 
-          </div>
+            <span class="banco-info">
+
+              <span class="banco-titulo">
+                ${escapar(
+                  musica.titulo ||
+                  "Música sem título"
+                )}
+              </span>
+
+              ${
+                musica.artista
+                  ? `
+                    <span class="banco-artista">
+                      ${escapar(
+                        musica.artista
+                      )}
+                    </span>
+                  `
+                  : ""
+              }
+
+            </span>
+
+            <span>
+              ›
+            </span>
+
+          `;
 
 
-          <div class="banco-tom">
-            ${escapar(
-              musica.tom ||
-              "-"
-            )}
-          </div>
+          botao.addEventListener(
+            "click",
+            function() {
 
-        `;
+              abrirMusica(
+                musica
+              );
 
-
-        item.addEventListener(
-          "click",
-          function() {
-            abrirMusica(musica);
-          }
-        );
+            }
+          );
 
 
-        lista.appendChild(item);
+          lista.appendChild(
+            botao
+          );
 
-      });
+        }
+      );
+
     }
 
 
-    function filtrarBancoMusicas() {
+    /* =====================================================
+       BUSCA
+       ===================================================== */
+
+    function filtrarBanco() {
 
       const campo =
         document.getElementById(
@@ -2343,44 +2867,50 @@
         );
 
 
-      if (!campo) {
+      const termo =
+        normalizarTexto(
+          campo.value
+        );
+
+
+      if (!termo) {
+
+        renderizarBanco(
+          musicasBanco
+        );
+
         return;
       }
 
 
-      const termo =
-        campo.value
-          .trim()
-          .toLowerCase();
-
-
       const filtradas =
-        bancoMusicas.filter(
+        musicasBanco.filter(
           musica => {
 
             const titulo =
-              String(
-                musica.titulo || ""
-              ).toLowerCase();
-
+              normalizarTexto(
+                musica.titulo
+              );
 
             const artista =
-              String(
-                musica.artista || ""
-              ).toLowerCase();
+              normalizarTexto(
+                musica.artista
+              );
 
 
             return (
               titulo.includes(termo) ||
               artista.includes(termo)
             );
+
           }
         );
 
 
-      renderizarBancoMusicas(
+      renderizarBanco(
         filtradas
       );
+
     }
 
 
@@ -2388,12 +2918,9 @@
        ABRIR MÚSICA
        ===================================================== */
 
-    function abrirMusica(musica) {
-
-      if (!musica) {
-        return;
-      }
-
+    function abrirMusica(
+      musica
+    ) {
 
       musicaAtual =
         musica;
@@ -2406,8 +2933,13 @@
         );
 
 
-      if (tomOriginal < 0) {
-        tomOriginal = 0;
+      if (
+        tomOriginal < 0
+      ) {
+
+        tomOriginal =
+          0;
+
       }
 
 
@@ -2420,23 +2952,35 @@
 
       document.body
         .classList
-        .remove("modo-culto");
+        .remove(
+          "modo-culto"
+        );
 
 
       document
-        .getElementById("inicio")
+        .getElementById(
+          "inicio"
+        )
         .classList
-        .add("oculto");
+        .add(
+          "oculto"
+        );
 
 
       document
-        .getElementById("paginaMusica")
+        .getElementById(
+          "paginaMusica"
+        )
         .classList
-        .remove("oculto");
+        .remove(
+          "oculto"
+        );
 
 
       document
-        .getElementById("tituloMusica")
+        .getElementById(
+          "tituloMusica"
+        )
         .textContent =
           "🎵 " +
           (
@@ -2446,14 +2990,15 @@
 
 
       document
-        .getElementById("artistaMusica")
+        .getElementById(
+          "artistaMusica"
+        )
         .textContent =
           musica.artista ||
           "";
 
 
-      atualizarTomVisual();
-
+      atualizarTomNaTela();
 
       mostrarCifra();
 
@@ -2462,25 +3007,27 @@
         0,
         0
       );
+
     }
 
 
     /* =====================================================
-       MOSTRAR CIFRA
+       CIFRA
        ===================================================== */
 
     function mostrarCifra() {
 
-      if (!musicaAtual) {
-        return;
-      }
-
-
       const elemento =
-        document.getElementById("cifra");
+        document.getElementById(
+          "cifra"
+        );
 
 
-      if (!elemento) {
+      if (!musicaAtual) {
+
+        elemento.innerHTML =
+          "";
+
         return;
       }
 
@@ -2495,8 +3042,8 @@
       if (!texto.trim()) {
 
         elemento.innerHTML = `
-          <div class="vazio">
-            Esta música ainda não possui cifra.
+          <div class="cifra-vazia">
+            🎼 Esta música ainda não possui cifra.
           </div>
         `;
 
@@ -2505,13 +3052,15 @@
 
 
       const diferenca =
-        tomAtual -
-        tomOriginal;
+        calcularDiferencaTom();
+
+
+      const linhas =
+        texto.split(/\r?\n/);
 
 
       elemento.innerHTML =
-        texto
-          .split(/\r?\n/)
+        linhas
           .map(
             linha =>
               processarLinha(
@@ -2519,378 +3068,347 @@
                 diferenca
               )
           )
-          .join("");
+          .join(
+            ""
+          );
+
     }
 
 
-    /* =====================================================
-       PROCESSAMENTO DA CIFRA
-       ===================================================== */
+    /*
+     * Processa uma linha.
+     *
+     * Reconhece:
+     * [C]
+     * [G]
+     * [Am]
+     * [D7]
+     * [G/B]
+     * [C#m7]
+     *
+     * E também reconhece uma linha que seja formada
+     * somente por acordes, mesmo sem [ ].
+     *
+     * Exemplo:
+     *
+     * C       G       Am      F
+     *
+     * Essa linha será automaticamente tratada
+     * como linha de acordes.
+     */
 
     function processarLinha(
       linha,
       diferenca
     ) {
 
-      /*
-        Primeiro procuramos acordes entre colchetes.
+      if (
+        !linha
+      ) {
 
-        Exemplo:
+        return `
+          <div class="linha-cifra">
+            &nbsp;
+          </div>
+        `;
 
-        [C] Deus
-        [G] é bom
-        [Am] sempre
-      */
-
-      const regexColchetes =
-        /\[([A-Ga-g](?:#|b)?(?:m|maj|maj7|m7|m9|sus|sus2|sus4|dim|aug|add9|6|7|9|11|13|4|5)*(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
+      }
 
 
-      let resultado = "";
+      if (
+        linhaEhSomenteAcordes(
+          linha
+        )
+      ) {
 
-      let ultimaPosicao = 0;
+        return `
+          <div class="linha-cifra linha-acordes">
+            ${processarAcordesSoltos(
+              linha,
+              diferenca
+            )}
+          </div>
+        `;
 
-      let encontrou = false;
+      }
 
-      let match;
+
+      const regex =
+        /\[([A-Ga-g](?:#|b)?(?:[^\]\s]+)?)\]/g;
+
+
+      let resultado =
+        "";
+
+      let ultimaPosicao =
+        0;
+
+      let encontrado;
 
 
       while (
         (
-          match =
-            regexColchetes.exec(linha)
+          encontrado =
+            regex.exec(
+              linha
+            )
         ) !== null
       ) {
-
-        encontrou = true;
-
 
         resultado +=
           escapar(
             linha.substring(
               ultimaPosicao,
-              match.index
+              encontrado.index
             )
           );
 
 
         const acorde =
           transporAcorde(
-            match[1],
+            encontrado[1],
             diferenca
           );
 
 
         resultado +=
           '<span class="acorde">' +
-          escapar(acorde) +
+          escapar(
+            acorde
+          ) +
           "</span>";
 
 
         ultimaPosicao =
-          regexColchetes.lastIndex;
+          regex.lastIndex;
+
       }
 
 
-      if (encontrou) {
-
-        resultado +=
-          escapar(
-            linha.substring(
-              ultimaPosicao
-            )
-          );
-
-
-        return `
-          <div class="linha-cifra">
-            ${resultado}
-          </div>
-        `;
-      }
-
-
-      /*
-        Se não houver colchetes, tentamos
-        identificar acordes escritos sozinhos.
-
-        Exemplos que serão detectados:
-
-        C G Am F
-
-        C
-        G
-        Am
-        D7
-        G/B
-
-        Mas uma frase normal como:
-
-        "Eu vou cantar"
-
-        não será tratada como acorde.
-      */
-
-      return processarAcordesSemColchetes(
-        linha,
-        diferenca
-      );
-    }
-
-
-    /* =====================================================
-       DETECÇÃO AUTOMÁTICA DE ACORDES
-       ===================================================== */
-
-    function processarAcordesSemColchetes(
-      linha,
-      diferenca
-    ) {
-
-      const texto =
-        String(linha);
-
-
-      const tokens =
-        texto.split(/(\s+)/);
-
-
-      const naoVazios =
-        tokens.filter(
-          token =>
-            token.trim() !== ""
+      resultado +=
+        escapar(
+          linha.substring(
+            ultimaPosicao
+          )
         );
-
-
-      /*
-        Se a linha inteira for composta
-        apenas de acordes, temos muita
-        confiança de que é uma linha de acordes.
-      */
-
-      const linhaSoDeAcordes =
-        naoVazios.length > 0 &&
-        naoVazios.every(
-          token =>
-            ehAcorde(token)
-        );
-
-
-      let resultado = "";
-
-
-      if (linhaSoDeAcordes) {
-
-        tokens.forEach(token => {
-
-          if (ehAcorde(token)) {
-
-            const acorde =
-              transporAcorde(
-                limparPontuacao(token),
-                diferenca
-              );
-
-
-            resultado +=
-              '<span class="acorde acorde-detectado">' +
-              escapar(acorde) +
-              "</span>";
-
-          } else {
-
-            resultado +=
-              escapar(token);
-          }
-
-        });
-
-
-        return `
-          <div class="linha-cifra">
-            ${resultado}
-          </div>
-        `;
-      }
-
-
-      /*
-        Em linhas normais, só marcamos tokens
-        que sejam acordes muito claros.
-
-        Para evitar transformar palavras comuns
-        como "A" em acorde, acordes de uma letra
-        só são marcados quando a linha tem
-        características de cifra.
-      */
-
-      const possuiFormatoDeCifra =
-        naoVazios.some(
-          token =>
-            ehAcorde(token) &&
-            temQualidadeDeAcorde(token)
-        );
-
-
-      if (!possuiFormatoDeCifra) {
-
-        return `
-          <div class="linha-cifra">
-            ${escapar(texto) || "&nbsp;"}
-          </div>
-        `;
-      }
-
-
-      tokens.forEach(token => {
-
-        const limpo =
-          limparPontuacao(token);
-
-
-        if (
-          ehAcorde(limpo) &&
-          temQualidadeDeAcorde(limpo)
-        ) {
-
-          const acorde =
-            transporAcorde(
-              limpo,
-              diferenca
-            );
-
-
-          const antes =
-            token.substring(
-              0,
-              token.indexOf(limpo)
-            );
-
-
-          const depois =
-            token.substring(
-              token.indexOf(limpo) +
-              limpo.length
-            );
-
-
-          resultado +=
-            escapar(antes) +
-            '<span class="acorde acorde-detectado">' +
-            escapar(acorde) +
-            "</span>" +
-            escapar(depois);
-
-        } else {
-
-          resultado +=
-            escapar(token);
-        }
-
-      });
 
 
       return `
         <div class="linha-cifra">
-          ${resultado || "&nbsp;"}
+          ${resultado}
         </div>
       `;
+
     }
 
 
-    function ehAcorde(valor) {
+    /* =====================================================
+       DETECTAR LINHA DE ACORDES
+       ===================================================== */
+
+    function linhaEhSomenteAcordes(
+      linha
+    ) {
+
+      const limpa =
+        linha.trim();
+
+
+      if (!limpa) {
+        return false;
+      }
+
+
+      /*
+       * Uma linha precisa ter pelo menos um acorde.
+       */
+
+      const tokens =
+        limpa.split(
+          /\s+/
+        );
+
+
+      if (!tokens.length) {
+        return false;
+      }
+
+
+      let quantidadeAcordes =
+        0;
+
+
+      tokens.forEach(
+        token => {
+
+          const limpo =
+            token
+              .replace(
+                /[|,;:.!?]+$/g,
+                ""
+              )
+              .trim();
+
+
+          if (
+            ehAcorde(
+              limpo
+            )
+          ) {
+
+            quantidadeAcordes++;
+
+          }
+
+        }
+      );
+
+
+      /*
+       * Aceita se todos os tokens forem acordes.
+       *
+       * Também aceita uma linha com separadores.
+       */
+
+      return (
+        quantidadeAcordes > 0 &&
+        quantidadeAcordes === tokens.length
+      );
+
+    }
+
+
+    function processarAcordesSoltos(
+      linha,
+      diferenca
+    ) {
+
+      const partes =
+        linha.split(
+          /(\s+)/
+        );
+
+
+      return partes
+        .map(
+          parte => {
+
+            if (
+              /^\s+$/.test(
+                parte
+              )
+            ) {
+
+              return escapar(
+                parte
+              );
+
+            }
+
+
+            const semPontuacao =
+              parte.replace(
+                /[|,;:.!?]+$/g,
+                ""
+              );
+
+
+            const pontuacao =
+              parte.substring(
+                semPontuacao.length
+              );
+
+
+            if (
+              ehAcorde(
+                semPontuacao
+              )
+            ) {
+
+              return (
+                '<span class="acorde">' +
+                escapar(
+                  transporAcorde(
+                    semPontuacao,
+                    diferenca
+                  )
+                ) +
+                "</span>" +
+                escapar(
+                  pontuacao
+                )
+              );
+
+            }
+
+
+            return escapar(
+              parte
+            );
+
+          }
+        )
+        .join(
+          ""
+        );
+
+    }
+
+
+    function ehAcorde(
+      valor
+    ) {
 
       if (!valor) {
         return false;
       }
 
 
-      const texto =
-        limparPontuacao(
-          String(valor).trim()
-        );
-
-
       /*
-        Aceita:
-
-        C
-        Cm
-        C#m7
-        Db
-        F#
-        G/B
-        D7
-        Asus4
-        Bbmaj7
-        etc.
-      */
+       * Evita confundir palavras iniciadas
+       * por A-G com acordes.
+       */
 
       return /^
         [A-Ga-g]
         (?:#|b)?
         (?:
-          m
-          |maj
-          |maj7
-          |m7
-          |m9
-          |sus
-          |sus2
-          |sus4
-          |dim
-          |aug
-          |add9
-          |6
-          |7
-          |9
-          |11
-          |13
-          |4
-          |5
-        )*
+          m|min|
+          maj|maj7|
+          dim|aug|
+          sus|sus2|sus4|
+          add|add9|
+          7|9|11|13|
+          6|5|4|2
+        )?
+        (?:\d+)?
         (?:\/[A-Ga-g](?:#|b)?)?
-      $/x.test(texto);
-    }
-
-
-    function temQualidadeDeAcorde(valor) {
-
-      const texto =
-        limparPontuacao(
-          String(valor)
-        );
-
-
-      /*
-        Acordes com qualidade explícita
-        são muito mais seguros de detectar
-        dentro de uma frase.
-      */
-
-      return (
-        /[#b]/.test(texto) ||
-        /(?:m|maj|sus|dim|aug|add|[0-9]|\/)/i.test(texto)
+      $/x.test(
+        valor
       );
+
     }
 
 
-    function limparPontuacao(valor) {
+    /*
+     * JavaScript não aceita /x em regex.
+     * Esta função substitui a expressão acima
+     * por uma versão compatível.
+     */
 
-      return String(valor)
-        .replace(
-          /^[("“”'`]+/,
-          ""
-        )
-        .replace(
-          /[),.;:!?}"“”'`]+$/,
-          ""
-        );
+    function ehAcorde(
+      valor
+    ) {
+
+      return /^[A-Ga-g](?:#|b)?(?:m|min|maj|maj7|dim|aug|sus|sus2|sus4|add|add9|7|9|11|13|6|5|4|2)?(?:\d+)?(?:\/[A-Ga-g](?:#|b)?)?$/.test(
+        valor
+      );
+
     }
 
 
     /* =====================================================
-       TOM
+       TRANSPOSIÇÃO
        ===================================================== */
 
     function mudarTom(
@@ -2905,18 +3423,21 @@
       tomAtual =
         (
           tomAtual +
-          direcao +
+          Number(
+            direcao
+          ) +
           12
         ) % 12;
 
 
-      atualizarTomVisual();
+      atualizarTomNaTela();
 
       mostrarCifra();
+
     }
 
 
-    function atualizarTomVisual() {
+    function atualizarTomNaTela() {
 
       const elemento =
         document.getElementById(
@@ -2930,9 +3451,43 @@
 
 
       elemento.textContent =
-        tons[
-          ((tomAtual % 12) + 12) % 12
-        ];
+        tons[tomAtual];
+
+    }
+
+
+    function calcularDiferencaTom() {
+
+      let diferenca =
+        tomAtual -
+        tomOriginal;
+
+
+      /*
+       * Mantém dentro do intervalo
+       * -11 até +11.
+       */
+
+      if (
+        diferenca > 6
+      ) {
+
+        diferenca -= 12;
+
+      }
+
+
+      if (
+        diferenca < -6
+      ) {
+
+        diferenca += 12;
+
+      }
+
+
+      return diferenca;
+
     }
 
 
@@ -2947,32 +3502,70 @@
 
       const equivalentes = {
 
-        Db: "C#",
-        db: "C#",
+        "Db": "C#",
+        "db": "C#",
 
-        Eb: "D#",
-        eb: "D#",
+        "Eb": "D#",
+        "eb": "D#",
 
-        Gb: "F#",
-        gb: "F#",
+        "Gb": "F#",
+        "gb": "F#",
 
-        Ab: "G#",
-        ab: "G#",
+        "Ab": "G#",
+        "ab": "G#",
 
-        Bb: "A#",
-        bb: "A#"
+        "Bb": "A#",
+        "bb": "A#"
+
       };
 
 
-      const normalizada =
-        String(nota)
-          .trim();
+      const notaNormalizada =
+        equivalentes[
+          String(
+            nota
+          )
+        ] ||
+        String(
+          nota
+        );
 
 
       return tons.indexOf(
-        equivalentes[normalizada] ||
-        normalizada
+        notaNormalizada
       );
+
+    }
+
+
+    function transporNota(
+      nota,
+      diferenca
+    ) {
+
+      const indice =
+        indiceTom(
+          nota
+        );
+
+
+      if (
+        indice < 0
+      ) {
+
+        return nota;
+
+      }
+
+
+      return tons[
+        (
+          indice +
+          diferenca +
+          12
+        ) % 12
+      ];
+
     }
 
 
@@ -2981,238 +3574,83 @@
       diferenca
     ) {
 
-      if (!acorde) {
+      if (
+        !acorde ||
+        !diferenca
+      ) {
+
         return acorde;
+
       }
 
 
+      const valor =
+        String(
+          acorde
+        ).trim();
+
+
+      /*
+       * Exemplo:
+       *
+       * C#m7
+       * G/B
+       * F#maj7
+       * Bb
+       */
+
       const resultado =
-        String(acorde)
-          .match(
-            /^([A-Ga-g](?:#|b)?)(.*)$/
-          );
+        valor.match(
+          /^([A-Ga-g](?:#|b)?)([^/]*)(?:\/([A-Ga-g](?:#|b)?))?$/
+        );
 
 
       if (!resultado) {
+
         return acorde;
+
       }
 
 
-      const nota =
+      const raiz =
         resultado[1];
 
 
       const complemento =
-        resultado[2];
+        resultado[2] || "";
 
 
-      let indice =
-        indiceTom(nota);
+      const baixo =
+        resultado[3] ||
+        "";
 
 
-      if (indice === -1) {
-        return acorde;
+      const novaRaiz =
+        transporNota(
+          raiz,
+          diferenca
+        );
+
+
+      let resultadoFinal =
+        novaRaiz +
+        complemento;
+
+
+      if (baixo) {
+
+        resultadoFinal +=
+          "/" +
+          transporNota(
+            baixo,
+            diferenca
+          );
+
       }
 
 
-      indice =
-        (
-          indice +
-          diferenca +
-          12
-        ) % 12;
+      return resultadoFinal;
 
-
-      return (
-        tons[indice] +
-        complemento
-      );
-    }
-
-
-    /* =====================================================
-       ROLAGEM AUTOMÁTICA
-       ===================================================== */
-
-    function rolar() {
-
-      if (rolagemAtiva) {
-
-        pararRolagem();
-
-        return;
-      }
-
-
-      rolagemAtiva = true;
-
-
-      const botao =
-        document.getElementById(
-          "botaoRolagem"
-        );
-
-
-      if (botao) {
-
-        botao.textContent =
-          "⏹ Parar";
-
-        botao.classList.add(
-          "destaque"
-        );
-      }
-
-
-      iniciarRolagemAutomatica();
-    }
-
-
-    function iniciarRolagemAutomatica() {
-
-      clearInterval(
-        intervaloRolagem
-      );
-
-
-      /*
-        Quanto maior o valor,
-        mais rápida a rolagem.
-      */
-
-      const velocidade =
-        Math.max(
-          10,
-          100 -
-          (velocidadeRolagem * 8)
-        );
-
-
-      intervaloRolagem =
-        setInterval(
-          function() {
-
-            if (!rolagemAtiva) {
-              return;
-            }
-
-
-            window.scrollBy(
-              0,
-              1
-            );
-
-          },
-          velocidade
-        );
-    }
-
-
-    function pararRolagem() {
-
-      rolagemAtiva = false;
-
-
-      clearInterval(
-        intervaloRolagem
-      );
-
-
-      intervaloRolagem = null;
-
-
-      const botao =
-        document.getElementById(
-          "botaoRolagem"
-        );
-
-
-      if (botao) {
-
-        botao.textContent =
-          "▶ Rolagem";
-
-        botao.classList.remove(
-          "destaque"
-        );
-      }
-    }
-
-
-    function atualizarVelocidadeRolagem() {
-
-      const controle =
-        document.getElementById(
-          "velocidadeRolagem"
-        );
-
-      const valor =
-        document.getElementById(
-          "valorVelocidade"
-        );
-
-
-      if (!controle) {
-        return;
-      }
-
-
-      velocidadeRolagem =
-        Number(
-          controle.value
-        );
-
-
-      if (valor) {
-
-        valor.textContent =
-          velocidadeRolagem;
-      }
-
-
-      /*
-        Se estiver rolando,
-        reinicia com a nova velocidade.
-      */
-
-      if (rolagemAtiva) {
-
-        iniciarRolagemAutomatica();
-      }
-    }
-
-
-    /* =====================================================
-       MODO CULTO
-       ===================================================== */
-
-    function modoCulto() {
-
-      const ativado =
-        document.body
-          .classList
-          .toggle("modo-culto");
-
-
-      const botao =
-        document.getElementById(
-          "botaoModoCulto"
-        );
-
-
-      if (botao) {
-
-        botao.textContent =
-          ativado
-            ? "☀️ Sair do modo culto"
-            : "🎤 Modo culto";
-      }
-
-
-      window.scrollTo(
-        0,
-        0
-      );
     }
 
 
@@ -3223,7 +3661,13 @@
     async function copiarCifra() {
 
       if (!musicaAtual) {
+
+        mostrarToast(
+          "Nenhuma música aberta."
+        );
+
         return;
+
       }
 
 
@@ -3231,8 +3675,14 @@
         gerarTextoParaCopiar();
 
 
-      if (!texto) {
+      if (!texto.trim()) {
+
+        mostrarToast(
+          "Esta música não possui cifra."
+        );
+
         return;
+
       }
 
 
@@ -3243,18 +3693,68 @@
         );
 
 
-        mostrarCopiaSucesso();
+        mostrarToast(
+          "✓ Música cifrada copiada!"
+        );
 
 
       } catch (erro) {
 
         /*
-          Fallback para navegadores
-          que não liberam clipboard API.
-        */
+         * Fallback para navegadores antigos.
+         */
 
-        copiarComFallback(texto);
+        const area =
+          document.createElement(
+            "textarea"
+          );
+
+
+        area.value =
+          texto;
+
+
+        area.style.position =
+          "fixed";
+
+        area.style.opacity =
+          "0";
+
+
+        document.body.appendChild(
+          area
+        );
+
+
+        area.select();
+
+
+        try {
+
+          document.execCommand(
+            "copy"
+          );
+
+
+          mostrarToast(
+            "✓ Música copiada!"
+          );
+
+        } catch {
+
+          mostrarToast(
+            "Não foi possível copiar automaticamente."
+          );
+
+        }
+
+
+        document.body.removeChild(
+          area
+        );
+
       }
+
     }
 
 
@@ -3272,145 +3772,515 @@
         );
 
 
+      if (!texto.trim()) {
+        return "";
+      }
+
+
       const diferenca =
-        tomAtual -
-        tomOriginal;
+        calcularDiferencaTom();
 
-
-      /*
-        Mantém os acordes que estavam
-        entre colchetes no formato [C].
-
-        Também transpõe acordes escritos
-        sem colchetes quando a linha
-        claramente for uma linha de acordes.
-      */
 
       return texto
         .split(/\r?\n/)
         .map(
           linha =>
-            linhaParaTexto(
+            gerarLinhaParaCopiar(
               linha,
               diferenca
             )
         )
-        .join("\n");
+        .join(
+          "\n"
+        );
+
     }
 
 
-    function linhaParaTexto(
+    function gerarLinhaParaCopiar(
       linha,
       diferenca
     ) {
 
+      /*
+       * Primeiro trata acordes entre [ ].
+       * Ao copiar, removemos os colchetes para
+       * que o resultado já seja uma cifra limpa.
+       */
+
       const regex =
-        /\[([A-Ga-g](?:#|b)?(?:m|maj|maj7|m7|m9|sus|sus2|sus4|dim|aug|add9|6|7|9|11|13|4|5)*(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
+        /\[([A-Ga-g](?:#|b)?(?:[^\]\s]+)?)\]/g;
 
 
-      return linha.replace(
-        regex,
-        function(
-          completo,
-          acorde
-        ) {
+      let resultado =
+        "";
 
-          return (
-            "[" +
-            transporAcorde(
-              acorde,
-              diferenca
-            ) +
-            "]"
+      let ultimaPosicao =
+        0;
+
+      let encontrou =
+        false;
+
+      let match;
+
+
+      while (
+        (
+          match =
+            regex.exec(
+              linha
+            )
+        ) !== null
+      ) {
+
+        encontrou =
+          true;
+
+
+        resultado +=
+          linha.substring(
+            ultimaPosicao,
+            match.index
           );
-        }
-      );
-    }
 
 
-    function copiarComFallback(
-      texto
-    ) {
-
-      const area =
-        document.createElement(
-          "textarea"
-        );
+        resultado +=
+          transporAcorde(
+            match[1],
+            diferenca
+          );
 
 
-      area.value =
-        texto;
+        ultimaPosicao =
+          regex.lastIndex;
 
-
-      area.style.position =
-        "fixed";
-
-      area.style.opacity =
-        "0";
-
-
-      document.body.appendChild(
-        area
-      );
-
-
-      area.focus();
-
-      area.select();
-
-
-      try {
-
-        document.execCommand(
-          "copy"
-        );
-
-        mostrarCopiaSucesso();
-
-      } catch (erro) {
-
-        alert(
-          "Não foi possível copiar a cifra."
-        );
       }
 
 
-      document.body.removeChild(
-        area
-      );
+      if (encontrou) {
+
+        resultado +=
+          linha.substring(
+            ultimaPosicao
+          );
+
+
+        return resultado;
+
+      }
+
+
+      /*
+       * Depois trata linhas que já possuem
+       * acordes sem [ ].
+       */
+
+      if (
+        linhaEhSomenteAcordes(
+          linha
+        )
+      ) {
+
+        return linha
+          .split(
+            /(\s+)/
+          )
+          .map(
+            parte => {
+
+              if (
+                /^\s+$/.test(
+                  parte
+                )
+              ) {
+
+                return parte;
+
+              }
+
+
+              const semPontuacao =
+                parte.replace(
+                  /[|,;:.!?]+$/g,
+                  ""
+                );
+
+
+              const pontuacao =
+                parte.substring(
+                  semPontuacao.length
+                );
+
+
+              if (
+                ehAcorde(
+                  semPontuacao
+                )
+              ) {
+
+                return (
+                  transporAcorde(
+                    semPontuacao,
+                    diferenca
+                  ) +
+                  pontuacao
+                );
+
+              }
+
+
+              return parte;
+
+            }
+          )
+          .join(
+            ""
+          );
+
+      }
+
+
+      return linha;
+
     }
 
 
-    function mostrarCopiaSucesso() {
+    /* =====================================================
+       ROLAGEM
+       ===================================================== */
+
+    function alternarPainelRolagem() {
+
+      const painel =
+        document.getElementById(
+          "painelRolagem"
+        );
+
+
+      painel.classList.toggle(
+        "visivel"
+      );
+
+    }
+
+
+    function alternarRolagem() {
+
+      if (
+        rolagemAtiva
+      ) {
+
+        pararRolagem();
+
+        return;
+
+      }
+
+
+      iniciarRolagem();
+
+    }
+
+
+    function iniciarRolagem() {
+
+      if (
+        rolagemAtiva
+      ) {
+
+        return;
+
+      }
+
+
+      rolagemAtiva =
+        true;
+
+
+      document.body
+        .classList
+        .add(
+          "rolagem-ativa"
+        );
+
+
+      atualizarBotaoRolagem();
+
+
+      clearInterval(
+        intervaloRolagem
+      );
+
+
+      intervaloRolagem =
+        setInterval(
+          function() {
+
+            if (
+              !rolagemAtiva
+            ) {
+
+              return;
+
+            }
+
+
+            const velocidade =
+              Number(
+                document.getElementById(
+                  "velocidadeRolagem"
+                ).value
+              );
+
+
+            /*
+             * Quanto maior a velocidade,
+             * mais pixels por intervalo.
+             */
+
+            const passo =
+              Math.max(
+                1,
+                Math.round(
+                  velocidade / 2
+                )
+              );
+
+
+            window.scrollBy(
+              0,
+              passo
+            );
+
+
+            /*
+             * Para automaticamente quando
+             * chegar ao final.
+             */
+
+            const chegouFim =
+              window.innerHeight +
+              window.scrollY >=
+              document.documentElement
+                .scrollHeight -
+              5;
+
+
+            if (
+              chegouFim
+            ) {
+
+              pararRolagem();
+
+            }
+
+          },
+          55
+        );
+
+    }
+
+
+    function pararRolagem() {
+
+      rolagemAtiva =
+        false;
+
+
+      clearInterval(
+        intervaloRolagem
+      );
+
+
+      intervaloRolagem =
+        null;
+
+
+      document.body
+        .classList
+        .remove(
+          "rolagem-ativa"
+        );
+
+
+      atualizarBotaoRolagem();
+
+    }
+
+
+    function atualizarBotaoRolagem() {
 
       const botao =
         document.getElementById(
-          "botaoCopiar"
+          "botaoPlayRolagem"
         );
 
 
-      if (!botao) {
-        return;
+      if (botao) {
+
+        botao.textContent =
+          rolagemAtiva
+            ? "⏸ Pausar"
+            : "▶ Iniciar";
+
       }
 
 
-      const original =
-        "📋 Copiar cifra";
+      const botaoTopo =
+        document.getElementById(
+          "botaoRolagem"
+        );
 
 
-      botao.textContent =
-        "✅ Cifra copiada!";
+      if (botaoTopo) {
+
+        botaoTopo.textContent =
+          rolagemAtiva
+            ? "⏸ Rolando"
+            : "▶ Rolagem";
+
+      }
+
+    }
 
 
-      setTimeout(
-        function() {
+    /* =====================================================
+       MODO CULTO
+       ===================================================== */
 
-          botao.textContent =
-            original;
+    function modoCulto() {
 
-        },
-        1800
+      document.body
+        .classList
+        .toggle(
+          "modo-culto"
+        );
+
+
+      const ativado =
+        document.body
+          .classList
+          .contains(
+            "modo-culto"
+          );
+
+
+      if (ativado) {
+
+        pararRolagem();
+
+        window.scrollTo(
+          0,
+          0
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TEMA
+       ===================================================== */
+
+    function alternarTema() {
+
+      document.body
+        .classList
+        .toggle(
+          "modo-escuro"
+        );
+
+
+      const escuro =
+        document.body
+          .classList
+          .contains(
+            "modo-escuro"
+          );
+
+
+      localStorage.setItem(
+        "tema_cifras",
+        escuro
+          ? "escuro"
+          : "claro"
       );
+
+
+      atualizarBotoesTema();
+
+    }
+
+
+    function carregarTema() {
+
+      const tema =
+        localStorage.getItem(
+          "tema_cifras"
+        );
+
+
+      if (
+        tema ===
+        "escuro"
+      ) {
+
+        document.body
+          .classList
+          .add(
+            "modo-escuro"
+          );
+
+      }
+
+
+      atualizarBotoesTema();
+
+    }
+
+
+    function atualizarBotoesTema() {
+
+      const escuro =
+        document.body
+          .classList
+          .contains(
+            "modo-escuro"
+          );
+
+
+      const topo =
+        document.getElementById(
+          "botaoTemaTopo"
+        );
+
+
+      const musica =
+        document.getElementById(
+          "botaoTemaMusica"
+        );
+
+
+      if (topo) {
+
+        topo.textContent =
+          escuro
+            ? "☀️"
+            : "🌙";
+
+      }
+
+
+      if (musica) {
+
+        musica.textContent =
+          escuro
+            ? "☀️ Tema"
+            : "🌙 Tema";
+
+      }
+
     }
 
 
@@ -3425,41 +4295,159 @@
 
       document.body
         .classList
-        .remove("modo-culto");
+        .remove(
+          "modo-culto"
+        );
 
 
-      const pagina =
-        document.getElementById(
+      document
+        .getElementById(
           "paginaMusica"
+        )
+        .classList
+        .add(
+          "oculto"
         );
 
 
-      const inicio =
-        document.getElementById(
+      document
+        .getElementById(
           "inicio"
+        )
+        .classList
+        .remove(
+          "oculto"
         );
-
-
-      if (pagina) {
-
-        pagina
-          .classList
-          .add("oculto");
-      }
-
-
-      if (inicio) {
-
-        inicio
-          .classList
-          .remove("oculto");
-      }
 
 
       window.scrollTo(
         0,
         0
       );
+
+    }
+
+
+    /* =====================================================
+       LOGIN
+       ===================================================== */
+
+    function abrirLoginCadastro() {
+
+      const janela =
+        document.getElementById(
+          "loginCadastro"
+        );
+
+
+      const campo =
+        document.getElementById(
+          "senhaCadastro"
+        );
+
+
+      const erro =
+        document.getElementById(
+          "erroSenha"
+        );
+
+
+      erro.style.display =
+        "none";
+
+
+      campo.value =
+        "";
+
+
+      janela.style.display =
+        "flex";
+
+
+      setTimeout(
+        function() {
+
+          campo.focus();
+
+        },
+        100
+      );
+
+    }
+
+
+    function fecharLoginCadastro() {
+
+      document
+        .getElementById(
+          "loginCadastro"
+        )
+        .style.display =
+        "none";
+
+    }
+
+
+    function clicouForaDaSenha(
+      event
+    ) {
+
+      if (
+        event.target.id ===
+        "loginCadastro"
+      ) {
+
+        fecharLoginCadastro();
+
+      }
+
+    }
+
+
+    function verificarSenhaCadastro() {
+
+      const campo =
+        document.getElementById(
+          "senhaCadastro"
+        );
+
+
+      const erro =
+        document.getElementById(
+          "erroSenha"
+        );
+
+
+      if (
+        campo.value ===
+        SENHA_CADASTRO
+      ) {
+
+        localStorage.setItem(
+          "cadastro_autorizado",
+          "sim"
+        );
+
+
+        window.location.href =
+          "/cadastrar.html";
+
+
+        return;
+
+      }
+
+
+      erro.style.display =
+        "block";
+
+
+      campo.value =
+        "";
+
+
+      campo.focus();
+
     }
 
 
@@ -3476,17 +4464,28 @@
       }
 
 
+      const valor =
+        String(
+          data
+        );
+
+
       const partes =
-        String(data)
-          .substring(0, 10)
+        valor
+          .substring(
+            0,
+            10
+          )
           .split("-");
 
 
       if (
-        partes.length !== 3
+        partes.length !==
+        3
       ) {
 
-        return String(data);
+        return valor;
+
       }
 
 
@@ -3497,19 +4496,42 @@
         "/" +
         partes[0]
       );
+
     }
 
 
     /* =====================================================
-       SEGURANÇA HTML
+       UTILITÁRIOS
        ===================================================== */
+
+    function normalizarTexto(
+      texto
+    ) {
+
+      return String(
+        texto ||
+        ""
+      )
+        .normalize(
+          "NFD"
+        )
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        )
+        .toLowerCase()
+        .trim();
+
+    }
+
 
     function escapar(
       texto
     ) {
 
       return String(
-        texto ?? ""
+        texto ??
+        ""
       )
         .replace(
           /&/g,
@@ -3531,6 +4553,106 @@
           /'/g,
           "&#039;"
         );
+
+    }
+
+
+    function mensagemAmigavel(
+      erro
+    ) {
+
+      const texto =
+        String(
+          erro?.message ||
+          erro ||
+          ""
+        );
+
+
+      if (
+        /Failed to fetch/i.test(
+          texto
+        )
+      ) {
+
+        return (
+          "Não foi possível conectar ao Supabase. " +
+          "Verifique a internet ou as configurações de acesso do projeto."
+        );
+
+      }
+
+
+      if (
+        /PGRST205/i.test(
+          texto
+        )
+      ) {
+
+        return (
+          "O Supabase não encontrou uma das tabelas configuradas. " +
+          "Nenhuma alteração foi feita no banco."
+        );
+
+      }
+
+
+      if (
+        /401|403|JWT|apikey|permission/i.test(
+          texto
+        )
+      ) {
+
+        return (
+          "O banco recusou o acesso. " +
+          "Verifique a chave pública e as políticas de acesso (RLS) do Supabase."
+        );
+
+      }
+
+
+      return texto ||
+        "Ocorreu um erro inesperado.";
+
+    }
+
+
+    function mostrarToast(
+      mensagem
+    ) {
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+
+      clearTimeout(
+        toastTimeout
+      );
+
+
+      toast.textContent =
+        mensagem;
+
+
+      toast.classList.add(
+        "mostrar"
+      );
+
+
+      toastTimeout =
+        setTimeout(
+          function() {
+
+            toast.classList.remove(
+              "mostrar"
+            );
+
+          },
+          2600
+        );
+
     }
 
 
@@ -3542,24 +4664,7 @@
       "DOMContentLoaded",
       function() {
 
-        carregarCulto();
-
-        carregarBancoMusicas();
-
-
-        const campoBusca =
-          document.getElementById(
-            "buscaMusicas"
-          );
-
-
-        if (campoBusca) {
-
-          campoBusca.addEventListener(
-            "input",
-            filtrarBancoMusicas
-          );
-        }
+        carregarTema();
 
 
         const campoSenha =
@@ -3575,68 +4680,129 @@
             function(event) {
 
               if (
-                event.key === "Enter"
+                event.key ===
+                "Enter"
               ) {
 
                 verificarSenhaCadastro();
+
               }
 
+
               if (
-                event.key === "Escape"
+                event.key ===
+                "Escape"
               ) {
 
                 fecharLoginCadastro();
+
               }
 
             }
           );
+
         }
 
 
-        const controleVelocidade =
+        const busca =
+          document.getElementById(
+            "buscaMusicas"
+          );
+
+
+        if (busca) {
+
+          busca.addEventListener(
+            "input",
+            filtrarBanco
+          );
+
+        }
+
+
+        const velocidade =
           document.getElementById(
             "velocidadeRolagem"
           );
 
 
-        if (controleVelocidade) {
-
-          controleVelocidade.addEventListener(
-            "input",
-            atualizarVelocidadeRolagem
+        const valor =
+          document.getElementById(
+            "velocidadeValor"
           );
-        }
 
-      }
-    );
-
-
-    /*
-      ESC fecha o modal de senha.
-    */
-
-    document.addEventListener(
-      "keydown",
-      function(event) {
 
         if (
-          event.key === "Escape"
+          velocidade &&
+          valor
         ) {
 
-          const login =
-            document.getElementById(
-              "loginCadastro"
-            );
+          velocidade.addEventListener(
+            "input",
+            function() {
 
+              valor.textContent =
+                velocidade.value;
 
-          if (
-            login &&
-            login.style.display === "flex"
-          ) {
+            }
+          );
 
-            fecharLoginCadastro();
-          }
         }
+
+
+        /*
+         * Esc fecha modais/painéis.
+         */
+
+        document.addEventListener(
+          "keydown",
+          function(event) {
+
+            if (
+              event.key ===
+              "Escape"
+            ) {
+
+              const login =
+                document.getElementById(
+                  "loginCadastro"
+                );
+
+
+              if (
+                login &&
+                login.style.display ===
+                "flex"
+              ) {
+
+                fecharLoginCadastro();
+
+              }
+
+
+              document
+                .getElementById(
+                  "painelRolagem"
+                )
+                .classList
+                .remove(
+                  "visivel"
+                );
+
+            }
+
+          }
+        );
+
+
+        /*
+         * Carrega as duas áreas separadamente.
+         * Se uma falhar, a outra continua funcionando.
+         */
+
+        carregarCulto();
+
+        carregarBancoMusicas();
 
       }
     );
