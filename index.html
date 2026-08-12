@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#17112b">
+  <meta name="theme-color" content="#050505">
 
   <title>Cifras IEQ Patrocínio</title>
 
@@ -13,31 +13,30 @@
     }
 
     :root {
-      --roxo: #7c3aed;
-      --roxo-2: #6d28d9;
-      --roxo-escuro: #24103f;
-      --roxo-claro: #f1ebff;
+      --roxo: #d4af37;
+      --roxo-2: #b8860b;
+      --roxo-escuro: #090909;
+      --roxo-claro: #2a230f;
 
-      --fundo: #f5f6fa;
-      --card: #ffffff;
-      --card-2: #fafaff;
+      --fundo: #050505;
+      --card: #0d0d0d;
+      --card-2: #121212;
 
-      --texto: #17151f;
-      --texto-2: #5f5b6b;
-      --texto-3: #9994a6;
+      --texto: #f5f5f5;
+      --texto-2: #c7c7c7;
+      --texto-3: #8f8f8f;
 
-      --borda: #e8e5ef;
+      --borda: #2c2c2c;
 
-      --verde: #10b981;
-      --vermelho: #ef4444;
-      --laranja: #f59e0b;
+      --verde: #d4af37;
+      --vermelho: #dc2626;
+      --laranja: #d4af37;
 
-      /* Fundo novo das cifras */
       --cifra-fundo: #ffffff;
-      --cifra-texto: #17151f;
-      --acorde: #6d28d9;
+      --cifra-texto: #111111;
+      --acorde: #b8860b;
 
-      --sombra: 0 12px 40px rgba(42, 20, 80, 0.08);
+      --sombra: 0 12px 40px rgba(0, 0, 0, 0.35);
 
       --raio: 22px;
     }
@@ -53,11 +52,11 @@
 
       --borda: #2d2737;
 
-      --roxo-claro: #281c3c;
+      --roxo-claro: #2a230f;
 
       --cifra-fundo: #ffffff;
-      --cifra-texto: #17151f;
-      --acorde: #6d28d9;
+      --cifra-texto: #111111;
+      --acorde: #b8860b;
     }
 
     html {
@@ -86,7 +85,7 @@
       background:
         radial-gradient(
           circle at 15% 0%,
-          rgba(124, 58, 237, 0.08),
+          rgba(212, 175, 55, 0.10),
           transparent 30%
         ),
         var(--fundo);
@@ -1229,7 +1228,7 @@
 
     #cifra {
       position: relative;
-      left: 0;
+      left: -24px;
 
       box-sizing: border-box;
       width: 100%;
@@ -1768,7 +1767,8 @@
     }
 
     body.modo-culto #cifra {
-      width: 100%;
+      left: -28px;
+      width: calc(100% + 28px);
       max-width: none;
       margin: 0;
       padding-left: 8px;
@@ -1891,9 +1891,10 @@
       }
 
       #cifra {
+        left: -28px;
         /*
-          A cifra começa no mesmo eixo esquerdo do título
-          "🎵 CIFRA", sem deslocar o container.
+          A cifra fica propositalmente mais à esquerda para
+          aproveitar melhor a tela do telefone.
         */
         padding:
           10px
@@ -1945,6 +1946,82 @@
 
       .campo-full {
         grid-column: auto;
+      }
+    }
+
+    /* =====================================================
+       TEMA PRETO E DOURADO
+       ===================================================== */
+    .site-header {
+      background: linear-gradient(135deg, #050505 0%, #111111 55%, #1b1608 100%);
+      border-bottom: 1px solid #4a3b13;
+    }
+
+    .culto-header {
+      background: linear-gradient(135deg, #111111 0%, #171717 55%, #211b09 100%);
+    }
+
+    .culto-icon {
+      background: linear-gradient(135deg, #d4af37, #8f6b12) !important;
+      color: #080808 !important;
+      box-shadow: 0 10px 25px rgba(212,175,55,.18) !important;
+    }
+
+    .botao-roxo, .botao-verde, .btn-principal {
+      background: linear-gradient(135deg, #d4af37, #a67c12) !important;
+      color: #080808 !important;
+      border-color: #d4af37 !important;
+    }
+
+    .botao-medley {
+      background: #171717 !important;
+      color: #d4af37 !important;
+      border-color: #5a4612 !important;
+    }
+
+    .botao-claro, .btn-secundario {
+      background: #141414 !important;
+      color: #d4af37 !important;
+      border-color: #3d3d3d !important;
+    }
+
+    .mini-culto, .mini-editar {
+      color: #d4af37 !important;
+      border-color: #4a3b13 !important;
+    }
+
+    .cifra-toolbar {
+      background: #0b0b0b !important;
+      border-color: #3b3b3b !important;
+    }
+
+    .cifra-titulo, .status, .eyebrow {
+      color: #d4af37 !important;
+    }
+
+    .cifra-posicao .controle-cifra-posicao {
+      color: #d4af37 !important;
+      border-color: #4a3b13 !important;
+    }
+
+    .botao-excluir-culto {
+      margin-top: 10px;
+      border: 1px solid #5c2020;
+      background: #1a0d0d;
+      color: #ff8d8d;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .botao-excluir-culto:hover {
+      background: #2a1010;
+    }
+
+    @media (max-width: 700px) {
+      #cifra {
+        left: -32px;
       }
     }
   </style>
@@ -2045,6 +2122,15 @@
                 </h2>
 
                 <div id="dataCulto"></div>
+
+                <button
+                  type="button"
+                  id="btnExcluirCulto"
+                  class="botao-excluir-culto"
+                  onclick="excluirCultoAtual()"
+                >
+                  🗑️ Excluir culto
+                </button>
 
               </div>
 
@@ -3136,6 +3222,9 @@ Todos os dias"
                 cultoAtual.data_culto
               );
 
+          const btnExcluir = document.getElementById("btnExcluirCulto");
+          if (btnExcluir) btnExcluir.classList.remove("oculto");
+
 
           await carregarRepertorio(
             cultoAtual.id
@@ -3144,6 +3233,9 @@ Todos os dias"
         } else {
 
           cultoAtual = null;
+
+          const btnExcluir = document.getElementById("btnExcluirCulto");
+          if (btnExcluir) btnExcluir.classList.add("oculto");
 
 
           document
@@ -3205,6 +3297,44 @@ Todos os dias"
 
       }
 
+    }
+
+
+    async function excluirCultoAtual() {
+
+      if (!cultoAtual?.id) {
+        alert("Não há culto selecionado para excluir.");
+        return;
+      }
+
+      const confirmou = confirm(
+        `Excluir o culto "${cultoAtual.nome || "Culto"}"?\n\nAs músicas vinculadas a este culto também serão removidas do repertório dele.`
+      );
+
+      if (!confirmou) {
+        return;
+      }
+
+      try {
+        await excluirRegistro(
+          "/rest/v1/culto_musicas?culto_id=eq." +
+          encodeURIComponent(cultoAtual.id)
+        );
+
+        await excluirRegistro(
+          "/rest/v1/cultos?id=eq." +
+          encodeURIComponent(cultoAtual.id)
+        );
+
+        cultoAtual = null;
+
+        await atualizarTudo();
+
+        alert("🗑️ Culto excluído com sucesso!");
+      } catch (erro) {
+        console.error(erro);
+        alert("Não foi possível excluir o culto:\n\n" + erro.message);
+      }
     }
 
 
