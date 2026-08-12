@@ -13,17 +13,28 @@
 
     :root {
       --roxo: #7c3aed;
+      --roxo-2: #a855f7;
       --roxo-escuro: #4c1d95;
-      --roxo-claro: #ede9fe;
-      --azul: #2563eb;
-      --verde: #10b981;
-      --texto: #171717;
-      --cinza: #6b7280;
-      --fundo: #f5f3ff;
-      --branco: #ffffff;
-      --borda: #e5e7eb;
+      --roxo-claro: #f3e8ff;
+
+      --fundo: #f5f3fa;
+      --card: #ffffff;
+      --texto: #18181b;
+      --texto-2: #52525b;
+      --texto-3: #a1a1aa;
+      --borda: #e4e4e7;
+
       --acorde: #fb923c;
-      --acorde-fundo: rgba(251, 146, 60, .10);
+      --acorde-fundo: rgba(251, 146, 60, .12);
+
+      --sucesso: #10b981;
+      --erro: #ef4444;
+
+      --sombra:
+        0 15px 45px rgba(45, 20, 90, .09);
+
+      --sombra-forte:
+        0 25px 70px rgba(45, 20, 90, .16);
     }
 
     html {
@@ -32,39 +43,40 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
+
       font-family:
         Inter,
+        system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         Arial,
         sans-serif;
 
+      color: var(--texto);
+
       background:
         radial-gradient(
-          circle at top right,
-          rgba(124, 58, 237, .08),
+          circle at 10% 0%,
+          rgba(168, 85, 247, .10),
           transparent 30%
         ),
-        linear-gradient(
-          180deg,
-          #faf8ff 0%,
-          #f5f3ff 45%,
-          #f3f4f6 100%
-        );
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(124, 58, 237, .08),
+          transparent 28%
+        ),
+        var(--fundo);
 
-      color: var(--texto);
-      min-height: 100vh;
+      transition:
+        background .3s ease,
+        color .3s ease;
     }
 
-    body.modo-culto {
-      background: #050505;
-      color: #fff;
-    }
-
+    body,
     button,
-    input,
-    textarea {
+    input {
       font-family: inherit;
     }
 
@@ -77,42 +89,45 @@
     }
 
     /* =====================================================
-       TOPO
+       HEADER
        ===================================================== */
 
     header {
       position: relative;
       overflow: hidden;
-      color: white;
 
-      padding: 30px 20px 85px;
+      padding: 28px 20px 100px;
+
+      color: white;
 
       background:
         radial-gradient(
-          circle at 15% 20%,
+          circle at 10% 20%,
           rgba(255,255,255,.18),
           transparent 28%
         ),
         radial-gradient(
-          circle at 90% 10%,
-          rgba(167,139,250,.35),
-          transparent 25%
+          circle at 85% 10%,
+          rgba(192,132,252,.28),
+          transparent 28%
         ),
         linear-gradient(
           135deg,
-          #7c3aed,
-          #5b21b6 55%,
-          #312e81
+          #8b5cf6 0%,
+          #6d28d9 48%,
+          #312e81 100%
         );
     }
 
     header::before {
       content: "";
+
       position: absolute;
-      width: 300px;
-      height: 300px;
+      width: 280px;
+      height: 280px;
+
       right: -120px;
-      top: -150px;
+      bottom: -140px;
 
       border-radius: 50%;
 
@@ -121,19 +136,22 @@
 
     header::after {
       content: "";
+
       position: absolute;
       left: -5%;
       right: -5%;
       bottom: -55px;
-      height: 110px;
+
+      height: 100px;
 
       background: var(--fundo);
 
-      border-radius: 50% 50% 0 0;
+      border-radius:
+        50% 50% 0 0;
     }
 
     .topo {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: auto;
 
       position: relative;
@@ -143,26 +161,32 @@
     .marca {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 15px;
     }
 
     .logo {
       width: 58px;
       height: 58px;
 
-      border-radius: 18px;
-
       display: flex;
       align-items: center;
       justify-content: center;
 
-      font-size: 30px;
+      border-radius: 19px;
 
-      background: rgba(255,255,255,.16);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.22),
+          rgba(255,255,255,.08)
+        );
+
       border: 1px solid rgba(255,255,255,.25);
 
+      font-size: 30px;
+
       box-shadow:
-        0 12px 35px rgba(0,0,0,.18);
+        0 15px 35px rgba(0,0,0,.18);
 
       backdrop-filter: blur(10px);
     }
@@ -170,16 +194,17 @@
     .marca h1 {
       margin: 0;
 
-      font-size: 25px;
-      letter-spacing: -.7px;
+      font-size: clamp(21px, 4vw, 28px);
+
+      letter-spacing: -.8px;
     }
 
     .marca p {
-      margin: 4px 0 0;
+      margin: 5px 0 0;
 
-      opacity: .82;
+      font-size: 13px;
 
-      font-size: 14px;
+      opacity: .78;
     }
 
     /* =====================================================
@@ -187,15 +212,13 @@
        ===================================================== */
 
     .container {
-      width: min(
-        1100px,
-        calc(100% - 28px)
-      );
+      width: min(1120px, calc(100% - 24px));
 
-      margin: -30px auto 50px;
+      margin:
+        -35px auto 60px;
 
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     /* =====================================================
@@ -203,24 +226,24 @@
        ===================================================== */
 
     .hero {
-      background: rgba(255,255,255,.94);
+      padding: 26px;
 
-      border-radius: 26px;
+      border-radius: 28px;
 
-      padding: 28px;
-
-      box-shadow:
-        0 20px 60px rgba(76,29,149,.11);
+      background:
+        rgba(255,255,255,.92);
 
       border: 1px solid rgba(255,255,255,.9);
+
+      box-shadow: var(--sombra);
 
       backdrop-filter: blur(15px);
     }
 
     .hero-topo {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
 
       gap: 20px;
     }
@@ -228,28 +251,31 @@
     .hero h2 {
       margin: 0;
 
-      font-size: 28px;
-      letter-spacing: -.8px;
+      font-size: clamp(24px, 4vw, 30px);
+
+      letter-spacing: -.9px;
     }
 
     .hero p {
-      margin: 8px 0 0;
+      margin: 7px 0 0;
 
-      color: var(--cinza);
+      color: var(--texto-2);
+
+      font-size: 14px;
     }
 
     .culto-badge {
-      flex-shrink: 0;
-
-      padding: 10px 14px;
+      padding: 9px 14px;
 
       border-radius: 999px;
 
       background: #ecfdf5;
       color: #047857;
 
+      font-size: 12px;
       font-weight: 800;
-      font-size: 13px;
+
+      white-space: nowrap;
     }
 
     /* =====================================================
@@ -259,15 +285,16 @@
     .culto-card {
       margin-top: 25px;
 
-      border-radius: 22px;
       overflow: hidden;
 
-      background: white;
+      border-radius: 24px;
+
+      background: var(--card);
 
       border: 1px solid var(--borda);
 
       box-shadow:
-        0 10px 35px rgba(0,0,0,.05);
+        0 8px 30px rgba(0,0,0,.045);
     }
 
     .culto-cabecalho {
@@ -280,11 +307,12 @@
           #eef2ff
         );
 
-      border-bottom: 1px solid #e9e5ff;
+      border-bottom: 1px solid #ede9fe;
     }
 
     .culto-titulo {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
 
@@ -297,34 +325,43 @@
       color: var(--roxo-escuro);
 
       font-size: 22px;
+
+      letter-spacing: -.4px;
     }
 
     #dataCulto {
-      color: var(--cinza);
+      margin-top: 6px;
+
+      color: var(--texto-2);
 
       font-size: 14px;
-
-      margin-top: 6px;
     }
 
     .culto-icone {
-      width: 50px;
-      height: 50px;
-
-      border-radius: 15px;
+      width: 52px;
+      height: 52px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      background: var(--roxo);
+      flex-shrink: 0;
+
+      border-radius: 16px;
 
       color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--roxo-2),
+          var(--roxo)
+        );
 
       font-size: 23px;
 
       box-shadow:
-        0 8px 20px rgba(124,58,237,.25);
+        0 10px 25px rgba(124,58,237,.25);
     }
 
     /* =====================================================
@@ -337,24 +374,26 @@
 
     .musica {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
 
-      gap: 15px;
+      gap: 14px;
 
-      padding: 17px 15px;
+      padding: 16px;
+
       margin: 5px 0;
 
-      border-radius: 16px;
+      border-radius: 17px;
 
-      background: white;
+      background: var(--card);
 
       border: 1px solid transparent;
 
       transition:
         transform .18s ease,
+        border-color .18s ease,
         background .18s ease,
-        border .18s ease,
         box-shadow .18s ease;
     }
 
@@ -366,7 +405,11 @@
       border-color: #ddd6fe;
 
       box-shadow:
-        0 8px 20px rgba(124,58,237,.08);
+        0 10px 25px rgba(124,58,237,.08);
+    }
+
+    .musica:active {
+      transform: scale(.99);
     }
 
     .musica strong {
@@ -374,7 +417,28 @@
 
       font-size: 16px;
 
-      color: #262626;
+      color: var(--texto);
+    }
+
+    .numero-musica {
+      display: inline-flex;
+
+      width: 32px;
+      height: 32px;
+
+      margin-right: 8px;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 10px;
+
+      color: var(--roxo);
+
+      background: var(--roxo-claro);
+
+      font-size: 12px;
+      font-weight: 900;
     }
 
     .tom {
@@ -386,69 +450,42 @@
 
       border-radius: 999px;
 
-      background: #f3f4f6;
+      color: var(--roxo);
 
-      color: #6b7280;
+      background: var(--roxo-claro);
 
-      font-size: 12px;
+      font-size: 11px;
 
       font-weight: 800;
     }
 
     .artista {
-      color: #9ca3af;
+      margin-top: 5px;
+
+      color: var(--texto-3);
 
       font-size: 12px;
-
-      margin-top: 5px;
     }
 
     .seta {
       width: 38px;
       height: 38px;
 
-      min-width: 38px;
-
-      border-radius: 12px;
-
       display: flex;
+
       align-items: center;
       justify-content: center;
 
-      background: var(--roxo-claro);
+      flex-shrink: 0;
+
+      border-radius: 13px;
 
       color: var(--roxo);
 
-      font-size: 25px;
-      font-weight: bold;
-    }
+      background: var(--roxo-claro);
 
-    /* =====================================================
-       VAZIO / ERRO
-       ===================================================== */
-
-    .vazio {
-      text-align: center;
-
-      padding: 35px 20px;
-
-      color: var(--cinza);
-    }
-
-    .erro {
-      margin: 10px;
-
-      padding: 18px;
-
-      border-radius: 14px;
-
-      background: #fef2f2;
-
-      color: #991b1b;
-
-      line-height: 1.5;
-
-      font-size: 14px;
+      font-size: 24px;
+      font-weight: 700;
     }
 
     /* =====================================================
@@ -462,18 +499,19 @@
 
       gap: 12px;
 
-      margin-top: 22px;
+      margin-top: 20px;
     }
 
     .botao {
+      min-height: 52px;
+
       border: none;
 
-      border-radius: 15px;
+      border-radius: 16px;
 
-      padding: 15px 18px;
+      padding: 14px 18px;
 
-      font-size: 15px;
-
+      font-size: 14px;
       font-weight: 800;
 
       transition:
@@ -486,6 +524,8 @@
     }
 
     .botao-roxo {
+      color: white;
+
       background:
         linear-gradient(
           135deg,
@@ -493,18 +533,208 @@
           #6d28d9
         );
 
-      color: white;
-
       box-shadow:
-        0 10px 25px rgba(109,40,217,.22);
+        0 10px 25px rgba(109,40,217,.24);
     }
 
     .botao-claro {
+      color: var(--roxo);
+
       background: white;
+
+      border: 1px solid #ddd6fe;
+    }
+
+    /* =====================================================
+       BANCO DE MÚSICAS
+       ===================================================== */
+
+    .banco-card {
+      margin-top: 22px;
+
+      padding: 22px;
+
+      border-radius: 24px;
+
+      background: var(--card);
+
+      border: 1px solid var(--borda);
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,.045);
+    }
+
+    .secao-titulo {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+    }
+
+    .secao-titulo h2 {
+      margin: 0;
+
+      font-size: 21px;
+
+      letter-spacing: -.4px;
+    }
+
+    .contador {
+      padding: 6px 10px;
+
+      border-radius: 999px;
 
       color: var(--roxo);
 
-      border: 1px solid #ddd6fe;
+      background: var(--roxo-claro);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .busca {
+      position: relative;
+
+      margin-top: 15px;
+    }
+
+    .busca input {
+      width: 100%;
+
+      padding: 15px 17px 15px 45px;
+
+      border: 1px solid var(--borda);
+
+      border-radius: 15px;
+
+      outline: none;
+
+      color: var(--texto);
+
+      background: #fafafa;
+
+      font-size: 15px;
+
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .busca input:focus {
+      border-color: var(--roxo);
+
+      box-shadow:
+        0 0 0 4px rgba(124,58,237,.09);
+    }
+
+    .busca::before {
+      content: "⌕";
+
+      position: absolute;
+
+      left: 16px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--texto-3);
+
+      font-size: 23px;
+
+      pointer-events: none;
+    }
+
+    #listaBanco {
+      margin-top: 12px;
+    }
+
+    .musica-banco {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 14px 12px;
+
+      border-bottom: 1px solid #f0f0f2;
+
+      cursor: pointer;
+
+      transition:
+        background .15s ease;
+    }
+
+    .musica-banco:last-child {
+      border-bottom: none;
+    }
+
+    .musica-banco:hover {
+      background: #faf7ff;
+    }
+
+    .musica-banco strong {
+      display: block;
+
+      font-size: 14px;
+    }
+
+    .musica-banco span {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--texto-3);
+
+      font-size: 12px;
+    }
+
+    .banco-tom {
+      flex-shrink: 0;
+
+      padding: 5px 9px;
+
+      border-radius: 8px;
+
+      color: var(--roxo);
+
+      background: var(--roxo-claro);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       ESTADOS
+       ===================================================== */
+
+    .vazio {
+      padding: 35px 20px;
+
+      text-align: center;
+
+      color: var(--texto-2);
+
+      font-size: 14px;
+    }
+
+    .erro {
+      margin: 10px;
+
+      padding: 17px;
+
+      border-radius: 15px;
+
+      color: #991b1b;
+
+      background: #fef2f2;
+
+      line-height: 1.5;
+
+      font-size: 13px;
     }
 
     /* =====================================================
@@ -512,46 +742,54 @@
        ===================================================== */
 
     .pagina-musica {
-      width: min(
-        100%,
-        1000px
-      );
+      width: min(100%, 1000px);
 
       margin: auto;
 
-      padding: 18px;
+      padding: 18px 18px 50px;
     }
 
     .musica-topo {
-      background:
-        linear-gradient(
-          135deg,
-          #7c3aed,
-          #4c1d95
-        );
+      position: relative;
 
-      color: white;
+      overflow: hidden;
 
       padding: 25px;
 
-      border-radius: 23px;
+      border-radius: 25px;
+
+      color: white;
+
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(255,255,255,.16),
+          transparent 28%
+        ),
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #4c1d95
+        );
 
       box-shadow:
-        0 15px 40px rgba(76,29,149,.23);
+        0 15px 40px rgba(76,29,149,.22);
     }
 
     .musica-topo h2 {
       margin: 0;
 
-      font-size: 27px;
+      font-size: clamp(23px, 5vw, 31px);
 
-      letter-spacing: -.5px;
+      letter-spacing: -.7px;
     }
 
     .musica-topo p {
       margin: 7px 0 0;
 
-      opacity: .8;
+      color: rgba(255,255,255,.78);
+
+      font-size: 14px;
     }
 
     .controles {
@@ -559,23 +797,30 @@
 
       flex-wrap: wrap;
 
+      align-items: center;
+
       gap: 8px;
 
       margin-top: 20px;
     }
 
     .controle {
-      border: 0;
+      min-height: 40px;
 
-      padding: 10px 14px;
+      padding: 9px 13px;
+
+      border: 1px solid rgba(255,255,255,.14);
 
       border-radius: 11px;
 
-      background: rgba(255,255,255,.14);
-
       color: white;
 
+      background: rgba(255,255,255,.12);
+
+      font-size: 13px;
       font-weight: 800;
+
+      backdrop-filter: blur(8px);
 
       transition:
         background .15s ease,
@@ -583,97 +828,34 @@
     }
 
     .controle:hover {
-      background: rgba(255,255,255,.25);
+      background: rgba(255,255,255,.21);
 
       transform: translateY(-1px);
     }
 
+    .controle.destaque {
+      background: rgba(255,255,255,.22);
+    }
+
     .tom-atual {
+      min-width: 58px;
+      min-height: 40px;
+
       display: flex;
 
       align-items: center;
       justify-content: center;
 
-      min-width: 65px;
-
-      padding: 10px 15px;
+      padding: 8px 13px;
 
       border-radius: 11px;
 
-      background: white;
-
       color: var(--roxo-escuro);
 
+      background: white;
+
+      font-size: 15px;
       font-weight: 900;
-    }
-
-    /* =====================================================
-       CIFRA
-       ===================================================== */
-
-    .cifra-card {
-      margin-top: 15px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #111827,
-          #0b1020
-        );
-
-      color: #f9fafb;
-
-      border-radius: 20px;
-
-      padding: 27px;
-
-      overflow-x: auto;
-
-      box-shadow:
-        0 12px 35px rgba(0,0,0,.16);
-    }
-
-    #cifra {
-      font-family:
-        "Courier New",
-        Consolas,
-        monospace;
-
-      font-size: 17px;
-
-      line-height: 1.8;
-
-      white-space: pre-wrap;
-
-      overflow-wrap: break-word;
-    }
-
-    .linha-cifra {
-      min-height: 1.8em;
-    }
-
-    .acorde {
-      color: var(--acorde);
-
-      font-weight: 900;
-
-      background: var(--acorde-fundo);
-
-      border-radius: 4px;
-
-      padding: 1px 3px;
-    }
-
-    .acorde-isolado {
-      color: var(--acorde);
-
-      font-weight: 900;
-
-      background: var(--acorde-fundo);
-
-      border-radius: 4px;
-
-      padding: 1px 3px;
     }
 
     /* =====================================================
@@ -681,21 +863,15 @@
        ===================================================== */
 
     .controle-rolagem {
-      display: none;
-
-      margin-top: 12px;
+      margin-top: 14px;
 
       padding: 14px;
 
       border-radius: 15px;
 
-      background: rgba(255,255,255,.10);
+      background: rgba(0,0,0,.15);
 
-      border: 1px solid rgba(255,255,255,.15);
-    }
-
-    .controle-rolagem.ativo {
-      display: block;
+      border: 1px solid rgba(255,255,255,.1);
     }
 
     .rolagem-linha {
@@ -707,71 +883,153 @@
     }
 
     .rolagem-linha span {
-      font-size: 13px;
-
-      font-weight: 800;
+      font-size: 12px;
 
       white-space: nowrap;
+
+      color: rgba(255,255,255,.85);
     }
 
     #velocidadeRolagem {
       width: 100%;
 
-      accent-color: #a78bfa;
+      accent-color: #c084fc;
     }
 
     #valorVelocidade {
-      min-width: 45px;
+      min-width: 38px;
 
       text-align: right;
 
-      font-weight: 900;
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-      color: #ddd6fe;
+    /* =====================================================
+       CIFRA
+       ===================================================== */
+
+    .cifra-card {
+      margin-top: 16px;
+
+      padding: 25px;
+
+      border-radius: 22px;
+
+      color: #f4f4f5;
+
+      background:
+        linear-gradient(
+          145deg,
+          #18181b,
+          #09090b
+        );
+
+      border: 1px solid #27272a;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.16);
+
+      overflow-x: auto;
+
+      transition:
+        background .3s ease;
+    }
+
+    #cifra {
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        "Courier New",
+        monospace;
+
+      font-size: 17px;
+
+      line-height: 1.85;
+
+      white-space: normal;
+
+      overflow-wrap: anywhere;
+    }
+
+    .linha-cifra {
+      min-height: 1.85em;
+    }
+
+    .acorde {
+      display: inline;
+
+      padding: 1px 4px;
+
+      margin: 0 1px;
+
+      border-radius: 5px;
+
+      color: var(--acorde);
+
+      background: var(--acorde-fundo);
+
+      font-weight: 900;
+    }
+
+    .acorde-detectado {
+      color: #fbbf24;
     }
 
     /* =====================================================
        MODO CULTO
        ===================================================== */
 
-    body.modo-culto #paginaMusica {
-      width: 100%;
+    body.modo-culto {
+      color: #f4f4f5;
 
-      padding: 10px;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(124,58,237,.20),
+          transparent 38%
+        ),
+        #09090b;
+    }
+
+    body.modo-culto .pagina-musica {
+      width: min(1200px, 100%);
+
+      padding-top: 10px;
     }
 
     body.modo-culto .musica-topo {
-      background: #050505;
+      position: sticky;
 
-      box-shadow: none;
+      top: 8px;
 
-      border-bottom:
-        1px solid #252525;
+      z-index: 50;
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
     }
 
     body.modo-culto .cifra-card {
-      margin-top: 0;
+      background:
+        linear-gradient(
+          145deg,
+          #111113,
+          #050505
+        );
 
-      border-radius: 0;
+      border-color: #292929;
 
-      min-height: calc(100vh - 160px);
-
-      background: #050505;
-
-      box-shadow: none;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
     }
 
     body.modo-culto #cifra {
-      font-size: 21px;
+      font-size: clamp(18px, 2.3vw, 24px);
 
       line-height: 2;
-    }
-
-    body.modo-culto .acorde,
-    body.modo-culto .acorde-isolado {
-      color: #fbbf24;
-
-      background: transparent;
     }
 
     /* =====================================================
@@ -793,26 +1051,24 @@
       padding: 20px;
 
       background:
-        rgba(30,16,60,.68);
+        rgba(17,10,35,.68);
 
-      backdrop-filter: blur(7px);
+      backdrop-filter: blur(8px);
     }
 
     .login-card {
-      width: 100%;
-
-      max-width: 390px;
-
-      background: white;
-
-      border-radius: 24px;
+      width: min(100%, 390px);
 
       padding: 30px;
 
+      border-radius: 25px;
+
       text-align: center;
 
+      background: white;
+
       box-shadow:
-        0 25px 80px rgba(0,0,0,.3);
+        0 30px 90px rgba(0,0,0,.35);
 
       animation:
         aparecer .2s ease;
@@ -821,48 +1077,45 @@
     @keyframes aparecer {
       from {
         opacity: 0;
-
-        transform:
-          translateY(12px)
-          scale(.98);
+        transform: translateY(12px) scale(.98);
       }
 
       to {
         opacity: 1;
-
-        transform:
-          translateY(0)
-          scale(1);
+        transform: translateY(0) scale(1);
       }
     }
 
     .login-icone {
-      width: 70px;
-      height: 70px;
+      width: 68px;
+      height: 68px;
 
       margin: auto;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
-      border-radius: 22px;
+      border-radius: 20px;
 
       background: var(--roxo-claro);
 
-      font-size: 35px;
+      font-size: 32px;
     }
 
     .login-card h2 {
-      margin: 17px 0 7px;
+      margin: 16px 0 6px;
 
       color: var(--roxo-escuro);
     }
 
     .login-card p {
-      color: var(--cinza);
-
       margin-top: 0;
+
+      color: var(--texto-2);
+
+      font-size: 14px;
     }
 
     .login-card input {
@@ -870,61 +1123,58 @@
 
       padding: 14px;
 
-      border:
-        1px solid #d1d5db;
+      border: 1px solid #d4d4d8;
 
-      border-radius: 12px;
+      border-radius: 13px;
 
-      font-size: 16px;
+      outline: none;
 
       text-align: center;
 
-      outline: none;
+      font-size: 16px;
     }
 
     .login-card input:focus {
       border-color: var(--roxo);
 
       box-shadow:
-        0 0 0 4px rgba(124,58,237,.1);
+        0 0 0 4px rgba(124,58,237,.10);
     }
 
-    .login-entrar {
+    .login-entrar,
+    .login-cancelar {
       width: 100%;
-
-      margin-top: 12px;
-
-      padding: 14px;
 
       border: none;
 
-      border-radius: 12px;
-
-      background: var(--roxo);
-
-      color: white;
-
-      font-size: 16px;
+      border-radius: 13px;
 
       font-weight: 800;
     }
 
-    .login-cancelar {
-      width: 100%;
+    .login-entrar {
+      margin-top: 12px;
 
+      padding: 14px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #6d28d9
+        );
+    }
+
+    .login-cancelar {
       margin-top: 8px;
 
       padding: 11px;
 
-      border: none;
+      color: #52525b;
 
-      border-radius: 12px;
-
-      background: #f3f4f6;
-
-      color: #4b5563;
-
-      font-weight: 700;
+      background: #f4f4f5;
     }
 
     #erroSenha {
@@ -936,27 +1186,26 @@
 
       border-radius: 10px;
 
-      background: #fee2e2;
-
       color: #991b1b;
 
-      font-size: 14px;
+      background: #fee2e2;
 
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 800;
     }
 
     /* =====================================================
-       RODAPÉ
+       FOOTER
        ===================================================== */
 
     footer {
+      padding: 25px;
+
       text-align: center;
 
-      color: #9ca3af;
+      color: #a1a1aa;
 
-      font-size: 12px;
-
-      padding: 25px;
+      font-size: 11px;
     }
 
     /* =====================================================
@@ -966,7 +1215,17 @@
     @media (max-width: 650px) {
 
       header {
-        padding: 22px 15px 65px;
+        padding:
+          21px 14px 82px;
+      }
+
+      .logo {
+        width: 50px;
+        height: 50px;
+
+        border-radius: 16px;
+
+        font-size: 25px;
       }
 
       .marca h1 {
@@ -974,36 +1233,27 @@
       }
 
       .marca p {
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .container {
-        width:
-          calc(100% - 18px);
+        width: calc(100% - 14px);
 
-        margin-top: -20px;
+        margin-top: -30px;
       }
 
       .hero {
-        padding: 20px;
+        padding: 18px;
 
-        border-radius: 20px;
+        border-radius: 22px;
       }
 
       .hero-topo {
         align-items: flex-start;
       }
 
-      .hero h2 {
-        font-size: 23px;
-      }
-
       .culto-badge {
         display: none;
-      }
-
-      .acoes {
-        grid-template-columns: 1fr;
       }
 
       .culto-cabecalho {
@@ -1014,16 +1264,43 @@
         font-size: 19px;
       }
 
-      .musica-topo {
-        border-radius: 18px;
+      .acoes {
+        grid-template-columns: 1fr;
+      }
 
+      .banco-card {
+        padding: 18px;
+
+        border-radius: 22px;
+      }
+
+      .pagina-musica {
+        padding:
+          10px 10px 40px;
+      }
+
+      .musica-topo {
         padding: 20px;
+
+        border-radius: 20px;
+      }
+
+      .controles {
+        gap: 7px;
+      }
+
+      .controle {
+        flex: 1 1 auto;
+      }
+
+      .tom-atual {
+        flex: 0 0 auto;
       }
 
       .cifra-card {
         padding: 18px;
 
-        border-radius: 16px;
+        border-radius: 17px;
       }
 
       #cifra {
@@ -1032,16 +1309,6 @@
 
       body.modo-culto #cifra {
         font-size: 18px;
-      }
-
-      .controles {
-        gap: 6px;
-      }
-
-      .controle {
-        padding: 9px 11px;
-
-        font-size: 13px;
       }
     }
   </style>
@@ -1066,9 +1333,7 @@
           </div>
 
           <div>
-            <h1>
-              Cifras IEQ Patrocínio
-            </h1>
+            <h1>Cifras IEQ Patrocínio</h1>
 
             <p>
               Louvor, cifras e repertório em um só lugar.
@@ -1107,6 +1372,8 @@
         </div>
 
 
+        <!-- CULTO -->
+
         <section class="culto-card">
 
           <div class="culto-cabecalho">
@@ -1143,6 +1410,8 @@
         </section>
 
 
+        <!-- AÇÕES -->
+
         <div class="acoes">
 
           <button
@@ -1162,6 +1431,49 @@
           </button>
 
         </div>
+
+
+        <!-- BANCO DE MÚSICAS -->
+
+        <section class="banco-card">
+
+          <div class="secao-titulo">
+
+            <h2>
+              📚 Banco de músicas
+            </h2>
+
+            <div
+              id="contadorBanco"
+              class="contador"
+            >
+              0 músicas
+            </div>
+
+          </div>
+
+
+          <div class="busca">
+
+            <input
+              id="buscaMusicas"
+              type="search"
+              placeholder="Buscar por título ou artista..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div id="listaBanco">
+
+            <div class="vazio">
+              Carregando músicas...
+            </div>
+
+          </div>
+
+        </section>
 
       </section>
 
@@ -1203,6 +1515,7 @@
           ← Voltar
         </button>
 
+
         <button
           type="button"
           class="controle"
@@ -1211,12 +1524,14 @@
           − Tom
         </button>
 
+
         <div
           id="tomAtual"
           class="tom-atual"
         >
           C
         </div>
+
 
         <button
           type="button"
@@ -1225,6 +1540,7 @@
         >
           + Tom
         </button>
+
 
         <button
           type="button"
@@ -1235,17 +1551,21 @@
           ▶ Rolagem
         </button>
 
-        <button
-          type="button"
-          class="controle"
-          onclick="copiarMusica()"
-        >
-          📋 Copiar música
-        </button>
 
         <button
           type="button"
           class="controle"
+          id="botaoCopiar"
+          onclick="copiarCifra()"
+        >
+          📋 Copiar cifra
+        </button>
+
+
+        <button
+          type="button"
+          class="controle"
+          id="botaoModoCulto"
           onclick="modoCulto()"
         >
           🎤 Modo culto
@@ -1254,12 +1574,9 @@
       </div>
 
 
-      <!-- CONTROLE DE ROLAGEM -->
+      <!-- CONTROLE DA ROLAGEM -->
 
-      <div
-        id="controleRolagem"
-        class="controle-rolagem"
-      >
+      <div class="controle-rolagem">
 
         <div class="rolagem-linha">
 
@@ -1274,7 +1591,6 @@
             max="10"
             value="4"
             step="1"
-            oninput="alterarVelocidadeRolagem()"
           >
 
           <span id="valorVelocidade">
@@ -1322,12 +1638,14 @@
         Digite a senha para adicionar uma música.
       </p>
 
+
       <input
         id="senhaCadastro"
         type="password"
         placeholder="Digite a senha"
         autocomplete="off"
       >
+
 
       <button
         type="button"
@@ -1337,6 +1655,7 @@
         🔐 Entrar
       </button>
 
+
       <button
         type="button"
         class="login-cancelar"
@@ -1344,6 +1663,7 @@
       >
         Cancelar
       </button>
+
 
       <div id="erroSenha">
         ❌ Senha incorreta.
@@ -1380,6 +1700,14 @@
 
     let intervaloRolagem = null;
 
+    let velocidadeRolagem = 4;
+
+    let bancoMusicas = [];
+
+
+    /*
+      Ordem cromática usada para a transposição.
+    */
 
     const tons = [
       "C",
@@ -1404,19 +1732,19 @@
     function abrirLoginCadastro() {
 
       const janela =
-        document.getElementById(
-          "loginCadastro"
-        );
+        document.getElementById("loginCadastro");
 
       const campo =
-        document.getElementById(
-          "senhaCadastro"
-        );
+        document.getElementById("senhaCadastro");
 
       const erro =
-        document.getElementById(
-          "erroSenha"
-        );
+        document.getElementById("erroSenha");
+
+
+      if (!janela || !campo || !erro) {
+        return;
+      }
+
 
       erro.style.display = "none";
 
@@ -1424,32 +1752,31 @@
 
       janela.style.display = "flex";
 
-      setTimeout(
-        function() {
-          campo.focus();
-        },
-        100
-      );
+
+      setTimeout(function() {
+        campo.focus();
+      }, 100);
     }
 
 
     function fecharLoginCadastro() {
 
-      document.getElementById(
-        "loginCadastro"
-      ).style.display = "none";
+      const janela =
+        document.getElementById("loginCadastro");
+
+      if (janela) {
+        janela.style.display = "none";
+      }
     }
 
 
     function clicouForaDaSenha(event) {
 
       if (
-        event.target.id ===
-        "loginCadastro"
+        event.target &&
+        event.target.id === "loginCadastro"
       ) {
-
         fecharLoginCadastro();
-
       }
     }
 
@@ -1457,56 +1784,39 @@
     function verificarSenhaCadastro() {
 
       const campo =
-        document.getElementById(
-          "senhaCadastro"
-        );
+        document.getElementById("senhaCadastro");
 
       const erro =
-        document.getElementById(
-          "erroSenha"
-        );
+        document.getElementById("erroSenha");
 
-      if (
-        campo.value ===
-        SENHA_CADASTRO
-      ) {
+
+      if (!campo || !erro) {
+        return;
+      }
+
+
+      if (campo.value === SENHA_CADASTRO) {
 
         localStorage.setItem(
           "cadastro_autorizado",
           "sim"
         );
 
+
         window.location.href =
           "/cadastrar.html";
+
 
         return;
       }
 
-      erro.style.display =
-        "block";
+
+      erro.style.display = "block";
 
       campo.value = "";
 
       campo.focus();
     }
-
-
-    document
-      .getElementById("senhaCadastro")
-      .addEventListener(
-        "keydown",
-        function(event) {
-
-          if (
-            event.key === "Enter"
-          ) {
-
-            verificarSenhaCadastro();
-
-          }
-
-        }
-      );
 
 
     /* =====================================================
@@ -1522,33 +1832,43 @@
             method: "GET",
 
             headers: {
-              "apikey":
-                SUPABASE_KEY,
+              "apikey": SUPABASE_KEY,
 
               "Authorization":
-                "Bearer " +
-                SUPABASE_KEY
+                "Bearer " + SUPABASE_KEY
             }
           }
         );
 
+
       const texto =
         await resposta.text();
+
 
       if (!resposta.ok) {
 
         throw new Error(
           texto ||
-          "Erro ao consultar o Supabase."
+          "Não foi possível consultar o banco de dados."
         );
-
       }
+
 
       if (!texto) {
         return null;
       }
 
-      return JSON.parse(texto);
+
+      try {
+
+        return JSON.parse(texto);
+
+      } catch (erro) {
+
+        throw new Error(
+          "O banco retornou uma resposta inválida."
+        );
+      }
     }
 
 
@@ -1559,28 +1879,36 @@
     async function carregarCulto() {
 
       const nomeCulto =
-        document.getElementById(
-          "nomeCulto"
-        );
+        document.getElementById("nomeCulto");
 
       const dataCulto =
-        document.getElementById(
-          "dataCulto"
-        );
+        document.getElementById("dataCulto");
 
       const repertorio =
-        document.getElementById(
-          "repertorio"
-        );
+        document.getElementById("repertorio");
+
+
+      if (
+        !nomeCulto ||
+        !dataCulto ||
+        !repertorio
+      ) {
+        return;
+      }
+
 
       nomeCulto.textContent =
         "Carregando culto...";
+
+      dataCulto.textContent = "";
+
 
       repertorio.innerHTML = `
         <div class="vazio">
           Carregando repertório...
         </div>
       `;
+
 
       try {
 
@@ -1600,8 +1928,6 @@
 
           nomeCulto.textContent =
             "Nenhum culto cadastrado";
-
-          dataCulto.textContent = "";
 
           repertorio.innerHTML = `
             <div class="vazio">
@@ -1636,9 +1962,7 @@
             "/rest/v1/culto_musicas" +
             "?select=musica_id,ordem" +
             "&culto_id=eq." +
-            encodeURIComponent(
-              culto.id
-            ) +
+            encodeURIComponent(culto.id) +
             "&order=ordem.asc"
           );
 
@@ -1663,14 +1987,8 @@
 
         const ids =
           vinculos
-            .map(
-              item =>
-                item.musica_id
-            )
-            .filter(
-              id =>
-                id != null
-            );
+            .map(item => item.musica_id)
+            .filter(id => id != null);
 
 
         if (!ids.length) {
@@ -1699,130 +2017,118 @@
           new Map();
 
 
-        if (
-          Array.isArray(musicas)
-        ) {
+        if (Array.isArray(musicas)) {
 
-          musicas.forEach(
-            musica => {
+          musicas.forEach(musica => {
 
-              mapa.set(
-                String(musica.id),
-                musica
-              );
+            mapa.set(
+              String(musica.id),
+              musica
+            );
 
-            }
-          );
-
+          });
         }
 
 
-        vinculos.forEach(
-          item => {
+        vinculos.forEach(item => {
 
-            const musica =
-              mapa.get(
-                String(
-                  item.musica_id
-                )
-              );
-
-
-            if (!musica) {
-              return;
-            }
-
-
-            const div =
-              document.createElement(
-                "div"
-              );
-
-
-            div.className =
-              "musica";
-
-
-            const ordem =
-              item.ordem != null
-                ? String(
-                    item.ordem
-                  ).padStart(
-                    2,
-                    "0"
-                  )
-                : "--";
-
-
-            div.innerHTML = `
-
-              <div>
-
-                <strong>
-                  ${escapar(ordem)}
-                  —
-                  ${escapar(
-                    musica.titulo ||
-                    "Música sem título"
-                  )}
-                </strong>
-
-                <div class="tom">
-                  Tom:
-                  ${escapar(
-                    musica.tom ||
-                    "-"
-                  )}
-                </div>
-
-                ${
-                  musica.artista
-                    ? `
-                      <div class="artista">
-                        ${escapar(
-                          musica.artista
-                        )}
-                      </div>
-                    `
-                    : ""
-                }
-
-              </div>
-
-              <div class="seta">
-                ›
-              </div>
-            `;
-
-
-            div.onclick =
-              function() {
-
-                abrirMusica(
-                  musica
-                );
-
-              };
-
-
-            repertorio.appendChild(
-              div
+          const musica =
+            mapa.get(
+              String(item.musica_id)
             );
 
+
+          if (!musica) {
+            return;
           }
-        );
 
 
-        if (
-          !repertorio.children.length
-        ) {
+          const div =
+            document.createElement("div");
+
+
+          div.className =
+            "musica";
+
+
+          const ordem =
+            item.ordem != null
+              ? String(item.ordem).padStart(2, "0")
+              : "--";
+
+
+          const titulo =
+            musica.titulo ||
+            "Música sem título";
+
+
+          const artista =
+            musica.artista ||
+            "";
+
+
+          const tom =
+            musica.tom ||
+            "-";
+
+
+          div.innerHTML = `
+
+            <div>
+
+              <strong>
+
+                <span class="numero-musica">
+                  ${escapar(ordem)}
+                </span>
+
+                ${escapar(titulo)}
+
+              </strong>
+
+              ${
+                artista
+                  ? `
+                    <div class="artista">
+                      ${escapar(artista)}
+                    </div>
+                  `
+                  : ""
+              }
+
+              <div class="tom">
+                Tom: ${escapar(tom)}
+              </div>
+
+            </div>
+
+
+            <div class="seta">
+              ›
+            </div>
+          `;
+
+
+          div.addEventListener(
+            "click",
+            function() {
+              abrirMusica(musica);
+            }
+          );
+
+
+          repertorio.appendChild(div);
+
+        });
+
+
+        if (!repertorio.children.length) {
 
           repertorio.innerHTML = `
             <div class="vazio">
               🎵 Nenhuma música encontrada neste culto.
             </div>
           `;
-
         }
 
 
@@ -1835,29 +2141,246 @@
 
 
         nomeCulto.textContent =
-          "Não foi possível carregar o culto";
+          "Culto indisponível";
 
 
         dataCulto.textContent = "";
 
 
         repertorio.innerHTML = `
+
           <div class="erro">
 
             <strong>
-              ❌ Erro ao carregar o repertório.
+              ⚠️ Não foi possível carregar o repertório.
             </strong>
 
             <br><br>
 
-            ${escapar(
-              erro.message
-            )}
+            Verifique sua conexão e tente novamente.
 
+          </div>
+
+        `;
+      }
+    }
+
+
+    /* =====================================================
+       BANCO DE MÚSICAS
+       ===================================================== */
+
+    async function carregarBancoMusicas() {
+
+      const lista =
+        document.getElementById("listaBanco");
+
+      const contador =
+        document.getElementById("contadorBanco");
+
+
+      if (!lista) {
+        return;
+      }
+
+
+      lista.innerHTML = `
+        <div class="vazio">
+          Carregando músicas...
+        </div>
+      `;
+
+
+      try {
+
+        const musicas =
+          await buscar(
+            "/rest/v1/musicas" +
+            "?select=*" +
+            "&order=titulo.asc"
+          );
+
+
+        bancoMusicas =
+          Array.isArray(musicas)
+            ? musicas
+            : [];
+
+
+        if (contador) {
+
+          contador.textContent =
+            bancoMusicas.length +
+            (
+              bancoMusicas.length === 1
+                ? " música"
+                : " músicas"
+            );
+        }
+
+
+        renderizarBancoMusicas(
+          bancoMusicas
+        );
+
+
+      } catch (erro) {
+
+        console.error(
+          "Erro ao carregar banco de músicas:",
+          erro
+        );
+
+
+        if (contador) {
+          contador.textContent =
+            "indisponível";
+        }
+
+
+        lista.innerHTML = `
+          <div class="erro">
+            ⚠️ Não foi possível carregar o banco de músicas.
+            <br><br>
+            O restante do site continua funcionando normalmente.
+          </div>
+        `;
+      }
+    }
+
+
+    function renderizarBancoMusicas(
+      musicas
+    ) {
+
+      const lista =
+        document.getElementById("listaBanco");
+
+
+      if (!lista) {
+        return;
+      }
+
+
+      lista.innerHTML = "";
+
+
+      if (
+        !Array.isArray(musicas) ||
+        musicas.length === 0
+      ) {
+
+        lista.innerHTML = `
+          <div class="vazio">
+            🎵 Nenhuma música cadastrada ainda.
           </div>
         `;
 
+        return;
       }
+
+
+      musicas.forEach(musica => {
+
+        const item =
+          document.createElement("div");
+
+
+        item.className =
+          "musica-banco";
+
+
+        item.innerHTML = `
+
+          <div>
+
+            <strong>
+              ${escapar(
+                musica.titulo ||
+                "Música sem título"
+              )}
+            </strong>
+
+            <span>
+              ${escapar(
+                musica.artista ||
+                "Artista não informado"
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="banco-tom">
+            ${escapar(
+              musica.tom ||
+              "-"
+            )}
+          </div>
+
+        `;
+
+
+        item.addEventListener(
+          "click",
+          function() {
+            abrirMusica(musica);
+          }
+        );
+
+
+        lista.appendChild(item);
+
+      });
+    }
+
+
+    function filtrarBancoMusicas() {
+
+      const campo =
+        document.getElementById(
+          "buscaMusicas"
+        );
+
+
+      if (!campo) {
+        return;
+      }
+
+
+      const termo =
+        campo.value
+          .trim()
+          .toLowerCase();
+
+
+      const filtradas =
+        bancoMusicas.filter(
+          musica => {
+
+            const titulo =
+              String(
+                musica.titulo || ""
+              ).toLowerCase();
+
+
+            const artista =
+              String(
+                musica.artista || ""
+              ).toLowerCase();
+
+
+            return (
+              titulo.includes(termo) ||
+              artista.includes(termo)
+            );
+          }
+        );
+
+
+      renderizarBancoMusicas(
+        filtradas
+      );
     }
 
 
@@ -1867,25 +2390,24 @@
 
     function abrirMusica(musica) {
 
+      if (!musica) {
+        return;
+      }
+
+
       musicaAtual =
         musica;
 
 
       tomOriginal =
         indiceTom(
-          normalizarTom(
-            musica.tom ||
-            "C"
-          )
+          musica.tom ||
+          "C"
         );
 
 
-      if (
-        tomOriginal === -1
-      ) {
-
+      if (tomOriginal < 0) {
         tomOriginal = 0;
-
       }
 
 
@@ -1894,6 +2416,11 @@
 
 
       pararRolagem();
+
+
+      document.body
+        .classList
+        .remove("modo-culto");
 
 
       document
@@ -1925,7 +2452,8 @@
           "";
 
 
-      atualizarTomNaTela();
+      atualizarTomVisual();
+
 
       mostrarCifra();
 
@@ -1949,14 +2477,19 @@
 
 
       const elemento =
-        document.getElementById(
-          "cifra"
-        );
+        document.getElementById("cifra");
+
+
+      if (!elemento) {
+        return;
+      }
 
 
       const texto =
-        musicaAtual.cifra ||
-        "";
+        String(
+          musicaAtual.cifra ||
+          ""
+        );
 
 
       if (!texto.trim()) {
@@ -1972,15 +2505,13 @@
 
 
       const diferenca =
-        calcularDiferencaTom();
-
-
-      const linhas =
-        texto.split(/\r?\n/);
+        tomAtual -
+        tomOriginal;
 
 
       elemento.innerHTML =
-        linhas
+        texto
+          .split(/\r?\n/)
           .map(
             linha =>
               processarLinha(
@@ -1993,7 +2524,7 @@
 
 
     /* =====================================================
-       PROCESSAMENTO INTELIGENTE DOS ACORDES
+       PROCESSAMENTO DA CIFRA
        ===================================================== */
 
     function processarLinha(
@@ -2002,120 +2533,50 @@
     ) {
 
       /*
-        Primeiro verificamos se existem acordes
-        entre colchetes:
-
-        [C]
-        [G]
-        [Am]
-        [C#m7]
-        [G/B]
-      */
-
-      const regexColchetes =
-        /\[([A-Ga-g](?:#|b)?(?:maj7|maj9|maj|min|m|sus4|sus2|sus|dim|aug|add9|add2|7|9|11|13|6|5)?(?:[0-9]+)?(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
-
-
-      if (
-        regexColchetes.test(linha)
-      ) {
-
-        regexColchetes.lastIndex = 0;
-
-        return processarLinhaComColchetes(
-          linha,
-          diferenca,
-          regexColchetes
-        );
-
-      }
-
-
-      /*
-        Agora tentamos detectar acordes que foram
-        simplesmente colados como texto.
-
-        Exemplos:
-
-        C      G      Am
-        F      C      G
-
-        C G Am
-        Dm F A7
-
-        Também detectamos linhas que tenham
-        acordes separados por espaços.
-      */
-
-      if (
-        linhaTemApenasAcordes(linha)
-      ) {
-
-        return processarLinhaSomenteAcordes(
-          linha,
-          diferenca
-        );
-
-      }
-
-
-      /*
-        Finalmente procuramos acordes no meio da
-        linha quando eles estiverem claramente
-        separados.
+        Primeiro procuramos acordes entre colchetes.
 
         Exemplo:
 
-        C        G
-        Tu és digno
-
-        Nesse caso a primeira linha é detectada
-        como linha de acordes.
+        [C] Deus
+        [G] é bom
+        [Am] sempre
       */
 
-      return `
-        <div class="linha-cifra">
-          ${processarTextoComAcordes(
-            linha,
-            diferenca
-          )}
-        </div>
-      `;
-    }
+      const regexColchetes =
+        /\[([A-Ga-g](?:#|b)?(?:m|maj|maj7|m7|m9|sus|sus2|sus4|dim|aug|add9|6|7|9|11|13|4|5)*(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
 
-
-    function processarLinhaComColchetes(
-      linha,
-      diferenca,
-      regex
-    ) {
 
       let resultado = "";
 
       let ultimaPosicao = 0;
 
-      let encontrado;
+      let encontrou = false;
+
+      let match;
 
 
       while (
         (
-          encontrado =
-            regex.exec(linha)
+          match =
+            regexColchetes.exec(linha)
         ) !== null
       ) {
+
+        encontrou = true;
+
 
         resultado +=
           escapar(
             linha.substring(
               ultimaPosicao,
-              encontrado.index
+              match.index
             )
           );
 
 
         const acorde =
           transporAcorde(
-            encontrado[1],
+            match[1],
             diferenca
           );
 
@@ -2127,255 +2588,112 @@
 
 
         ultimaPosicao =
-          regex.lastIndex;
+          regexColchetes.lastIndex;
       }
 
 
-      resultado +=
-        escapar(
-          linha.substring(
-            ultimaPosicao
-          )
-        );
+      if (encontrou) {
 
-
-      return `
-        <div class="linha-cifra">
-          ${resultado}
-        </div>
-      `;
-    }
-
-
-    /*
-      Detecta se a linha inteira parece ser
-      uma linha de acordes.
-
-      Exemplos válidos:
-
-      C G Am
-      C      G      Am
-      Dm F A7
-      C#m7 G/B A
-
-      Evitamos considerar frases normais como
-      linhas de acordes.
-    */
-
-    function linhaTemApenasAcordes(
-      linha
-    ) {
-
-      const limpa =
-        linha.trim();
-
-
-      if (!limpa) {
-        return false;
-      }
-
-
-      /*
-        Se tiver muitos caracteres de frase,
-        provavelmente é letra.
-      */
-
-      const palavras =
-        limpa.split(/\s+/);
-
-
-      if (
-        palavras.length === 0
-      ) {
-        return false;
-      }
-
-
-      let quantidadeAcordes = 0;
-
-
-      palavras.forEach(
-        palavra => {
-
-          const semPontuacao =
-            palavra
-              .replace(
-                /^[([{]+/,
-                ""
-              )
-              .replace(
-                /[)\]},.;:!?]+$/,
-                ""
-              );
-
-
-          if (
-            ehAcorde(
-              semPontuacao
+        resultado +=
+          escapar(
+            linha.substring(
+              ultimaPosicao
             )
-          ) {
-
-            quantidadeAcordes++;
-
-          }
-
-        }
-      );
+          );
 
 
-      /*
-        Para linhas com mais de uma palavra,
-        exigimos que todas sejam acordes.
-
-        Isso evita transformar frases como:
-
-        "A noite está linda"
-
-        em acordes.
-      */
-
-      if (
-        palavras.length > 1
-      ) {
-
-        return (
-          quantidadeAcordes ===
-          palavras.length
-        );
-
+        return `
+          <div class="linha-cifra">
+            ${resultado}
+          </div>
+        `;
       }
 
 
       /*
-        Uma única palavra só será considerada
-        acorde se estiver em formato inequívoco,
-        como:
+        Se não houver colchetes, tentamos
+        identificar acordes escritos sozinhos.
 
-        C#m7
-        G/B
-        D7
+        Exemplos que serão detectados:
+
+        C G Am F
+
+        C
+        G
         Am
-        Bb
+        D7
+        G/B
+
+        Mas uma frase normal como:
+
+        "Eu vou cantar"
+
+        não será tratada como acorde.
       */
 
-      return (
-        quantidadeAcordes === 1 &&
-        ehAcorde(
-          palavras[0]
-            .replace(
-              /^[([{]+/,
-              ""
-            )
-            .replace(
-              /[)\]},.;:!?]+$/,
-              ""
-            )
-        )
+      return processarAcordesSemColchetes(
+        linha,
+        diferenca
       );
     }
 
 
-    function processarLinhaSomenteAcordes(
+    /* =====================================================
+       DETECÇÃO AUTOMÁTICA DE ACORDES
+       ===================================================== */
+
+    function processarAcordesSemColchetes(
       linha,
       diferenca
     ) {
 
-      const partes =
-        linha.split(
-          /(\s+)/
-        );
+      const texto =
+        String(linha);
 
-
-      let resultado = "";
-
-
-      partes.forEach(
-        parte => {
-
-          if (
-            ehAcorde(
-              parte
-                .trim()
-            )
-          ) {
-
-            const acorde =
-              transporAcorde(
-                parte.trim(),
-                diferenca
-              );
-
-
-            resultado +=
-              '<span class="acorde-isolado">' +
-              escapar(acorde) +
-              "</span>";
-
-          } else {
-
-            resultado +=
-              escapar(parte);
-
-          }
-
-        }
-      );
-
-
-      return `
-        <div class="linha-cifra">
-          ${resultado}
-        </div>
-      `;
-    }
-
-
-    /*
-      Detecta acordes no meio de uma linha.
-
-      Só aceita quando existe separação clara
-      por espaços ou pontuação.
-
-      Isso é importante para não transformar
-      palavras como "amor" ou "casa" em acordes.
-    */
-
-    function processarTextoComAcordes(
-      linha,
-      diferenca
-    ) {
 
       const tokens =
-        linha.split(
-          /(\s+)/
+        texto.split(/(\s+)/);
+
+
+      const naoVazios =
+        tokens.filter(
+          token =>
+            token.trim() !== ""
+        );
+
+
+      /*
+        Se a linha inteira for composta
+        apenas de acordes, temos muita
+        confiança de que é uma linha de acordes.
+      */
+
+      const linhaSoDeAcordes =
+        naoVazios.length > 0 &&
+        naoVazios.every(
+          token =>
+            ehAcorde(token)
         );
 
 
       let resultado = "";
 
 
-      tokens.forEach(
-        token => {
+      if (linhaSoDeAcordes) {
 
-          const trim =
-            token.trim();
+        tokens.forEach(token => {
 
-
-          if (
-            trim &&
-            ehAcorde(trim) &&
-            trim.length <= 10
-          ) {
+          if (ehAcorde(token)) {
 
             const acorde =
               transporAcorde(
-                trim,
+                limparPontuacao(token),
                 diferenca
               );
 
 
             resultado +=
-              '<span class="acorde-isolado">' +
+              '<span class="acorde acorde-detectado">' +
               escapar(acorde) +
               "</span>";
 
@@ -2383,51 +2701,191 @@
 
             resultado +=
               escapar(token);
-
           }
 
+        });
+
+
+        return `
+          <div class="linha-cifra">
+            ${resultado}
+          </div>
+        `;
+      }
+
+
+      /*
+        Em linhas normais, só marcamos tokens
+        que sejam acordes muito claros.
+
+        Para evitar transformar palavras comuns
+        como "A" em acorde, acordes de uma letra
+        só são marcados quando a linha tem
+        características de cifra.
+      */
+
+      const possuiFormatoDeCifra =
+        naoVazios.some(
+          token =>
+            ehAcorde(token) &&
+            temQualidadeDeAcorde(token)
+        );
+
+
+      if (!possuiFormatoDeCifra) {
+
+        return `
+          <div class="linha-cifra">
+            ${escapar(texto) || "&nbsp;"}
+          </div>
+        `;
+      }
+
+
+      tokens.forEach(token => {
+
+        const limpo =
+          limparPontuacao(token);
+
+
+        if (
+          ehAcorde(limpo) &&
+          temQualidadeDeAcorde(limpo)
+        ) {
+
+          const acorde =
+            transporAcorde(
+              limpo,
+              diferenca
+            );
+
+
+          const antes =
+            token.substring(
+              0,
+              token.indexOf(limpo)
+            );
+
+
+          const depois =
+            token.substring(
+              token.indexOf(limpo) +
+              limpo.length
+            );
+
+
+          resultado +=
+            escapar(antes) +
+            '<span class="acorde acorde-detectado">' +
+            escapar(acorde) +
+            "</span>" +
+            escapar(depois);
+
+        } else {
+
+          resultado +=
+            escapar(token);
         }
-      );
+
+      });
 
 
-      return resultado;
+      return `
+        <div class="linha-cifra">
+          ${resultado || "&nbsp;"}
+        </div>
+      `;
     }
 
 
-    /*
-      Verifica se uma palavra possui formato
-      válido de acorde.
-    */
+    function ehAcorde(valor) {
 
-    function ehAcorde(
-      texto
-    ) {
-
-      if (!texto) {
+      if (!valor) {
         return false;
       }
 
 
-      const valor =
-        texto
-          .trim()
-          .replace(
-            /^[([{]+/,
-            ""
-          )
-          .replace(
-            /[)\]},.;:!?]+$/,
-            ""
-          );
+      const texto =
+        limparPontuacao(
+          String(valor).trim()
+        );
 
 
-      const regex =
-        /^[A-Ga-g](?:#|b)?(?:maj7|maj9|maj|min|m|sus4|sus2|sus|dim|aug|add9|add2|7|9|11|13|6|5)?(?:[0-9]+)?(?:\/[A-Ga-g](?:#|b)?)?$/;
+      /*
+        Aceita:
+
+        C
+        Cm
+        C#m7
+        Db
+        F#
+        G/B
+        D7
+        Asus4
+        Bbmaj7
+        etc.
+      */
+
+      return /^
+        [A-Ga-g]
+        (?:#|b)?
+        (?:
+          m
+          |maj
+          |maj7
+          |m7
+          |m9
+          |sus
+          |sus2
+          |sus4
+          |dim
+          |aug
+          |add9
+          |6
+          |7
+          |9
+          |11
+          |13
+          |4
+          |5
+        )*
+        (?:\/[A-Ga-g](?:#|b)?)?
+      $/x.test(texto);
+    }
 
 
-      return regex.test(
-        valor
+    function temQualidadeDeAcorde(valor) {
+
+      const texto =
+        limparPontuacao(
+          String(valor)
+        );
+
+
+      /*
+        Acordes com qualidade explícita
+        são muito mais seguros de detectar
+        dentro de uma frase.
+      */
+
+      return (
+        /[#b]/.test(texto) ||
+        /(?:m|maj|sus|dim|aug|add|[0-9]|\/)/i.test(texto)
       );
+    }
+
+
+    function limparPontuacao(valor) {
+
+      return String(valor)
+        .replace(
+          /^[("“”'`]+/,
+          ""
+        )
+        .replace(
+          /[),.;:!?}"“”'`]+$/,
+          ""
+        );
     }
 
 
@@ -2452,13 +2910,13 @@
         ) % 12;
 
 
-      atualizarTomNaTela();
+      atualizarTomVisual();
 
       mostrarCifra();
     }
 
 
-    function atualizarTomNaTela() {
+    function atualizarTomVisual() {
 
       const elemento =
         document.getElementById(
@@ -2466,38 +2924,15 @@
         );
 
 
-      if (elemento) {
-
-        elemento.textContent =
-          tons[tomAtual];
-
-      }
-
-    }
-
-
-    function calcularDiferencaTom() {
-
-      let diferenca =
-        tomAtual -
-        tomOriginal;
-
-
-      /*
-        Mantemos o valor em uma faixa
-        mais fácil de interpretar.
-      */
-
-      if (diferenca > 6) {
-        diferenca -= 12;
-      }
-
-      if (diferenca < -6) {
-        diferenca += 12;
+      if (!elemento) {
+        return;
       }
 
 
-      return diferenca;
+      elemento.textContent =
+        tons[
+          ((tomAtual % 12) + 12) % 12
+        ];
     }
 
 
@@ -2512,66 +2947,31 @@
 
       const equivalentes = {
 
-        "Db": "C#",
-        "db": "C#",
+        Db: "C#",
+        db: "C#",
 
-        "Eb": "D#",
-        "eb": "D#",
+        Eb: "D#",
+        eb: "D#",
 
-        "Gb": "F#",
-        "gb": "F#",
+        Gb: "F#",
+        gb: "F#",
 
-        "Ab": "G#",
-        "ab": "G#",
+        Ab: "G#",
+        ab: "G#",
 
-        "Bb": "A#",
-        "bb": "A#"
-
+        Bb: "A#",
+        bb: "A#"
       };
 
 
-      return tons.indexOf(
-        equivalentes[nota] ||
-        nota
-      );
-    }
-
-
-    function normalizarTom(
-      tom
-    ) {
-
-      const valor =
-        String(
-          tom || "C"
-        )
+      const normalizada =
+        String(nota)
           .trim();
 
 
-      /*
-        Se o banco guardar "C maior",
-        "Am", etc., pegamos somente
-        a nota raiz.
-      */
-
-      const resultado =
-        valor.match(
-          /^([A-Ga-g](?:#|b)?)/
-        );
-
-
-      if (!resultado) {
-        return "C";
-      }
-
-
-      const nota =
-        resultado[1];
-
-
-      return (
-        nota.charAt(0).toUpperCase() +
-        nota.slice(1)
+      return tons.indexOf(
+        equivalentes[normalizada] ||
+        normalizada
       );
     }
 
@@ -2587,9 +2987,10 @@
 
 
       const resultado =
-        acorde.match(
-          /^([A-Ga-g](?:#|b)?)(.*)$/
-        );
+        String(acorde)
+          .match(
+            /^([A-Ga-g](?:#|b)?)(.*)$/
+          );
 
 
       if (!resultado) {
@@ -2606,11 +3007,7 @@
 
 
       let indice =
-        indiceTom(
-          normalizarTom(
-            nota
-          )
-        );
+        indiceTom(nota);
 
 
       if (indice === -1) {
@@ -2634,10 +3031,196 @@
 
 
     /* =====================================================
-       COPIAR MÚSICA
+       ROLAGEM AUTOMÁTICA
        ===================================================== */
 
-    async function copiarMusica() {
+    function rolar() {
+
+      if (rolagemAtiva) {
+
+        pararRolagem();
+
+        return;
+      }
+
+
+      rolagemAtiva = true;
+
+
+      const botao =
+        document.getElementById(
+          "botaoRolagem"
+        );
+
+
+      if (botao) {
+
+        botao.textContent =
+          "⏹ Parar";
+
+        botao.classList.add(
+          "destaque"
+        );
+      }
+
+
+      iniciarRolagemAutomatica();
+    }
+
+
+    function iniciarRolagemAutomatica() {
+
+      clearInterval(
+        intervaloRolagem
+      );
+
+
+      /*
+        Quanto maior o valor,
+        mais rápida a rolagem.
+      */
+
+      const velocidade =
+        Math.max(
+          10,
+          100 -
+          (velocidadeRolagem * 8)
+        );
+
+
+      intervaloRolagem =
+        setInterval(
+          function() {
+
+            if (!rolagemAtiva) {
+              return;
+            }
+
+
+            window.scrollBy(
+              0,
+              1
+            );
+
+          },
+          velocidade
+        );
+    }
+
+
+    function pararRolagem() {
+
+      rolagemAtiva = false;
+
+
+      clearInterval(
+        intervaloRolagem
+      );
+
+
+      intervaloRolagem = null;
+
+
+      const botao =
+        document.getElementById(
+          "botaoRolagem"
+        );
+
+
+      if (botao) {
+
+        botao.textContent =
+          "▶ Rolagem";
+
+        botao.classList.remove(
+          "destaque"
+        );
+      }
+    }
+
+
+    function atualizarVelocidadeRolagem() {
+
+      const controle =
+        document.getElementById(
+          "velocidadeRolagem"
+        );
+
+      const valor =
+        document.getElementById(
+          "valorVelocidade"
+        );
+
+
+      if (!controle) {
+        return;
+      }
+
+
+      velocidadeRolagem =
+        Number(
+          controle.value
+        );
+
+
+      if (valor) {
+
+        valor.textContent =
+          velocidadeRolagem;
+      }
+
+
+      /*
+        Se estiver rolando,
+        reinicia com a nova velocidade.
+      */
+
+      if (rolagemAtiva) {
+
+        iniciarRolagemAutomatica();
+      }
+    }
+
+
+    /* =====================================================
+       MODO CULTO
+       ===================================================== */
+
+    function modoCulto() {
+
+      const ativado =
+        document.body
+          .classList
+          .toggle("modo-culto");
+
+
+      const botao =
+        document.getElementById(
+          "botaoModoCulto"
+        );
+
+
+      if (botao) {
+
+        botao.textContent =
+          ativado
+            ? "☀️ Sair do modo culto"
+            : "🎤 Modo culto";
+      }
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+    }
+
+
+    /* =====================================================
+       COPIAR CIFRA
+       ===================================================== */
+
+    async function copiarCifra() {
 
       if (!musicaAtual) {
         return;
@@ -2648,6 +3231,11 @@
         gerarTextoParaCopiar();
 
 
+      if (!texto) {
+        return;
+      }
+
+
       try {
 
         await navigator.clipboard.writeText(
@@ -2655,41 +3243,20 @@
         );
 
 
-        mostrarAvisoCopiado();
+        mostrarCopiaSucesso();
+
 
       } catch (erro) {
 
         /*
-          Fallback para navegadores que não
-          permitem navigator.clipboard.
+          Fallback para navegadores
+          que não liberam clipboard API.
         */
 
-        copiarComFallback(
-          texto
-        );
-
+        copiarComFallback(texto);
       }
     }
 
-
-    /*
-      Gera uma versão limpa da música.
-
-      Importante:
-
-      Se a música estiver originalmente:
-
-      C      G      Am
-      Tu és digno
-
-      ela será copiada como:
-
-      C      G      Am
-      Tu és digno
-
-      Se o usuário mudar para outro tom,
-      os acordes serão copiados já transpostos.
-    */
 
     function gerarTextoParaCopiar() {
 
@@ -2698,137 +3265,66 @@
       }
 
 
-      const titulo =
-        musicaAtual.titulo ||
-        "Música";
-
-
-      const artista =
-        musicaAtual.artista ||
-        "";
-
-
-      const diferenca =
-        calcularDiferencaTom();
-
-
-      const linhas =
+      const texto =
         String(
           musicaAtual.cifra ||
           ""
-        )
-          .split(/\r?\n/);
-
-
-      const processadas =
-        linhas.map(
-          linha =>
-            converterLinhaParaTexto(
-              linha,
-              diferenca
-            )
         );
 
 
-      let resultado =
-        titulo +
-        "\n";
+      const diferenca =
+        tomAtual -
+        tomOriginal;
 
 
-      if (artista) {
+      /*
+        Mantém os acordes que estavam
+        entre colchetes no formato [C].
 
-        resultado +=
-          artista +
-          "\n";
+        Também transpõe acordes escritos
+        sem colchetes quando a linha
+        claramente for uma linha de acordes.
+      */
 
-      }
-
-
-      resultado +=
-        "Tom: " +
-        tons[tomAtual] +
-        "\n\n";
-
-
-      resultado +=
-        processadas.join("\n");
-
-
-      return resultado;
+      return texto
+        .split(/\r?\n/)
+        .map(
+          linha =>
+            linhaParaTexto(
+              linha,
+              diferenca
+            )
+        )
+        .join("\n");
     }
 
 
-    /*
-      Converte uma linha para texto copiável,
-      mantendo os acordes e removendo HTML.
-    */
-
-    function converterLinhaParaTexto(
+    function linhaParaTexto(
       linha,
       diferenca
     ) {
 
-      /*
-        Primeiro trata [C], [G], [Am].
-      */
-
-      const regexColchetes =
-        /\[([A-Ga-g](?:#|b)?(?:maj7|maj9|maj|min|m|sus4|sus2|sus|dim|aug|add9|add2|7|9|11|13|6|5)?(?:[0-9]+)?(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
+      const regex =
+        /\[([A-Ga-g](?:#|b)?(?:m|maj|maj7|m7|m9|sus|sus2|sus4|dim|aug|add9|6|7|9|11|13|4|5)*(?:\/[A-Ga-g](?:#|b)?)?)\]/g;
 
 
-      linha =
-        linha.replace(
-          regexColchetes,
-          function(
-            match,
-            acorde
-          ) {
+      return linha.replace(
+        regex,
+        function(
+          completo,
+          acorde
+        ) {
 
-            return transporAcorde(
+          return (
+            "[" +
+            transporAcorde(
               acorde,
               diferenca
-            );
-
-          }
-        );
-
-
-      /*
-        Depois trata acordes escritos diretamente.
-      */
-
-      const partes =
-        linha.split(
-          /(\s+)/
-        );
-
-
-      return partes
-        .map(
-          parte => {
-
-            const trim =
-              parte.trim();
-
-
-            if (
-              trim &&
-              ehAcorde(trim)
-            ) {
-
-              return transporAcorde(
-                trim,
-                diferenca
-              );
-
-            }
-
-
-            return parte;
-
-          }
-        )
-        .join("");
+            ) +
+            "]"
+          );
+        }
+      );
     }
 
 
@@ -2849,8 +3345,8 @@
       area.style.position =
         "fixed";
 
-      area.style.left =
-        "-9999px";
+      area.style.opacity =
+        "0";
 
 
       document.body.appendChild(
@@ -2869,15 +3365,13 @@
           "copy"
         );
 
-
-        mostrarAvisoCopiado();
+        mostrarCopiaSucesso();
 
       } catch (erro) {
 
         alert(
-          "Não foi possível copiar automaticamente. Selecione e copie a cifra manualmente."
+          "Não foi possível copiar a cifra."
         );
-
       }
 
 
@@ -2887,11 +3381,11 @@
     }
 
 
-    function mostrarAvisoCopiado() {
+    function mostrarCopiaSucesso() {
 
       const botao =
-        document.querySelector(
-          '[onclick="copiarMusica()"]'
+        document.getElementById(
+          "botaoCopiar"
         );
 
 
@@ -2900,217 +3394,23 @@
       }
 
 
-      const textoOriginal =
-        botao.textContent;
+      const original =
+        "📋 Copiar cifra";
 
 
       botao.textContent =
-        "✅ Copiado!";
+        "✅ Cifra copiada!";
 
 
       setTimeout(
         function() {
 
           botao.textContent =
-            textoOriginal;
+            original;
 
         },
         1800
       );
-    }
-
-
-    /* =====================================================
-       ROLAGEM
-       ===================================================== */
-
-    function rolar() {
-
-      if (
-        rolagemAtiva
-      ) {
-
-        pararRolagem();
-
-        return;
-      }
-
-
-      rolagemAtiva =
-        true;
-
-
-      const controle =
-        document.getElementById(
-          "controleRolagem"
-        );
-
-
-      if (controle) {
-
-        controle.classList.add(
-          "ativo"
-        );
-
-      }
-
-
-      const botao =
-        document.getElementById(
-          "botaoRolagem"
-        );
-
-
-      if (botao) {
-
-        botao.textContent =
-          "⏹ Parar rolagem";
-
-      }
-
-
-      iniciarRolagemAutomatica();
-    }
-
-
-    function iniciarRolagemAutomatica() {
-
-      clearInterval(
-        intervaloRolagem
-      );
-
-
-      intervaloRolagem =
-        setInterval(
-          function() {
-
-            if (
-              !rolagemAtiva
-            ) {
-
-              return;
-
-            }
-
-
-            const velocidade =
-              Number(
-                document.getElementById(
-                  "velocidadeRolagem"
-                )?.value ||
-                4
-              );
-
-
-            /*
-              Quanto maior a velocidade,
-              maior o deslocamento.
-            */
-
-            const distancia =
-              Math.max(
-                1,
-                velocidade / 2
-              );
-
-
-            window.scrollBy(
-              0,
-              distancia
-            );
-
-
-            /*
-              Quando chegar ao final,
-              para automaticamente.
-            */
-
-            const chegouAoFim =
-              window.innerHeight +
-              window.scrollY >=
-              document.documentElement.scrollHeight -
-              5;
-
-
-            if (
-              chegouAoFim
-            ) {
-
-              pararRolagem();
-
-            }
-
-          },
-          45
-        );
-    }
-
-
-    function alterarVelocidadeRolagem() {
-
-      const controle =
-        document.getElementById(
-          "velocidadeRolagem"
-        );
-
-      const valor =
-        document.getElementById(
-          "valorVelocidade"
-        );
-
-
-      if (
-        controle &&
-        valor
-      ) {
-
-        valor.textContent =
-          controle.value;
-
-      }
-
-    }
-
-
-    function pararRolagem() {
-
-      rolagemAtiva =
-        false;
-
-
-      clearInterval(
-        intervaloRolagem
-      );
-
-
-      const botao =
-        document.getElementById(
-          "botaoRolagem"
-        );
-
-
-      if (botao) {
-
-        botao.textContent =
-          "▶ Rolagem";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       MODO CULTO
-       ===================================================== */
-
-    function modoCulto() {
-
-      document.body
-        .classList
-        .toggle(
-          "modo-culto"
-        );
-
     }
 
 
@@ -3125,29 +3425,35 @@
 
       document.body
         .classList
-        .remove(
-          "modo-culto"
-        );
+        .remove("modo-culto");
 
 
-      document
-        .getElementById(
+      const pagina =
+        document.getElementById(
           "paginaMusica"
-        )
-        .classList
-        .add(
-          "oculto"
         );
 
 
-      document
-        .getElementById(
+      const inicio =
+        document.getElementById(
           "inicio"
-        )
-        .classList
-        .remove(
-          "oculto"
         );
+
+
+      if (pagina) {
+
+        pagina
+          .classList
+          .add("oculto");
+      }
+
+
+      if (inicio) {
+
+        inicio
+          .classList
+          .remove("oculto");
+      }
 
 
       window.scrollTo(
@@ -3172,10 +3478,7 @@
 
       const partes =
         String(data)
-          .substring(
-            0,
-            10
-          )
+          .substring(0, 10)
           .split("-");
 
 
@@ -3183,8 +3486,7 @@
         partes.length !== 3
       ) {
 
-        return data;
-
+        return String(data);
       }
 
 
@@ -3233,7 +3535,7 @@
 
 
     /* =====================================================
-       INICIAR
+       EVENTOS
        ===================================================== */
 
     document.addEventListener(
@@ -3241,6 +3543,100 @@
       function() {
 
         carregarCulto();
+
+        carregarBancoMusicas();
+
+
+        const campoBusca =
+          document.getElementById(
+            "buscaMusicas"
+          );
+
+
+        if (campoBusca) {
+
+          campoBusca.addEventListener(
+            "input",
+            filtrarBancoMusicas
+          );
+        }
+
+
+        const campoSenha =
+          document.getElementById(
+            "senhaCadastro"
+          );
+
+
+        if (campoSenha) {
+
+          campoSenha.addEventListener(
+            "keydown",
+            function(event) {
+
+              if (
+                event.key === "Enter"
+              ) {
+
+                verificarSenhaCadastro();
+              }
+
+              if (
+                event.key === "Escape"
+              ) {
+
+                fecharLoginCadastro();
+              }
+
+            }
+          );
+        }
+
+
+        const controleVelocidade =
+          document.getElementById(
+            "velocidadeRolagem"
+          );
+
+
+        if (controleVelocidade) {
+
+          controleVelocidade.addEventListener(
+            "input",
+            atualizarVelocidadeRolagem
+          );
+        }
+
+      }
+    );
+
+
+    /*
+      ESC fecha o modal de senha.
+    */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          const login =
+            document.getElementById(
+              "loginCadastro"
+            );
+
+
+          if (
+            login &&
+            login.style.display === "flex"
+          ) {
+
+            fecharLoginCadastro();
+          }
+        }
 
       }
     );
