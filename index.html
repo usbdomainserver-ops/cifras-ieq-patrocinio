@@ -1154,6 +1154,57 @@
 
       gap: 12px;
 
+    .cifra-titulo {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 900;
+    }
+
+    .cifra-posicao {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .controle-cifra-posicao {
+      width: 34px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 9px;
+      background: rgba(255,255,255,.07);
+      color: var(--cifra-texto);
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .controle-cifra-posicao:hover {
+      background: rgba(255,255,255,.14);
+      transform: translateY(-1px);
+    }
+
+    .controle-cifra-posicao:active {
+      transform: scale(.94);
+    }
+
+    /*
+      A coluna começa alinhada com o início visual do
+      título "🎵 CIFRA". O JavaScript pode deslocá-la
+      para esquerda/direita sem alterar os espaços internos.
+    */
+    #cifra {
+      position: relative;
+      left: var(--deslocamento-cifra, 0px);
+    }
+
+
+
       padding: 12px 17px;
 
       background:
@@ -1814,9 +1865,9 @@
         */
         padding:
           17px
+          13px
           17px
-          17px
-          0px;
+          13px;
 
         font-size: 15px;
 
@@ -2251,9 +2302,34 @@
 
       <div class="cifra-toolbar">
 
-        <span>
+        <span class="cifra-titulo">
           🎵 CIFRA
         </span>
+
+        <div
+          class="cifra-posicao"
+          aria-label="Posição da coluna da cifra"
+        >
+          <button
+            type="button"
+            class="controle-cifra-posicao"
+            title="Mover a coluna para a esquerda"
+            aria-label="Mover a coluna para a esquerda"
+            onclick="moverColunaCifra(-1)"
+          >
+            ←
+          </button>
+
+          <button
+            type="button"
+            class="controle-cifra-posicao"
+            title="Mover a coluna para a direita"
+            aria-label="Mover a coluna para a direita"
+            onclick="moverColunaCifra(1)"
+          >
+            →
+          </button>
+        </div>
 
         <span id="statusCifra">
           Tom original
@@ -6333,6 +6409,40 @@ Todos os dias"
         passive: true
       }
     );
+
+
+    /* =====================================================
+       POSIÇÃO HORIZONTAL DA COLUNA DA CIFRA
+       ===================================================== */
+
+    let deslocamentoColunaCifra = 0;
+
+    function moverColunaCifra(
+      direcao
+    ) {
+      const passo = 12;
+
+      deslocamentoColunaCifra +=
+        Number(direcao) * passo;
+
+      /*
+        Limites para evitar que a coluna desapareça
+        completamente da tela.
+      */
+      deslocamentoColunaCifra =
+        Math.max(
+          -72,
+          Math.min(
+            72,
+            deslocamentoColunaCifra
+          )
+        );
+
+      document.documentElement.style.setProperty(
+        "--deslocamento-cifra",
+        `${deslocamentoColunaCifra}px`
+      );
+    }
 
 
     /* =====================================================
