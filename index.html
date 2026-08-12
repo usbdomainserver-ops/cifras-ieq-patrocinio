@@ -1065,6 +1065,21 @@
       font-size: 13px;
     }
 
+    .controle-posicao-letra {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0;
+    }
+
+    .controle-posicao-letra .controle {
+      min-width: 42px;
+    }
+
+    .controle-posicao-letra .controle:nth-child(2) {
+      min-width: 112px;
+    }
+
     .controles {
       display: flex;
       align-items: center;
@@ -1216,7 +1231,9 @@
       position: relative;
       left: 0;
 
-      padding: 22px 13px 30px;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 14px 4px 30px;
 
       color: var(--cifra-texto);
       font-family:
@@ -1228,11 +1245,14 @@
       min-height: 300px;
       overflow-x: auto;
       overflow-y: visible;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
     }
 
     .linha-cifra {
       position: relative;
       left: var(--deslocamento-cifra, 0px);
+      box-sizing: border-box;
 
       white-space: pre;
       min-height: 0;
@@ -1714,23 +1734,47 @@
       display: none;
     }
 
+    body.modo-culto {
+      overflow-x: hidden;
+      background: var(--fundo);
+    }
+
     body.modo-culto .pagina-musica {
-      width: min(1250px, calc(100% - 24px));
-      padding-top: 12px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
     }
 
     body.modo-culto .musica-topo {
       position: relative;
       top: 0;
-    }
-
-    body.modo-culto #cifra {
-      font-size: 21px;
-      line-height: 1.25;
+      border-radius: 0;
+      margin: 0;
     }
 
     body.modo-culto .cifra-card {
-      border-radius: 15px;
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+    }
+
+    body.modo-culto .cifra-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    body.modo-culto #cifra {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-size: 21px;
+      line-height: 1.25;
     }
 
     /* =====================================================
@@ -1852,10 +1896,10 @@
           "🎵 CIFRA", sem deslocar o container.
         */
         padding:
-          17px
-          13px
-          17px
-          13px;
+          10px
+          2px
+          24px
+          2px;
 
         width: 100%;
         max-width: 100%;
@@ -2231,25 +2275,11 @@
           🎤 Modo culto
         </button>
 
-        <button
-          type="button"
-          class="controle"
-          onclick="moverColunaCifra(-1)"
-          title="Mover a letra para a esquerda"
-          aria-label="Mover a letra para a esquerda"
-        >
-          ← Letra
-        </button>
-
-        <button
-          type="button"
-          class="controle"
-          onclick="moverColunaCifra(1)"
-          title="Mover a letra para a direita"
-          aria-label="Mover a letra para a direita"
-        >
-          Letra →
-        </button>
+        <div class="controle-posicao-letra" aria-label="Ajustar posição da letra">
+          <button type="button" class="controle" onclick="moverColunaCifra(-1)" title="Mover a letra para a esquerda">←</button>
+          <button type="button" class="controle" onclick="centralizarLetra()" title="Centralizar a letra">↔ Centralizar</button>
+          <button type="button" class="controle" onclick="moverColunaCifra(1)" title="Mover a letra para a direita">→</button>
+        </div>
 
       </div>
 
@@ -2268,13 +2298,14 @@
           <input
             id="velocidadeRolagem"
             type="range"
-            min="1"
-            max="10"
-            value="4"
+            min="0.1"
+            max="6"
+            step="0.1"
+            value="1.0"
           >
 
           <span id="valorVelocidade">
-            4x
+            1.0x
           </span>
 
         </div>
@@ -5674,13 +5705,19 @@ Todos os dias"
             }
 
 
+            /*
+              Velocidade em pixels por segundo.
+              O controle agora permite velocidades realmente lentas.
+            */
+            const passo = Math.max(0.05, velocidade * 0.8);
+
             window.scrollBy(
               0,
-              velocidade
+              passo
             );
 
           },
-          45
+          50
         );
 
     }
@@ -5867,21 +5904,45 @@ Todos os dias"
        MODO CULTO
        ===================================================== */
 
-    function modoCulto() {
+    async function modoCulto() {
 
-      document.body
-        .classList
-        .toggle(
-          "modo-culto"
-        );
+      const ativo = document.body.classList.contains("modo-culto");
 
+      if (ativo) {
+        document.body.classList.remove("modo-culto");
 
-      window.scrollTo(
-        0,
-        0
-      );
+        if (document.fullscreenElement) {
+          try {
+            await document.exitFullscreen();
+          } catch (e) {}
+        }
 
+        window.scrollTo(0, 0);
+        return;
+      }
+
+      document.body.classList.add("modo-culto");
+      window.scrollTo(0, 0);
+
+      /*
+        Tenta usar a tela cheia real do navegador.
+        Se o navegador não permitir, o modo-culto continua
+        funcionando visualmente como alternativa.
+      */
+      try {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (e) {
+        // Alguns navegadores bloqueiam fullscreen sem interação.
+      }
     }
+
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) {
+        document.body.classList.remove("modo-culto");
+      }
+    });
 
 
     /* =====================================================
@@ -6429,53 +6490,32 @@ Todos os dias"
 
     let deslocamentoColunaCifra = 0;
 
-    function moverColunaCifra(
-      direcao
-    ) {
-      const passo = 16;
-
-      deslocamentoColunaCifra +=
-        Number(direcao) * passo;
-
-      deslocamentoColunaCifra =
-        Math.max(
-          -80,
-          Math.min(
-            80,
-            deslocamentoColunaCifra
-          )
-        );
-
+    function aplicarDeslocamentoCifra() {
       document.documentElement.style.setProperty(
         "--deslocamento-cifra",
         `${deslocamentoColunaCifra}px`
       );
     }
 
+    function moverColunaCifra(direcao) {
+      const passo = 20;
 
-    function configurarBotoesPosicaoCifra() {
-      const esquerda =
-        document.getElementById(
-          "btnCifraEsquerda"
-        );
+      deslocamentoColunaCifra += Number(direcao) * passo;
+      deslocamentoColunaCifra = Math.max(
+        -180,
+        Math.min(180, deslocamentoColunaCifra)
+      );
 
-      const direita =
-        document.getElementById(
-          "btnCifraDireita"
-        );
+      aplicarDeslocamentoCifra();
+    }
 
-      if (esquerda) {
-        esquerda.addEventListener(
-          "click",
-          () => moverColunaCifra(-1)
-        );
-      }
+    function centralizarLetra() {
+      deslocamentoColunaCifra = 0;
+      aplicarDeslocamentoCifra();
 
-      if (direita) {
-        direita.addEventListener(
-          "click",
-          () => moverColunaCifra(1)
-        );
+      const cifra = document.getElementById("cifra");
+      if (cifra) {
+        cifra.scrollLeft = 0;
       }
     }
 
@@ -6487,9 +6527,6 @@ Todos os dias"
     document.addEventListener(
       "DOMContentLoaded",
       () => {
-
-        configurarBotoesPosicaoCifra();
-
 
         carregarTema();
 
