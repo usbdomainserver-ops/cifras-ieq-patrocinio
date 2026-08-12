@@ -33,9 +33,9 @@
       --laranja: #f59e0b;
 
       /* Fundo novo das cifras */
-      --cifra-fundo: #252238;
-      --cifra-texto: #f7f4ff;
-      --acorde: #ffc15c;
+      --cifra-fundo: #ffffff;
+      --cifra-texto: #17151f;
+      --acorde: #6d28d9;
 
       --sombra: 0 12px 40px rgba(42, 20, 80, 0.08);
 
@@ -55,9 +55,9 @@
 
       --roxo-claro: #281c3c;
 
-      --cifra-fundo: #171525;
-      --cifra-texto: #f8f5ff;
-      --acorde: #ffd27d;
+      --cifra-fundo: #ffffff;
+      --cifra-texto: #17151f;
+      --acorde: #6d28d9;
     }
 
     html {
@@ -1220,7 +1220,7 @@
 
     #cifra {
       position: relative;
-      left: var(--deslocamento-cifra, 0px);
+      left: 0;
 
       padding: 22px 13px 30px;
 
@@ -1237,9 +1237,14 @@
     }
 
     .linha-cifra {
+      position: relative;
+      left: var(--deslocamento-cifra, 0px);
+
       white-space: pre;
       min-height: 0;
       height: auto;
+      width: max-content;
+      max-width: none;
       margin: 0;
       padding: 0;
     }
@@ -1848,14 +1853,18 @@
 
       #cifra {
         /*
-          A coluna da cifra começa no mesmo eixo esquerdo
-          do título "🎵 CIFRA".
+          A cifra começa no mesmo eixo esquerdo do título
+          "🎵 CIFRA", sem deslocar o container.
         */
         padding:
           17px
           13px
           17px
           13px;
+
+        width: 100%;
+        max-width: 100%;
+        overflow-x: visible;
 
         font-size: 15px;
         line-height: 1.22;
@@ -6407,16 +6416,16 @@ Todos os dias"
     function moverColunaCifra(
       direcao
     ) {
-      const passo = 16;
+      const passo = 12;
 
       deslocamentoColunaCifra +=
         Number(direcao) * passo;
 
       deslocamentoColunaCifra =
         Math.max(
-          -160,
+          -80,
           Math.min(
-            160,
+            80,
             deslocamentoColunaCifra
           )
         );
