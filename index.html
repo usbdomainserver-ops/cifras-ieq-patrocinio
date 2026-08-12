@@ -1151,73 +1151,58 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       gap: 12px;
+      padding: 12px 17px;
+
+      background: rgba(255,255,255,.045);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      color: rgba(255,255,255,.65);
+      font-size: 11px;
+    }
 
     .cifra-titulo {
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      color: rgba(255,255,255,.92);
       font-weight: 900;
+      white-space: nowrap;
     }
 
     .cifra-posicao {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+      margin-left: auto;
+      margin-right: 8px;
     }
 
     .controle-cifra-posicao {
       width: 34px;
       height: 32px;
+      padding: 0;
       display: grid;
       place-items: center;
-      padding: 0;
-      border: 1px solid rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
       border-radius: 9px;
-      background: rgba(255,255,255,.07);
-      color: var(--cifra-texto);
-      font-size: 17px;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.92);
+      font-size: 18px;
       font-weight: 900;
       line-height: 1;
       cursor: pointer;
-      transition: .16s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .controle-cifra-posicao:hover {
-      background: rgba(255,255,255,.14);
-      transform: translateY(-1px);
+      background: rgba(255,255,255,.16);
     }
 
     .controle-cifra-posicao:active {
       transform: scale(.94);
-    }
-
-    /*
-      A coluna começa alinhada com o início visual do
-      título "🎵 CIFRA". O JavaScript pode deslocá-la
-      para esquerda/direita sem alterar os espaços internos.
-    */
-    #cifra {
-      position: relative;
-      left: var(--deslocamento-cifra, 0px);
-    }
-
-
-
-      padding: 12px 17px;
-
-      background:
-        rgba(255,255,255,.045);
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.07);
-
-      color:
-        rgba(255,255,255,.65);
-
-      font-size: 11px;
     }
 
     /*
@@ -1234,7 +1219,11 @@
     */
 
     #cifra {
-      padding: 22px 25px 30px;
+      position: relative;
+      left: var(--deslocamento-cifra, 0px);
+
+      padding: 22px 13px 30px;
+
       color: var(--cifra-texto);
       font-family:
         "Courier New",
@@ -1859,9 +1848,8 @@
 
       #cifra {
         /*
-          No celular a cifra ficava muito colada à borda esquerda.
-          Aumentamos somente o recuo horizontal, preservando
-          exatamente os espaços internos dos acordes.
+          A coluna da cifra começa no mesmo eixo esquerdo
+          do título "🎵 CIFRA".
         */
         padding:
           17px
@@ -1870,7 +1858,6 @@
           13px;
 
         font-size: 15px;
-
         line-height: 1.22;
       }
 
@@ -2313,9 +2300,9 @@
           <button
             type="button"
             class="controle-cifra-posicao"
+            id="btnCifraEsquerda"
             title="Mover a coluna para a esquerda"
             aria-label="Mover a coluna para a esquerda"
-            onclick="moverColunaCifra(-1)"
           >
             ←
           </button>
@@ -2323,9 +2310,9 @@
           <button
             type="button"
             class="controle-cifra-posicao"
+            id="btnCifraDireita"
             title="Mover a coluna para a direita"
             aria-label="Mover a coluna para a direita"
-            onclick="moverColunaCifra(1)"
           >
             →
           </button>
@@ -6420,20 +6407,16 @@ Todos os dias"
     function moverColunaCifra(
       direcao
     ) {
-      const passo = 12;
+      const passo = 16;
 
       deslocamentoColunaCifra +=
         Number(direcao) * passo;
 
-      /*
-        Limites para evitar que a coluna desapareça
-        completamente da tela.
-      */
       deslocamentoColunaCifra =
         Math.max(
-          -72,
+          -160,
           Math.min(
-            72,
+            160,
             deslocamentoColunaCifra
           )
         );
@@ -6445,6 +6428,33 @@ Todos os dias"
     }
 
 
+    function configurarBotoesPosicaoCifra() {
+      const esquerda =
+        document.getElementById(
+          "btnCifraEsquerda"
+        );
+
+      const direita =
+        document.getElementById(
+          "btnCifraDireita"
+        );
+
+      if (esquerda) {
+        esquerda.addEventListener(
+          "click",
+          () => moverColunaCifra(-1)
+        );
+      }
+
+      if (direita) {
+        direita.addEventListener(
+          "click",
+          () => moverColunaCifra(1)
+        );
+      }
+    }
+
+
     /* =====================================================
        INICIALIZAÇÃO
        ===================================================== */
@@ -6452,6 +6462,9 @@ Todos os dias"
     document.addEventListener(
       "DOMContentLoaded",
       () => {
+
+        configurarBotoesPosicaoCifra();
+
 
         carregarTema();
 
